@@ -16,7 +16,20 @@ import ErrorState from '../../components/ui/ErrorState';
 import StatusBadge from '../../components/ui/StatusBadge';
 import EmptyState from '../../components/ui/EmptyState';
 import GlassSelectCustom from '../../components/ui/GlassSelectCustom';
-import { useBillingBalance, useBillingPackages, useBillingHistory, useCreatePurchase, useSettings } from '../../services/queries';
+import GlassInput from '../../components/ui/GlassInput';
+import { 
+  useBillingBalance, 
+  useBillingPackages, 
+  useBillingHistory, 
+  useCreatePurchase, 
+  useSettings,
+  useSubscriptionStatus,
+  useSubscribe,
+  useUpdateSubscription,
+  useCancelSubscription,
+  useCalculateTopup,
+  useCreateTopup,
+} from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
 import { format } from 'date-fns';
@@ -26,16 +39,27 @@ export default function Billing() {
   const toast = useToastContext();
   const [page, setPage] = useState(1);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [topupCredits, setTopupCredits] = useState('');
   const pageSize = 20;
 
   const { data: balanceData, isLoading: isLoadingBalance, error: balanceError } = useBillingBalance();
   const { data: settingsData } = useSettings();
+  const { data: subscriptionData, isLoading: isLoadingSubscription } = useSubscriptionStatus();
   const { data: packagesData, isLoading: isLoadingPackages, error: packagesError, refetch: refetchPackages } = useBillingPackages(selectedCurrency);
   const { data: historyData, isLoading: isLoadingHistory, error: historyError } = useBillingHistory({
     page,
     pageSize,
   });
   const createPurchase = useCreatePurchase();
+  const subscribe = useSubscribe();
+  const updateSubscription = useUpdateSubscription();
+  const cancelSubscription = useCancelSubscription();
+  const createTopup = useCreateTopup();
+  
+  // Calculate top-up price when credits are entered
+  const { data: topupPriceData, isLoading: isLoadingTopupPrice } = useCalculateTopup(
+    topupCredits ? parseInt(topupCredits) : null
+  );
 
   // Normalize response data
   const balanceResponse = balanceData?.data || balanceData || {};
@@ -49,12 +73,20 @@ export default function Billing() {
   // Use selected currency if set, otherwise use default from settings/balance
   const currency = selectedCurrency || defaultCurrency;
   
+  const subscriptionResponse = subscriptionData?.data || subscriptionData || {};
+  const subscription = subscriptionResponse || {};
+  const isSubscriptionActive = subscription.active === true;
+  const subscriptionPlan = subscription.planType || null;
+  
   const packagesResponse = packagesData?.data || packagesData || {};
   const packages = packagesResponse.packages || (Array.isArray(packagesResponse) ? packagesResponse : []);
+  const subscriptionRequired = packagesResponse.subscriptionRequired === true;
   
   const historyResponse = historyData?.data || historyData || {};
   const history = historyResponse.transactions || historyResponse.items || [];
   const pagination = historyResponse.pagination || {};
+  
+  const topupPrice = topupPriceData?.data || topupPriceData || {};
 
   // Update selected currency when settings currency changes (immediately sync)
   useEffect(() => {
@@ -72,11 +104,25 @@ export default function Billing() {
     }
   }, [selectedCurrency, refetchPackages]);
 
+  // Handle URL params for success/cancel
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') {
+      toast.success('Payment completed successfully!');
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (params.get('canceled') === 'true') {
+      toast.info('Payment was cancelled');
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [toast]);
+
   const handlePurchase = async (packageId) => {
     try {
       // Build success and cancel URLs based on frontend URL
-      const successUrl = `${FRONTEND_URL}/app/billing?success=true`;
-      const cancelUrl = `${FRONTEND_URL}/app/billing?canceled=true`;
+      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+      const cancelUrl = `${FRONTEND_URL}/shopify/app/billing/cancel`;
       
       const result = await createPurchase.mutateAsync({ 
         packageId,
@@ -86,7 +132,13 @@ export default function Billing() {
       });
       
       // Redirect to Stripe checkout
-      if (result?.sessionUrl) {
+      if (result?.data?.sessionUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.data.sessionUrl;
+      } else if (result?.data?.checkoutUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.data.checkoutUrl;
+      } else if (result?.sessionUrl) {
         toast.success('Redirecting to payment...');
         window.location.href = result.sessionUrl;
       } else if (result?.checkoutUrl) {
@@ -96,7 +148,83 @@ export default function Billing() {
         toast.error('Failed to get checkout URL. Please try again.');
       }
     } catch (error) {
-      toast.error(error?.message || 'Failed to initiate purchase');
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate purchase';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleSubscribe = async (planType) => {
+    try {
+      const result = await subscribe.mutateAsync({ planType });
+      
+      if (result?.data?.checkoutUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.data.checkoutUrl;
+      } else if (result?.checkoutUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.checkoutUrl;
+      } else {
+        toast.error('Failed to get checkout URL. Please try again.');
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate subscription';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleUpdateSubscription = async (planType) => {
+    try {
+      await updateSubscription.mutateAsync({ planType });
+      toast.success(`Subscription updated to ${planType} plan successfully`);
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to update subscription';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    if (!window.confirm('Are you sure you want to cancel your subscription? You will lose access to subscription benefits.')) {
+      return;
+    }
+    
+    try {
+      await cancelSubscription.mutateAsync();
+      toast.success('Subscription cancelled successfully');
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to cancel subscription';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleTopup = async () => {
+    const credits = parseInt(topupCredits);
+    if (!credits || credits <= 0) {
+      toast.error('Please enter a valid number of credits');
+      return;
+    }
+
+    try {
+      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+      const cancelUrl = `${FRONTEND_URL}/shopify/app/billing/cancel`;
+      
+      const result = await createTopup.mutateAsync({
+        credits,
+        successUrl,
+        cancelUrl,
+      });
+      
+      if (result?.data?.checkoutUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.data.checkoutUrl;
+      } else if (result?.checkoutUrl) {
+        toast.success('Redirecting to payment...');
+        window.location.href = result.checkoutUrl;
+      } else {
+        toast.error('Failed to get checkout URL. Please try again.');
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate top-up';
+      toast.error(errorMessage);
     }
   };
 
@@ -173,30 +301,241 @@ export default function Billing() {
                 </div>
               </GlassCard>
 
-              {/* Purchase Packages */}
+              {/* Subscription Section */}
               <div className="mb-8 sm:mb-10">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                      <Icon name="billing" size="md" variant="ice" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Purchase Credits</h2>
-                      <p className="text-sm text-neutral-text-secondary mt-1">Choose a package to add credits to your account</p>
-                    </div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2.5 rounded-xl bg-ice-soft/80">
+                    <Icon name="billing" size="md" variant="ice" />
                   </div>
-                  <div className="w-full sm:w-auto sm:min-w-[200px]">
-                    <GlassSelectCustom
-                      label="Currency"
-                      value={selectedCurrency}
-                      onChange={(e) => setSelectedCurrency(e.target.value)}
-                      options={[
-                        { value: 'EUR', label: 'EUR (€)' },
-                        { value: 'USD', label: 'USD ($)' },
-                      ]}
-                    />
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Subscription</h2>
+                    <p className="text-sm text-neutral-text-secondary mt-1">Manage your subscription plan</p>
                   </div>
                 </div>
+
+                {isLoadingSubscription ? (
+                  <div className="flex items-center justify-center py-12">
+                    <LoadingSpinner size="lg" />
+                  </div>
+                ) : isSubscriptionActive ? (
+                  <GlassCard className="p-5 sm:p-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <StatusBadge status="active" />
+                          <h3 className="text-lg font-semibold text-neutral-text-primary capitalize">
+                            {subscriptionPlan} Plan
+                          </h3>
+                        </div>
+                        <p className="text-sm text-neutral-text-secondary">
+                          {subscriptionPlan === 'starter' 
+                            ? '€40/month - 100 free credits per month'
+                            : '€240/year - 500 free credits per year'}
+                        </p>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        {subscriptionPlan === 'starter' ? (
+                          <GlassButton
+                            variant="primary"
+                            size="md"
+                            onClick={() => handleUpdateSubscription('pro')}
+                            disabled={updateSubscription.isPending}
+                          >
+                            Upgrade to Pro
+                          </GlassButton>
+                        ) : (
+                          <GlassButton
+                            variant="ghost"
+                            size="md"
+                            onClick={() => handleUpdateSubscription('starter')}
+                            disabled={updateSubscription.isPending}
+                          >
+                            Downgrade to Starter
+                          </GlassButton>
+                        )}
+                        <GlassButton
+                          variant="ghost"
+                          size="md"
+                          onClick={handleCancelSubscription}
+                          disabled={cancelSubscription.isPending}
+                          className="text-red-500 hover:text-red-600"
+                        >
+                          Cancel Subscription
+                        </GlassButton>
+                      </div>
+                    </div>
+                  </GlassCard>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <GlassCard className="p-5 sm:p-6">
+                      <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Starter Plan</h3>
+                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€40<span className="text-sm font-normal text-neutral-text-secondary">/month</span></p>
+                      <ul className="space-y-2 mb-4 text-sm text-neutral-text-secondary">
+                        <li className="flex items-center gap-2">
+                          <Icon name="check" size="xs" variant="ice" />
+                          <span>100 free credits per month</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Icon name="check" size="xs" variant="ice" />
+                          <span>All features included</span>
+                        </li>
+                      </ul>
+                      <GlassButton
+                        variant="primary"
+                        size="lg"
+                        onClick={() => handleSubscribe('starter')}
+                        disabled={subscribe.isPending}
+                        className="w-full"
+                      >
+                        Subscribe to Starter
+                      </GlassButton>
+                    </GlassCard>
+                    <GlassCard variant="fuchsia" className="p-5 sm:p-6 border-2 border-fuchsia-primary relative">
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                        <span className="px-3 py-1 text-xs font-semibold rounded-full bg-fuchsia-primary text-white">
+                          Best Value
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Pro Plan</h3>
+                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€240<span className="text-sm font-normal text-neutral-text-secondary">/year</span></p>
+                      <ul className="space-y-2 mb-4 text-sm text-neutral-text-secondary">
+                        <li className="flex items-center gap-2">
+                          <Icon name="check" size="xs" variant="ice" />
+                          <span>500 free credits per year</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Icon name="check" size="xs" variant="ice" />
+                          <span>All features included</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <Icon name="check" size="xs" variant="ice" />
+                          <span>Save 50% vs monthly</span>
+                        </li>
+                      </ul>
+                      <GlassButton
+                        variant="fuchsia"
+                        size="lg"
+                        onClick={() => handleSubscribe('pro')}
+                        disabled={subscribe.isPending}
+                        className="w-full"
+                      >
+                        Subscribe to Pro
+                      </GlassButton>
+                    </GlassCard>
+                  </div>
+                )}
+              </div>
+
+              {/* Credit Top-up Section */}
+              <div className="mb-8 sm:mb-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2.5 rounded-xl bg-ice-soft/80">
+                    <Icon name="billing" size="md" variant="ice" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Top-up</h2>
+                    <p className="text-sm text-neutral-text-secondary mt-1">Purchase additional credits at €0.045 per credit (24% VAT included)</p>
+                  </div>
+                </div>
+
+                <GlassCard className="p-5 sm:p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <GlassInput
+                        type="number"
+                        min="1"
+                        max="1000000"
+                        label="Number of Credits"
+                        value={topupCredits}
+                        onChange={(e) => setTopupCredits(e.target.value)}
+                        placeholder="Enter credits (e.g., 1000)"
+                      />
+                      {topupCredits && parseInt(topupCredits) > 0 && (
+                        <p className="text-xs text-neutral-text-secondary mt-2">
+                          Max 1,000,000 credits per purchase
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-text-primary mb-2">
+                        Price Breakdown
+                      </label>
+                      {isLoadingTopupPrice ? (
+                        <div className="flex items-center gap-2 py-3">
+                          <LoadingSpinner size="sm" />
+                          <span className="text-sm text-neutral-text-secondary">Calculating...</span>
+                        </div>
+                      ) : topupPrice.priceEurWithVat ? (
+                        <div className="space-y-1 py-3">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-neutral-text-secondary">Base Price:</span>
+                            <span className="text-neutral-text-primary">€{topupPrice.priceEur?.toFixed(2) || '0.00'}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-neutral-text-secondary">VAT (24%):</span>
+                            <span className="text-neutral-text-primary">€{topupPrice.vatAmount?.toFixed(2) || '0.00'}</span>
+                          </div>
+                          <div className="flex justify-between text-base font-semibold pt-2 border-t border-neutral-border">
+                            <span className="text-neutral-text-primary">Total:</span>
+                            <span className="text-ice-primary">€{topupPrice.priceEurWithVat?.toFixed(2) || '0.00'}</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-neutral-text-secondary py-3">
+                          Enter credits to see price
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <GlassButton
+                      variant="primary"
+                      size="lg"
+                      onClick={handleTopup}
+                      disabled={!topupCredits || parseInt(topupCredits) <= 0 || createTopup.isPending || isLoadingTopupPrice}
+                      className="w-full sm:w-auto"
+                    >
+                      {createTopup.isPending ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <LoadingSpinner size="sm" />
+                          Processing...
+                        </span>
+                      ) : (
+                        <span className="flex items-center justify-center gap-2">
+                          <Icon name="billing" size="sm" variant="ice" />
+                          Purchase Credits
+                        </span>
+                      )}
+                    </GlassButton>
+                  </div>
+                </GlassCard>
+              </div>
+
+              {/* Purchase Packages (Credit Packs) - Only if subscription active */}
+              {isSubscriptionActive && (
+                <div className="mb-8 sm:mb-10">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-xl bg-ice-soft/80">
+                        <Icon name="billing" size="md" variant="ice" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Packs</h2>
+                        <p className="text-sm text-neutral-text-secondary mt-1">Purchase credit packs at discounted rates (subscription required)</p>
+                      </div>
+                    </div>
+                    <div className="w-full sm:w-auto sm:min-w-[200px]">
+                      <GlassSelectCustom
+                        label="Currency"
+                        value={selectedCurrency}
+                        onChange={(e) => setSelectedCurrency(e.target.value)}
+                        options={[
+                          { value: 'EUR', label: 'EUR (€)' },
+                          { value: 'USD', label: 'USD ($)' },
+                        ]}
+                      />
+                    </div>
+                  </div>
                 
                 {isLoadingPackages ? (
                   <div className="flex items-center justify-center py-12">
@@ -206,7 +545,7 @@ export default function Billing() {
                   <EmptyState
                     icon="billing"
                     title="No packages available"
-                    message="Credit packages are currently unavailable. Please try again later."
+                    message={subscriptionRequired ? "Credit packs require an active subscription. Please subscribe first." : "Credit packages are currently unavailable. Please try again later."}
                   />
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -287,7 +626,25 @@ export default function Billing() {
                     ))}
                   </div>
                 )}
-              </div>
+                </div>
+              )}
+
+              {/* Info message if subscription required but not active */}
+              {subscriptionRequired && !isSubscriptionActive && (
+                <GlassCard variant="default" className="p-5 sm:p-6 mb-8 border-2 border-ice-primary/50">
+                  <div className="flex items-start gap-3">
+                    <Icon name="info" size="md" variant="ice" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-neutral-text-primary mb-2">
+                        Subscription Required
+                      </h3>
+                      <p className="text-sm text-neutral-text-secondary mb-4">
+                        Credit packs are only available with an active subscription. Subscribe to a plan above to unlock discounted credit packs.
+                      </p>
+                    </div>
+                  </div>
+                </GlassCard>
+              )}
 
               {/* Purchase History */}
               <div>

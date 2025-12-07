@@ -498,6 +498,91 @@ export const useCreatePurchase = () => {
   });
 };
 
+// Subscriptions
+export const useSubscriptionStatus = () => {
+  return useQuery({
+    queryKey: ['subscriptions', 'status'],
+    queryFn: () => api.get('/subscriptions/status'),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    placeholderData: (previousData) => previousData,
+  });
+};
+
+export const useSubscribe = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => api.post('/subscriptions/subscribe', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+    },
+  });
+};
+
+export const useUpdateSubscription = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => api.post('/subscriptions/update', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+    },
+  });
+};
+
+export const useCancelSubscription = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: () => api.post('/subscriptions/cancel'),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+    },
+  });
+};
+
+export const useVerifySubscriptionSession = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => api.post('/subscriptions/verify-session', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+    },
+  });
+};
+
+// Credit Top-up
+export const useCalculateTopup = (credits) => {
+  return useQuery({
+    queryKey: ['billing', 'topup', 'calculate', credits],
+    queryFn: () => api.get(`/billing/topup/calculate?credits=${credits}`),
+    enabled: !!credits && credits > 0,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+};
+
+export const useCreateTopup = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => api.post('/billing/topup', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'history'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+  });
+};
+
 export const useBillingHistory = (params = {}) => {
   return useQuery({
     queryKey: ['billing', 'history', params],

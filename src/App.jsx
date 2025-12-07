@@ -37,6 +37,8 @@ const Templates = lazy(() => import('./pages/app/Templates'));
 const Reports = lazy(() => import('./pages/app/Reports'));
 const CampaignReports = lazy(() => import('./pages/app/CampaignReports'));
 const Billing = lazy(() => import('./pages/app/Billing'));
+const BillingSuccess = lazy(() => import('./pages/app/BillingSuccess'));
+const BillingCancel = lazy(() => import('./pages/app/BillingCancel'));
 const Settings = lazy(() => import('./pages/app/Settings'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -143,14 +145,16 @@ function AppRoutes() {
           <Route path="/install" element={<Install />} />
           <Route path="/login" element={<Login />} />
           <Route path="/shopify/login" element={<Login />} />
+          {/* Redirect root /shopify to /shopify/app/dashboard if authenticated, otherwise to /shopify/login */}
           <Route path="/unsubscribe/:token" element={<Unsubscribe />} />
+          
+          {/* Auth Routes - Must be before catch-all routes */}
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/shopify/auth/callback" element={<AuthCallback />} />
+          
           <Route path="/shopify-app" element={<ShopifyApp />} />
           <Route path="/shopify" element={<ShopifyApp />} />
           <Route path="/shopify/*" element={<ShopifyApp />} />
-          
-          {/* Auth Routes */}
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/shopify/auth/callback" element={<AuthCallback />} />
           
           {/* Protected App Routes - Shopify Base */}
           <Route
@@ -309,6 +313,26 @@ function AppRoutes() {
               <ProtectedRoute>
                 <AppLayout>
                   <Billing />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shopify/app/billing/success"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <BillingSuccess />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shopify/app/billing/cancel"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <BillingCancel />
                 </AppLayout>
               </ProtectedRoute>
             }

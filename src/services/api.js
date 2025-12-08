@@ -215,7 +215,6 @@ api.interceptors.response.use(
       // Redirect to login if not already there
       // Check if we're on a shopify route
       const isShopifyRoute = window.location.pathname.startsWith('/shopify');
-      const loginPath = isShopifyRoute ? '/shopify/login' : '/login';
       if (!window.location.pathname.includes('/login')) {
         window.location.href = isShopifyRoute ? '/shopify' : '/';
       }

@@ -5,6 +5,7 @@ import GlassBadge from '../components/ui/GlassBadge';
 import Icon from '../components/ui/Icon';
 import SEO from '../components/SEO';
 import { FRONTEND_URL } from '../utils/constants';
+import { SUBSCRIPTION_PLANS } from '../utils/subscriptionPlans';
 
 // Static pricing packages for public landing page
 const STATIC_PACKAGES = [
@@ -149,6 +150,106 @@ export default function Pricing() {
               </p>
             </div>
           </div>
+
+          {/* Subscription Plans Section */}
+          <section className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-h2 md:text-4xl font-bold mb-4">Subscription Plans</h2>
+              <p className="text-body text-border-subtle max-w-2xl mx-auto">
+                Choose a subscription plan to get free credits every billing cycle. All plans include full access to all features.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              {SUBSCRIPTION_PLANS.map((plan) => (
+                <GlassCard
+                  key={plan.id}
+                  variant={plan.popular ? 'fuchsia' : 'default'}
+                  className={`relative ${plan.popular ? 'border-2 border-fuchsia-primary shadow-glow-fuchsia' : ''}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                      <GlassBadge variant="fuchsia">Best Value</GlassBadge>
+                    </div>
+                  )}
+                  
+                  <div className="p-6">
+                    <div className="text-center mb-6">
+                      <h3 className="text-2xl font-bold mb-2 text-primary-light">{plan.name}</h3>
+                      <div className="mb-2">
+                        <span className="text-4xl font-bold text-primary-light">
+                          €{plan.price}
+                        </span>
+                        <span className="text-lg text-border-subtle ml-2">
+                          {plan.billingPeriodLabel}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2 mb-4">
+                        <Icon name="sms" size="md" variant={plan.popular ? 'fuchsia' : 'ice'} />
+                        <span className="text-lg font-semibold text-primary-light">
+                          {plan.freeCredits} free credits per {plan.freeCreditsPeriod}
+                        </span>
+                      </div>
+                      <p className="text-sm text-border-subtle">{plan.description}</p>
+                    </div>
+
+                    <div className="mb-6">
+                      <h4 className="text-sm font-semibold text-primary-light mb-3 uppercase tracking-wider">
+                        What's Included
+                      </h4>
+                      <ul className="space-y-2">
+                        {plan.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm">
+                            <Icon name="check" size="sm" variant={plan.popular ? 'fuchsia' : 'ice'} className="mt-0.5 flex-shrink-0" />
+                            <span className="text-primary-light">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {plan.limits && plan.limits.length > 0 && (
+                      <div className="mb-6 pt-4 border-t border-neutral-border">
+                        <h4 className="text-sm font-semibold text-primary-light mb-3 uppercase tracking-wider">
+                          Limits & Flexibility
+                        </h4>
+                        <ul className="space-y-2">
+                          {plan.limits.map((limit, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm">
+                              <Icon name="info" size="sm" variant="ice" className="mt-0.5 flex-shrink-0" />
+                              <span className="text-border-subtle">{limit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {plan.notes && plan.notes.length > 0 && (
+                      <div className="mb-6 pt-4 border-t border-neutral-border">
+                        <ul className="space-y-1">
+                          {plan.notes.map((note, i) => (
+                            <li key={i} className="text-xs text-border-subtle flex items-start gap-2">
+                              <span className="text-ice-accent">•</span>
+                              <span>{note}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <GlassButton
+                      variant={plan.popular ? 'fuchsia' : 'primary'}
+                      size="lg"
+                      className="w-full"
+                      as={Link}
+                      to="/install"
+                    >
+                      Get Started with {plan.name}
+                    </GlassButton>
+                  </div>
+                </GlassCard>
+              ))}
+            </div>
+          </section>
 
           {/* Free Features Banner */}
           <GlassCard variant="ice" className="mb-12 p-6">

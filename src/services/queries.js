@@ -557,6 +557,12 @@ export const useVerifySubscriptionSession = () => {
   });
 };
 
+export const useGetPortal = () => {
+  return useMutation({
+    mutationFn: () => api.get('/subscriptions/portal'),
+  });
+};
+
 // Credit Top-up
 export const useCalculateTopup = (credits) => {
   return useQuery({

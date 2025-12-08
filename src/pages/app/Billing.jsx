@@ -29,6 +29,7 @@ import {
   useCancelSubscription,
   useCalculateTopup,
   useCreateTopup,
+  useGetPortal,
 } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
@@ -55,6 +56,7 @@ export default function Billing() {
   const updateSubscription = useUpdateSubscription();
   const cancelSubscription = useCancelSubscription();
   const createTopup = useCreateTopup();
+  const getPortal = useGetPortal();
   
   // Calculate top-up price when credits are entered
   const { data: topupPriceData, isLoading: isLoadingTopupPrice } = useCalculateTopup(
@@ -121,7 +123,7 @@ export default function Billing() {
   const handlePurchase = async (packageId) => {
     try {
       // Build success and cancel URLs based on frontend URL
-      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}&type=credit_pack`;
       const cancelUrl = `${FRONTEND_URL}/shopify/app/billing/cancel`;
       
       const result = await createPurchase.mutateAsync({ 
@@ -148,13 +150,19 @@ export default function Billing() {
         toast.error('Failed to get checkout URL. Please try again.');
       }
     } catch (error) {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate purchase';
-      toast.error(errorMessage);
+      // Enhanced error handling
+      if (error?.code === 'SUBSCRIPTION_REQUIRED' || error?.response?.data?.code === 'SUBSCRIPTION_REQUIRED') {
+        toast.error('An active subscription is required to purchase credit packs.');
+      } else {
+        const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate purchase';
+        toast.error(errorMessage);
+      }
     }
   };
 
   const handleSubscribe = async (planType) => {
     try {
+      // Backend constructs URLs internally, no need to pass them
       const result = await subscribe.mutateAsync({ planType });
       
       if (result?.data?.checkoutUrl) {
@@ -167,8 +175,17 @@ export default function Billing() {
         toast.error('Failed to get checkout URL. Please try again.');
       }
     } catch (error) {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate subscription';
-      toast.error(errorMessage);
+      // Enhanced error handling with specific error codes
+      if (error?.code === 'ALREADY_SUBSCRIBED' || error?.response?.data?.code === 'ALREADY_SUBSCRIBED') {
+        toast.error('You already have an active subscription. Please cancel your current subscription first.');
+      } else if (error?.code === 'MISSING_PRICE_ID' || error?.response?.data?.code === 'MISSING_PRICE_ID') {
+        toast.error('Payment configuration error. Please contact support.');
+      } else if (error?.code === 'INVALID_PLAN_TYPE' || error?.response?.data?.code === 'INVALID_PLAN_TYPE') {
+        toast.error('Invalid subscription plan selected.');
+      } else {
+        const errorMessage = error?.response?.data?.message || error?.message || 'Failed to initiate subscription';
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -190,9 +207,32 @@ export default function Billing() {
     try {
       await cancelSubscription.mutateAsync();
       toast.success('Subscription cancelled successfully');
+      // Refetch subscription status to update UI
+      window.location.reload();
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error?.message || 'Failed to cancel subscription';
       toast.error(errorMessage);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    try {
+      const result = await getPortal.mutateAsync();
+      const portalUrl = result?.data?.portalUrl || result?.portalUrl;
+      
+      if (portalUrl) {
+        window.open(portalUrl, '_blank', 'noopener,noreferrer');
+        toast.success('Opening customer portal...');
+      } else {
+        toast.error('Failed to get portal URL. Please try again.');
+      }
+    } catch (error) {
+      if (error?.code === 'MISSING_CUSTOMER_ID' || error?.response?.data?.code === 'MISSING_CUSTOMER_ID') {
+        toast.error('No payment account found. Please subscribe to a plan first.');
+      } else {
+        const errorMessage = error?.response?.data?.message || error?.message || 'Failed to open customer portal';
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -203,8 +243,13 @@ export default function Billing() {
       return;
     }
 
+    if (credits > 1000000) {
+      toast.error('Maximum 1,000,000 credits per purchase');
+      return;
+    }
+
     try {
-      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+      const successUrl = `${FRONTEND_URL}/shopify/app/billing/success?session_id={CHECKOUT_SESSION_ID}&type=credit_topup`;
       const cancelUrl = `${FRONTEND_URL}/shopify/app/billing/cancel`;
       
       const result = await createTopup.mutateAsync({
@@ -334,9 +379,19 @@ export default function Billing() {
                         </p>
                       </div>
                       <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <GlassButton
+                          variant="primary"
+                          size="md"
+                          onClick={handleManageSubscription}
+                          disabled={getPortal.isPending}
+                          className="flex items-center gap-2"
+                        >
+                          <Icon name="settings" size="sm" variant="ice" />
+                          Manage Subscription
+                        </GlassButton>
                         {subscriptionPlan === 'starter' ? (
                           <GlassButton
-                            variant="primary"
+                            variant="ghost"
                             size="md"
                             onClick={() => handleUpdateSubscription('pro')}
                             disabled={updateSubscription.isPending}

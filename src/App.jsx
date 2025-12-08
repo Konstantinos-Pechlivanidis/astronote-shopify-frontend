@@ -109,9 +109,9 @@ function AppRoutes() {
   const toast = useToastContext();
   const location = useLocation();
   
-  // Check if current route is an app route or shopify routes (no navbar)
+  // Check if current route is an app route (no navbar/footer)
+  // App routes are under /shopify/app/*
   const isAppRoute = location.pathname.startsWith('/shopify/app');
-  const isShopifyAppRoute = location.pathname.startsWith('/shopify');
   
   // Apply light mode class to body for logged-in pages
   useEffect(() => {
@@ -130,7 +130,7 @@ function AppRoutes() {
   return (
     <>
       <ScrollToTop />
-      {!isAppRoute && !isShopifyAppRoute && <Navbar />}
+      {!isAppRoute && <Navbar />}
       <Suspense fallback={<Loading />}>
         <div className="page-enter">
           <Routes>
@@ -353,7 +353,7 @@ function AppRoutes() {
           </Routes>
         </div>
       </Suspense>
-      {!isAppRoute && !isShopifyAppRoute && <Footer />}
+      {!isAppRoute && <Footer />}
       <ToastContainer toasts={toast.toasts} onRemove={toast.removeToast} />
     </>
   );

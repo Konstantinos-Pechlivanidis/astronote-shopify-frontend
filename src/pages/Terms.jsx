@@ -7,7 +7,7 @@ export default function Terms() {
       <SEO
         title="Terms of Service - Astronote SMS Marketing"
         description="Read Astronote's Terms of Service to understand the rules and guidelines for using our platform."
-        path="/terms"
+        path="/shopify/terms"
       />
       <div className="min-h-screen pt-24 pb-20 px-4 lg:px-8">
         <div className="max-w-4xl mx-auto">

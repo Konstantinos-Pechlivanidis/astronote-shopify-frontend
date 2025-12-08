@@ -88,7 +88,7 @@ export default function Features() {
       <SEO
         title="Features - Astronote SMS Marketing"
         description="Powerful features to help you create, send, and track SMS campaigns that convert."
-        path="/features"
+        path="/shopify/features"
         keywords="SMS features, text message features, campaign builder, automation, analytics"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -185,7 +185,7 @@ export default function Features() {
               <p className="text-body text-border-subtle mb-6">
                 Start using these features today with a free 14-day trial. No credit card required.
               </p>
-              <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
+              <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
                 <span className="flex items-center gap-2">
                   Start Free Trial
                   <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />

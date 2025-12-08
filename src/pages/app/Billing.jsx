@@ -288,7 +288,7 @@ export default function Billing() {
       <SEO
         title="Billing - Astronote SMS Marketing"
         description="Manage your SMS credits and billing"
-        path="/app/billing"
+        path="/shopify/app/billing"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">

@@ -37,14 +37,14 @@ export default function CampaignReports() {
       <SEO
         title="Campaign Reports - Astronote SMS Marketing"
         description="Detailed campaign performance reports"
-        path="/app/reports/campaigns"
+        path="/shopify/app/reports/campaigns"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BackButton to="/app/reports" label="Back" />
+              <BackButton to="/shopify/app/reports" label="Back" />
             </div>
             <PageHeader
               title="Campaign Reports"

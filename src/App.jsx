@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect } from 'react';
@@ -24,7 +24,6 @@ const GDPR = lazy(() => import('./pages/GDPR'));
 const Install = lazy(() => import('./pages/Install'));
 const Login = lazy(() => import('./pages/Login'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
-const ShopifyApp = lazy(() => import('./pages/ShopifyApp'));
 const AuthCallback = lazy(() => import('./pages/auth/AuthCallback'));
 const Dashboard = lazy(() => import('./pages/app/Dashboard'));
 const Campaigns = lazy(() => import('./pages/app/Campaigns'));
@@ -91,7 +90,7 @@ function ScrollToTop() {
 // Detects if we're on an app route and uses light mode accordingly
 function Loading() {
   const location = useLocation();
-  const isAppRoute = location.pathname.startsWith('/app');
+  const isAppRoute = location.pathname.startsWith('/shopify/app');
   
   return (
     <div className={`min-h-screen flex items-center justify-center ${isAppRoute ? 'bg-neutral-bg-base' : 'bg-bg-dark'}`}>
@@ -111,8 +110,8 @@ function AppRoutes() {
   const location = useLocation();
   
   // Check if current route is an app route or shopify routes (no navbar)
-  const isAppRoute = location.pathname.startsWith('/shopify/app') || location.pathname.startsWith('/app');
-  const isShopifyAppRoute = location.pathname === '/shopify-app' || location.pathname.startsWith('/shopify');
+  const isAppRoute = location.pathname.startsWith('/shopify/app');
+  const isShopifyAppRoute = location.pathname.startsWith('/shopify');
   
   // Apply light mode class to body for logged-in pages
   useEffect(() => {
@@ -135,28 +134,27 @@ function AppRoutes() {
       <Suspense fallback={<Loading />}>
         <div className="page-enter">
           <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/gdpr" element={<GDPR />} />
-          <Route path="/install" element={<Install />} />
-          <Route path="/login" element={<Login />} />
+          {/* Root redirect to /shopify */}
+          <Route path="/" element={<Navigate to="/shopify" replace />} />
+          
+          {/* Public Routes - All under /shopify prefix */}
+          <Route path="/shopify" element={<Landing />} />
+          <Route path="/shopify/features" element={<Features />} />
+          <Route path="/shopify/pricing" element={<Pricing />} />
+          <Route path="/shopify/how-it-works" element={<HowItWorks />} />
+          <Route path="/shopify/contact" element={<Contact />} />
+          <Route path="/shopify/privacy" element={<Privacy />} />
+          <Route path="/shopify/terms" element={<Terms />} />
+          <Route path="/shopify/gdpr" element={<GDPR />} />
+          <Route path="/shopify/install" element={<Install />} />
           <Route path="/shopify/login" element={<Login />} />
-          {/* Redirect root /shopify to /shopify/app/dashboard if authenticated, otherwise to /shopify/login */}
-          <Route path="/unsubscribe/:token" element={<Unsubscribe />} />
+          <Route path="/shopify/unsubscribe/:token" element={<Unsubscribe />} />
           
           {/* Auth Routes - Must be before catch-all routes */}
-          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/shopify/auth/callback" element={<AuthCallback />} />
           
-          <Route path="/shopify-app" element={<ShopifyApp />} />
-          <Route path="/shopify" element={<ShopifyApp />} />
-          <Route path="/shopify/*" element={<ShopifyApp />} />
+          {/* Legacy redirects for backward compatibility */}
+          <Route path="/shopify-app" element={<Navigate to="/shopify" replace />} />
           
           {/* Protected App Routes - Shopify Base */}
           <Route

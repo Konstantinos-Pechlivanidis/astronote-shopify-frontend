@@ -190,7 +190,7 @@ export default function ContactDetail() {
         if (contactId) {
           navigate(`/app/contacts/${contactId}`, { replace: true });
         } else {
-          navigate('/app/contacts', { replace: true });
+          navigate('/shopify/app/contacts', { replace: true });
         }
       } else {
         await updateContact.mutateAsync({ id, ...payload });
@@ -204,14 +204,14 @@ export default function ContactDetail() {
 
   const handleDelete = async () => {
     if (isNewContact) {
-      navigate('/app/contacts');
+      navigate('/shopify/app/contacts');
       return;
     }
 
     try {
       await deleteContact.mutateAsync(id);
       toast.success('Contact deleted successfully');
-      navigate('/app/contacts');
+      navigate('/shopify/app/contacts');
     } catch (error) {
       toast.error(error?.message || 'Failed to delete contact');
     }
@@ -233,7 +233,7 @@ export default function ContactDetail() {
             title="Contact Not Found"
             message={error?.message || 'The contact you are looking for does not exist.'}
             actionLabel="Back to Contacts"
-            onAction={() => navigate('/app/contacts')}
+            onAction={() => navigate('/shopify/app/contacts')}
           />
         </div>
       </div>
@@ -252,7 +252,7 @@ export default function ContactDetail() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BackButton to="/app/contacts" label="Back" />
+              <BackButton to="/shopify/app/contacts" label="Back" />
             </div>
             <PageHeader
               title={

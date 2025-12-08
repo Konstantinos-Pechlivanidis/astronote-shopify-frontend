@@ -33,7 +33,7 @@ export default function Dashboard() {
       <SEO
         title="Dashboard - Astronote SMS Marketing"
         description="Manage your SMS marketing campaigns and grow your Shopify store."
-        path="/app/dashboard"
+        path="/shopify/app/dashboard"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         {/* Header */}
@@ -118,13 +118,13 @@ export default function Dashboard() {
           <GlassCard 
             variant="ice" 
             className="p-6 group hover:scale-[1.02] hover:shadow-glass-light-lg transition-all cursor-pointer focus-ring" 
-            onClick={() => navigate('/app/campaigns/new')}
+            onClick={() => navigate('/shopify/app/campaigns/new')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                navigate('/app/campaigns/new');
+                navigate('/shopify/app/campaigns/new');
               }
             }}
             aria-label="Create Campaign - Start a new SMS campaign"
@@ -143,13 +143,13 @@ export default function Dashboard() {
 
           <GlassCard 
             className="p-6 group hover:scale-[1.02] hover:shadow-glass-light-lg transition-all cursor-pointer focus-ring" 
-            onClick={() => navigate('/app/contacts')}
+            onClick={() => navigate('/shopify/app/contacts')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                navigate('/app/contacts');
+                navigate('/shopify/app/contacts');
               }
             }}
             aria-label="Manage Contacts - View and manage your contacts"
@@ -168,13 +168,13 @@ export default function Dashboard() {
 
           <GlassCard 
             className="p-6 group hover:scale-[1.02] hover:shadow-glass-light-lg transition-all cursor-pointer focus-ring" 
-            onClick={() => navigate('/app/automations')}
+            onClick={() => navigate('/shopify/app/automations')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                navigate('/app/automations');
+                navigate('/shopify/app/automations');
               }
             }}
             aria-label="Automations - Set up automated workflows"

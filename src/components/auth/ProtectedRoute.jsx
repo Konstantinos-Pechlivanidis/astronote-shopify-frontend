@@ -11,10 +11,8 @@ export default function ProtectedRoute({ children }) {
   const token = localStorage.getItem(TOKEN_KEY);
 
   if (!token) {
-    // Redirect to login with return URL - use /shopify/login for shopify routes
-    const isShopifyRoute = location.pathname.startsWith('/shopify');
-    const loginPath = isShopifyRoute ? '/shopify/login' : '/login';
-    return <Navigate to={loginPath} state={{ from: location }} replace />;
+    // Redirect to login with return URL
+    return <Navigate to="/shopify/login" state={{ from: location }} replace />;
   }
 
   return children;

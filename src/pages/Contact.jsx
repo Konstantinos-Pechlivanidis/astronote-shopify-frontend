@@ -140,7 +140,7 @@ export default function Contact() {
       <SEO
         title="Contact Us - Astronote SMS Marketing"
         description="Get in touch with the Astronote team. We're here to help you succeed with SMS marketing."
-        path="/contact"
+        path="/shopify/contact"
         keywords="contact Astronote, SMS marketing support, Shopify SMS help"
         jsonLd={[localBusinessData, breadcrumbData]}
       />
@@ -339,9 +339,9 @@ export default function Contact() {
                     <div className="pt-2">
                       <p className="text-xs text-center text-border-subtle mt-3">
                         By submitting this form, you agree to our{' '}
-                        <Link to="/privacy" className="text-ice-accent hover:underline">Privacy Policy</Link>
+                        <Link to="/shopify/privacy" className="text-ice-accent hover:underline">Privacy Policy</Link>
                         {' '}and{' '}
-                        <Link to="/terms" className="text-ice-accent hover:underline">Terms of Service</Link>.
+                        <Link to="/shopify/terms" className="text-ice-accent hover:underline">Terms of Service</Link>.
                       </p>
                     </div>
                   </div>

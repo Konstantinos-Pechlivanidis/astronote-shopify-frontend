@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 export default function Footer() {
   const footerLinks = {
     product: [
-      { path: '/features', label: 'Features' },
-      { path: '/pricing', label: 'Pricing' },
-      { path: '/how-it-works', label: 'How It Works' },
+      { path: '/shopify/features', label: 'Features' },
+      { path: '/shopify/pricing', label: 'Pricing' },
+      { path: '/shopify/how-it-works', label: 'How It Works' },
     ],
     company: [
-      { path: '/contact', label: 'Contact' },
+      { path: '/shopify/contact', label: 'Contact' },
     ],
     legal: [
-      { path: '/privacy', label: 'Privacy Policy' },
-      { path: '/terms', label: 'Terms of Service' },
-      { path: '/gdpr', label: 'GDPR Policy' },
+      { path: '/shopify/privacy', label: 'Privacy Policy' },
+      { path: '/shopify/terms', label: 'Terms of Service' },
+      { path: '/shopify/gdpr', label: 'GDPR Policy' },
     ],
   };
 
@@ -137,7 +137,7 @@ export default function Footer() {
               Failure to comply with GDPR regulations or our application's terms results in <strong>full liability on your part.</strong>
             </p>
             <p className="mt-2">
-              Please review our <Link to="/gdpr" className="text-ice-accent hover:underline">GDPR Policy</Link>, <Link to="/terms" className="text-ice-accent hover:underline">Terms of Service</Link>, and <Link to="/privacy" className="text-ice-accent hover:underline">Privacy Policy</Link> for complete details.
+              Please review our <Link to="/shopify/gdpr" className="text-ice-accent hover:underline">GDPR Policy</Link>, <Link to="/shopify/terms" className="text-ice-accent hover:underline">Terms of Service</Link>, and <Link to="/shopify/privacy" className="text-ice-accent hover:underline">Privacy Policy</Link> for complete details.
             </p>
           </div>
         </div>

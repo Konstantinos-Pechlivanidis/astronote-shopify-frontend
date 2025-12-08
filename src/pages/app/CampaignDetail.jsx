@@ -34,7 +34,7 @@ export default function CampaignDetail() {
     try {
       await deleteCampaign.mutateAsync(id);
       toast.success('Campaign deleted successfully');
-      navigate('/app/campaigns');
+      navigate('/shopify/app/campaigns');
     } catch (error) {
       toast.error(error?.message || 'Failed to delete campaign');
     }
@@ -65,7 +65,7 @@ export default function CampaignDetail() {
             title="Campaign Not Found"
             message={error?.message || 'The campaign you are looking for does not exist.'}
             actionLabel="Back to Campaigns"
-            onAction={() => navigate('/app/campaigns')}
+            onAction={() => navigate('/shopify/app/campaigns')}
           />
         </div>
       </div>
@@ -88,7 +88,7 @@ export default function CampaignDetail() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BackButton to="/app/campaigns" label="Back" />
+              <BackButton to="/shopify/app/campaigns" label="Back" />
             </div>
             <PageHeader
               title={campaign.name}

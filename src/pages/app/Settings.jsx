@@ -133,7 +133,7 @@ export default function Settings() {
       <SEO
         title="Settings - Astronote SMS Marketing"
         description="Manage your account and SMS settings"
-        path="/app/settings"
+        path="/shopify/app/settings"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">

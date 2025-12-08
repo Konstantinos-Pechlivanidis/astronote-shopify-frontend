@@ -64,7 +64,7 @@ export default function Templates() {
       }
       
       // Navigate to campaign create with template pre-filled
-      navigate('/app/campaigns/new', {
+      navigate('/shopify/app/campaigns/new', {
         state: {
           template: {
             message: template.content,
@@ -75,7 +75,7 @@ export default function Templates() {
     } catch (error) {
       // Error already handled by toast.error above
       // Still navigate even if tracking fails
-      navigate('/app/campaigns/new', {
+      navigate('/shopify/app/campaigns/new', {
         state: {
           template: {
             message: template.content,
@@ -99,7 +99,7 @@ export default function Templates() {
       <SEO
         title="Templates - Astronote SMS Marketing"
         description="Browse and use SMS message templates"
-        path="/app/templates"
+        path="/shopify/app/templates"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">

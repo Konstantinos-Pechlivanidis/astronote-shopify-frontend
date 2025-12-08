@@ -11,7 +11,7 @@ export default function NotFound() {
         <p className="text-body text-border-subtle mb-8">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <GlassButton variant="primary" size="lg" as={Link} to="/">
+        <GlassButton variant="primary" size="lg" as={Link} to="/shopify">
           Go Home
         </GlassButton>
       </GlassCard>

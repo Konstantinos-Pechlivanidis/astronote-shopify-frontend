@@ -86,7 +86,7 @@ export default function CampaignCreate() {
       
       if (!canEdit) {
         toast.error('This campaign cannot be edited. Only draft and scheduled campaigns can be modified.');
-        navigate('/app/campaigns');
+        navigate('/shopify/app/campaigns');
         return;
       }
       
@@ -203,7 +203,7 @@ export default function CampaignCreate() {
       
       if (result?.id) {
         toast.success(`Campaign ${isEditMode ? 'updated' : 'saved'} as draft successfully`);
-        navigate('/app/campaigns');
+        navigate('/shopify/app/campaigns');
       }
     } catch (error) {
       toast.error(error?.message || `Failed to ${isEditMode ? 'update' : 'save'} campaign draft. Please try again.`);
@@ -242,7 +242,7 @@ export default function CampaignCreate() {
               scheduleAt: scheduleAtUTC,
             });
             toast.success('Campaign scheduled successfully!');
-            setTimeout(() => navigate('/app/campaigns'), 1500);
+            setTimeout(() => navigate('/shopify/app/campaigns'), 1500);
             return;
           } catch (scheduleError) {
             toast.error(scheduleError?.message || 'Failed to schedule campaign');
@@ -415,7 +415,7 @@ export default function CampaignCreate() {
         <div className="max-w-[1400px] mx-auto w-full">
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BackButton to="/app/campaigns" label="Back" />
+              <BackButton to="/shopify/app/campaigns" label="Back" />
             </div>
             <PageHeader
               title={isEditMode ? 'Edit Campaign' : 'Create Campaign'}

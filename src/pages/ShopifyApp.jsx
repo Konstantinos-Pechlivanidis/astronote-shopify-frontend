@@ -99,7 +99,7 @@ export default function ShopifyApp() {
       <SEO
         title="Shopify SMS Marketing Extension - Astronote"
         description="Transform your Shopify store with SMS marketing. Embedded dashboard, storefront opt-in, automated messages, and discount integration. Free 14-day trial."
-        path="/shopify-app"
+        path="/shopify"
       />
       <div className="min-h-screen">
         {/* Hero Section */}

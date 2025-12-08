@@ -214,9 +214,8 @@ api.interceptors.response.use(
       localStorage.removeItem('astronote_store_info');
       // Redirect to login if not already there
       // Check if we're on a shopify route
-      const isShopifyRoute = window.location.pathname.startsWith('/shopify');
       if (!window.location.pathname.includes('/login')) {
-        window.location.href = isShopifyRoute ? '/shopify' : '/';
+        window.location.href = '/shopify';
       }
     }
     

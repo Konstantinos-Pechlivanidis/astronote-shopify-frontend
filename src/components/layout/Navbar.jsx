@@ -30,10 +30,10 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { path: '/features', label: 'Features', icon: 'target' },
-    { path: '/pricing', label: 'Pricing', icon: 'sms' },
-    { path: '/how-it-works', label: 'How It Works', icon: 'automation' },
-    { path: '/contact', label: 'Contact', icon: 'segment' },
+    { path: '/shopify/features', label: 'Features', icon: 'target' },
+    { path: '/shopify/pricing', label: 'Pricing', icon: 'sms' },
+    { path: '/shopify/how-it-works', label: 'How It Works', icon: 'automation' },
+    { path: '/shopify/contact', label: 'Contact', icon: 'segment' },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
           {/* Logo */}
           <Link 
-            to="/" 
+            to="/shopify" 
             className="flex items-center gap-3 group transition-transform hover:scale-105"
             aria-label="Astronote Home"
           >
@@ -86,7 +86,7 @@ export default function Navbar() {
               variant="ghost" 
               size="sm" 
               as={Link} 
-              to="/login"
+              to="/shopify/login"
               className="text-primary-light/90 hover:text-ice-accent"
             >
               Log in
@@ -95,7 +95,7 @@ export default function Navbar() {
               variant="primary" 
               size="sm" 
               as={Link} 
-              to="/install"
+              to="/shopify/install"
               className="bg-gradient-to-r from-ice-accent to-ice-dark hover:from-ice-light hover:to-ice-accent shadow-glow-ice hover:shadow-glow-ice-lg"
             >
               Install on Shopify
@@ -200,7 +200,7 @@ export default function Navbar() {
                 size="md"
                 className="w-full justify-center text-primary-light/90 hover:text-ice-accent"
                 as={Link}
-                to="/login"
+                to="/shopify/login"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Log in
@@ -210,7 +210,7 @@ export default function Navbar() {
                 size="md"
                 className="w-full justify-center bg-gradient-to-r from-ice-accent to-ice-dark hover:from-ice-light hover:to-ice-accent shadow-glow-ice hover:shadow-glow-ice-lg"
                 as={Link}
-                to="/install"
+                to="/shopify/install"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Install on Shopify

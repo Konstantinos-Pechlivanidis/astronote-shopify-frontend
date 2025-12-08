@@ -7,7 +7,7 @@ export default function Privacy() {
       <SEO
         title="Privacy Policy - Astronote SMS Marketing"
         description="Read Astronote's Privacy Policy to understand how we collect, use, and protect your data."
-        path="/privacy"
+        path="/shopify/privacy"
       />
       <div className="min-h-screen pt-24 pb-20 px-4 lg:px-8">
         <div className="max-w-4xl mx-auto">
@@ -102,7 +102,7 @@ export default function Privacy() {
                 To exercise these rights, please contact us at <a href="mailto:privacy@astronote.com" className="text-ice-accent hover:underline">privacy@astronote.com</a>.
               </p>
               <p className="text-body text-border-subtle leading-relaxed mt-4">
-                <strong>For detailed information about GDPR compliance and your responsibilities, please review our <a href="/gdpr" className="text-ice-accent hover:underline">GDPR Policy</a>.</strong>
+                <strong>For detailed information about GDPR compliance and your responsibilities, please review our <a href="/shopify/gdpr" className="text-ice-accent hover:underline">GDPR Policy</a>.</strong>
               </p>
             </section>
 

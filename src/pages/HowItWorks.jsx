@@ -76,7 +76,7 @@ export default function HowItWorks() {
       <SEO
         title="How It Works - Astronote SMS Marketing"
         description="Get started with Astronote in minutes. Simple 3-step process to start sending SMS campaigns."
-        path="/how-it-works"
+        path="/shopify/how-it-works"
         keywords="how Astronote works, SMS setup, Shopify SMS integration, getting started"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -197,7 +197,7 @@ export default function HowItWorks() {
               <p className="text-body text-border-subtle mb-6">
                 Join thousands of stores using Astronote to grow their business with SMS marketing.
               </p>
-              <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
+              <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
                 <span className="flex items-center gap-2">
                   Start Free Trial
                   <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />

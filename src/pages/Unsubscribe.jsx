@@ -121,14 +121,14 @@ export default function Unsubscribe() {
         <SEO
           title="Unsubscribe - Astronote"
           description="Unsubscribe from SMS messages"
-          path="/unsubscribe"
+          path="/shopify/unsubscribe"
         />
         <div className="min-h-screen flex items-center justify-center bg-bg-dark px-4">
           <ErrorState
             title="Unable to Load Unsubscribe Page"
             message={error}
             actionLabel="Go to Home"
-            onAction={() => navigate('/')}
+            onAction={() => navigate('/shopify')}
           />
         </div>
       </>
@@ -170,7 +170,7 @@ export default function Unsubscribe() {
                 <p className="text-lg text-border-subtle max-w-xl mx-auto mb-10">
                   You will no longer receive promotional SMS messages. If you change your mind, you can always opt back in by contacting the store directly.
                 </p>
-                <GlassButton variant="primary" size="lg" onClick={() => navigate('/')}>
+                <GlassButton variant="primary" size="lg" onClick={() => navigate('/shopify')}>
                   <span className="flex items-center gap-2">
                     Return to Home
                     <Icon name="arrowRight" size="sm" />
@@ -283,7 +283,7 @@ export default function Unsubscribe() {
                       <GlassButton
                         variant="ghost"
                         size="lg"
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/shopify')}
                       >
                         <span className="flex items-center gap-2">
                           <Icon name="arrowRight" size="sm" />

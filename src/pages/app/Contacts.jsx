@@ -98,7 +98,7 @@ export default function Contacts() {
       <SEO
         title="Contacts - Astronote SMS Marketing"
         description="Manage your SMS marketing contacts"
-        path="/app/contacts"
+        path="/shopify/app/contacts"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         {/* Header */}
@@ -121,7 +121,7 @@ export default function Contacts() {
               variant="primary"
               size="lg"
               as={Link}
-              to="/app/contacts/new"
+              to="/shopify/app/contacts/new"
               className="group"
             >
               <span className="flex items-center gap-2">

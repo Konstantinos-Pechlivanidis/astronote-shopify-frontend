@@ -81,7 +81,7 @@ export default function Landing() {
       <SEO
         title="SMS Marketing for Shopify - Astronote"
         description="Grow your store with SMS marketing that converts. Free 14-day trial, 98% open rates, 24/7 support."
-        path="/"
+        path="/shopify"
         keywords="SMS marketing, Shopify SMS, text message marketing, SMS campaigns, Shopify integration"
         jsonLd={[structuredData, organizationData]}
       />
@@ -120,13 +120,13 @@ export default function Landing() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
+                <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
                   <span className="flex items-center gap-2">
                     Install on Shopify
                     <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </GlassButton>
-                <GlassButton variant="ghost" size="lg" as={Link} to="/how-it-works">
+                <GlassButton variant="ghost" size="lg" as={Link} to="/shopify/how-it-works">
                   How it works
                 </GlassButton>
               </div>
@@ -361,7 +361,7 @@ export default function Landing() {
             <p className="text-xl text-border-subtle mb-8 leading-relaxed">
               Join thousands of stores using Astronote to increase sales with SMS marketing.
             </p>
-            <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
+            <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
               <span className="flex items-center gap-2">
                 Start Free Trial
                 <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />

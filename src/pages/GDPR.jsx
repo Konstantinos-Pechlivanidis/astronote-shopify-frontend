@@ -8,7 +8,7 @@ export default function GDPR() {
       <SEO
         title="GDPR Policy - Astronote SMS Marketing"
         description="Read Astronote's GDPR Policy to understand your rights and responsibilities regarding data protection."
-        path="/gdpr"
+        path="/shopify/gdpr"
       />
       <div className="min-h-screen pt-24 pb-20 px-4 lg:px-8">
         <div className="max-w-4xl mx-auto">

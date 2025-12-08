@@ -159,7 +159,7 @@ export default function Campaigns() {
       <SEO
         title="Campaigns - Astronote SMS Marketing"
         description="Manage your SMS marketing campaigns"
-        path="/app/campaigns"
+        path="/shopify/app/campaigns"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         {/* Header */}

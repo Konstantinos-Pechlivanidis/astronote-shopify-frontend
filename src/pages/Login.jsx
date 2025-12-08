@@ -56,7 +56,7 @@ export default function Login() {
       <SEO
         title="Log In - Astronote SMS Marketing"
         description="Log in to your Astronote account to manage your SMS campaigns."
-        path="/login"
+        path="/shopify/login"
       />
       <div className="min-h-screen pt-24 pb-20 px-4 flex items-center justify-center">
         <div className="max-w-md w-full">
@@ -115,13 +115,13 @@ export default function Login() {
               <p className="text-sm text-border-subtle mb-4">
                 Don't have an account?
               </p>
-              <GlassButton variant="ghost" size="md" as={Link} to="/install" className="w-full">
+              <GlassButton variant="ghost" size="md" as={Link} to="/shopify/install" className="w-full">
                 Install Astronote
               </GlassButton>
             </div>
 
             <div className="mt-6 text-center">
-              <Link to="/" className="text-sm text-ice-accent hover:text-ice-light hover:underline">
+              <Link to="/shopify" className="text-sm text-ice-accent hover:text-ice-light hover:underline">
                 ← Back to Home
               </Link>
             </div>

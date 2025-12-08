@@ -20,10 +20,8 @@ export default function AppLayout({ children }) {
   const handleLogout = () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(STORE_KEY);
-    // Redirect to shopify login if we're on a shopify route, otherwise regular login
-    const isShopifyRoute = location.pathname.startsWith('/shopify');
-    const loginPath = isShopifyRoute ? '/shopify/login' : '/login';
-    navigate(loginPath, { replace: true });
+    // Redirect to shopify login
+    navigate('/shopify/login', { replace: true });
   };
 
   // Prevent body scroll when mobile menu is open
@@ -39,9 +37,8 @@ export default function AppLayout({ children }) {
     };
   }, [isMobileMenuOpen]);
 
-  // Determine base path based on current route
-  const isShopifyRoute = location.pathname.startsWith('/shopify');
-  const basePath = isShopifyRoute ? '/shopify/app' : '/app';
+  // All routes are now under /shopify/app
+  const basePath = '/shopify/app';
 
   const navItems = [
     { path: `${basePath}/dashboard`, label: 'Dashboard', icon: 'dashboard' },

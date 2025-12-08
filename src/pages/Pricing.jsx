@@ -59,7 +59,7 @@ export default function Pricing() {
   
   // Handle package card click - redirect to install page
   const handlePackageClick = () => {
-    navigate('/install');
+    navigate('/shopify/install');
   };
 
   // Free features that are included with all packages
@@ -121,7 +121,7 @@ export default function Pricing() {
       <SEO
         title="Pricing - Astronote SMS Marketing"
         description="Simple, pay-as-you-go pricing. Pay only for SMS credits you use. All features included free."
-        path="/pricing"
+        path="/shopify/pricing"
         keywords="SMS pricing, text message pricing, Shopify SMS cost, SMS credits"
         jsonLd={[serviceData, breadcrumbData]}
       />
@@ -139,7 +139,7 @@ export default function Pricing() {
             
             {/* User Journey CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
+              <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
                 <span className="flex items-center gap-2">
                   Install on Shopify
                   <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
@@ -241,7 +241,7 @@ export default function Pricing() {
                       size="lg"
                       className="w-full"
                       as={Link}
-                      to="/install"
+                      to="/shopify/install"
                     >
                       Get Started with {plan.name}
                     </GlassButton>
@@ -377,7 +377,7 @@ export default function Pricing() {
                     className="w-full"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate('/install');
+                      navigate('/shopify/install');
                     }}
                   >
                     Get Started

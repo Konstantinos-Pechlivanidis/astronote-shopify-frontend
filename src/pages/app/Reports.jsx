@@ -257,7 +257,7 @@ export default function Reports() {
       <SEO
         title="Reports - Astronote SMS Marketing"
         description="View analytics and performance reports"
-        path="/app/reports"
+        path="/shopify/app/reports"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">

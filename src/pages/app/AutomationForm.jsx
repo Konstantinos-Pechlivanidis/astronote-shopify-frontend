@@ -99,7 +99,7 @@ export default function AutomationForm() {
         await createAutomation.mutateAsync(formData);
         toast.success('Automation created successfully');
       }
-      navigate('/app/automations');
+      navigate('/shopify/app/automations');
     } catch (error) {
       toast.error(error?.message || `Failed to ${isEditMode ? 'update' : 'create'} automation`);
     }
@@ -133,7 +133,7 @@ export default function AutomationForm() {
         <div className="max-w-[1000px] mx-auto w-full">
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BackButton to="/app/automations" label="Back" />
+              <BackButton to="/shopify/app/automations" label="Back" />
             </div>
             <PageHeader
               title={isEditMode ? 'Edit Automation' : 'Create Automation'}
@@ -204,7 +204,7 @@ export default function AutomationForm() {
                 <GlassButton
                   variant="ghost"
                   size="lg"
-                  onClick={() => navigate('/app/automations')}
+                  onClick={() => navigate('/shopify/app/automations')}
                   className="flex-1"
                 >
                   Cancel

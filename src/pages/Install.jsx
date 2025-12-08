@@ -44,7 +44,7 @@ export default function Install() {
       <SEO
         title="Install Astronote - SMS Marketing for Shopify"
         description="Install Astronote on your Shopify store. Free 14-day trial. No credit card required."
-        path="/install"
+        path="/shopify/install"
       />
       <div className="min-h-screen pt-24 pb-20 px-4">
         <div className="max-w-[800px] mx-auto">
@@ -146,7 +146,7 @@ export default function Install() {
             </div>
 
             <div className="mt-8 pt-8 border-t border-glass-border">
-              <Link to="/" className="text-ice-accent hover:text-ice-light hover:underline">
+              <Link to="/shopify" className="text-ice-accent hover:text-ice-light hover:underline">
                 ← Back to Home
               </Link>
             </div>

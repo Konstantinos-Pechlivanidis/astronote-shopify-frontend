@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../../components/ui/GlassCard';
 import PageHeader from '../../components/ui/PageHeader';
-import GlassSelectCustom from '../../components/ui/GlassSelectCustom';
 import StatusBadge from '../../components/ui/StatusBadge';
 import GlassBadge from '../../components/ui/GlassBadge';
 import Icon from '../../components/ui/Icon';
@@ -14,6 +13,7 @@ import { useAutomations, useAutomationStats, useUpdateAutomation, useDeleteAutom
 import { useToastContext } from '../../contexts/ToastContext';
 import { normalizeArrayResponse } from '../../utils/apiHelpers';
 import SEO from '../../components/SEO';
+import { clsx } from 'clsx';
 
 export default function Automations() {
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ export default function Automations() {
           subtitle="Set up automated SMS workflows for your store"
           actionLabel="Create Automation"
           actionIcon="automation"
-          actionTo="/app/automations/new"
+          actionTo="/shopify/app/automations/new"
         />
 
         {/* Error State */}
@@ -105,58 +105,79 @@ export default function Automations() {
 
         {/* Stats */}
         {!hasError && stats && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-            <GlassCard variant="ice" className="p-5 hover:shadow-glass-light-lg transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 rounded-xl bg-ice-soft/80">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+            <GlassCard 
+              variant="ice" 
+              className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 group-hover:from-ice-primary/30 group-hover:to-ice-soft transition-all duration-300">
                   <Icon name="automation" size="md" variant="ice" />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-neutral-text-primary mb-1">
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.total || automations.length}
               </p>
-              <p className="text-xs font-medium text-neutral-text-secondary uppercase tracking-wider">Total Automations</p>
+              <p className="text-xs sm:text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Total Automations</p>
             </GlassCard>
-            <GlassCard className="p-5 hover:shadow-glass-light-lg transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 rounded-xl bg-ice-soft/80">
+            <GlassCard 
+              className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 group-hover:from-ice-primary/30 group-hover:to-ice-soft transition-all duration-300">
                   <Icon name="send" size="md" variant="ice" />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-neutral-text-primary mb-1">
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.messagesSent || 0}
               </p>
-              <p className="text-xs font-medium text-neutral-text-secondary uppercase tracking-wider">Messages Sent</p>
+              <p className="text-xs sm:text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Messages Sent</p>
             </GlassCard>
-            <GlassCard className="p-5 hover:shadow-glass-light-lg transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2.5 rounded-xl bg-ice-soft/80">
+            <GlassCard 
+              className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group sm:col-span-2 lg:col-span-1"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 group-hover:from-ice-primary/30 group-hover:to-ice-soft transition-all duration-300">
                   <Icon name="check" size="md" variant="ice" />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-neutral-text-primary mb-1">
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.successRate ? `${stats.successRate.toFixed(1)}%` : '0%'}
               </p>
-              <p className="text-xs font-medium text-neutral-text-secondary uppercase tracking-wider">Success Rate</p>
+              <p className="text-xs sm:text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Success Rate</p>
             </GlassCard>
           </div>
         )}
 
         {/* Filter */}
         {!hasError && (
-          <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
-          <GlassSelectCustom
-            label="Filter by Status"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            options={[
-              { value: '', label: 'All Statuses' },
-              { value: 'active', label: 'Active' },
-              { value: 'paused', label: 'Paused' },
-              { value: 'draft', label: 'Draft' },
-            ]}
-          />
-        </GlassCard>
+          <div className="mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h3 className="text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Filter by Status</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: '', label: 'All Statuses', icon: 'filter' },
+                  { value: 'active', label: 'Active', icon: 'check' },
+                  { value: 'paused', label: 'Paused', icon: 'pause' },
+                  { value: 'draft', label: 'Draft', icon: 'edit' },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => setStatusFilter(option.value)}
+                    className={clsx(
+                      'px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 min-h-[44px]',
+                      statusFilter === option.value
+                        ? 'bg-ice-primary text-white shadow-glass-light-md hover:shadow-glass-light-lg'
+                        : 'bg-neutral-surface-secondary text-neutral-text-primary border border-neutral-border hover:border-ice-primary/50 hover:text-ice-primary'
+                    )}
+                  >
+                    <Icon name={option.icon} size="sm" />
+                    <span>{option.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Automations Grid */}
@@ -169,86 +190,109 @@ export default function Automations() {
               : 'Create your first automation to get started'}
             actionLabel={!statusFilter ? "Create Automation" : undefined}
             actionIcon={!statusFilter ? "automation" : undefined}
-            actionTo={!statusFilter ? "/app/automations/new" : undefined}
+            actionTo={!statusFilter ? "/shopify/app/automations/new" : undefined}
           />
         ) : !hasError && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {filteredAutomations.map((automation) => {
               const comingSoon = isComingSoon(automation);
               return (
-              <GlassCard key={automation.id} className="p-6 hover:shadow-glass-light-lg transition-shadow relative">
+              <GlassCard 
+                key={automation.id} 
+                className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] relative group"
+              >
                 {comingSoon && (
-                  <div className="absolute top-4 right-4">
-                    <GlassBadge variant="default" className="text-xs">
+                  <div className="absolute top-4 right-4 z-10">
+                    <GlassBadge variant="default" className="text-xs font-semibold">
                       Coming Soon
                     </GlassBadge>
                   </div>
                 )}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold mb-2 text-neutral-text-primary">{automation.name}</h3>
+                
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4 pr-20">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-bold mb-2.5 text-neutral-text-primary line-clamp-2 group-hover:text-ice-primary transition-colors">
+                      {automation.name}
+                    </h3>
                     <StatusBadge status={automation.status} />
                   </div>
                 </div>
                 
-                <div className="space-y-2 mb-4">
+                {/* Content */}
+                <div className="space-y-3 mb-5">
                   {automation.trigger && (
-                    <div>
-                      <p className="text-xs text-neutral-text-secondary mb-1 uppercase tracking-wider">Trigger</p>
-                      <p className="text-sm text-neutral-text-primary font-medium">{automation.trigger}</p>
+                    <div className="flex items-start gap-2">
+                      <Icon name="automation" size="sm" className="text-neutral-text-secondary mt-0.5 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-neutral-text-secondary mb-1 uppercase tracking-wider">Trigger</p>
+                        <p className="text-sm text-neutral-text-primary font-medium break-words">{automation.trigger}</p>
+                      </div>
                     </div>
                   )}
                   {automation.message && (
-                    <div>
-                      <p className="text-xs text-neutral-text-secondary mb-1 uppercase tracking-wider">Message</p>
-                      <p className="text-sm text-neutral-text-primary line-clamp-2">
-                        {automation.message}
-                      </p>
+                    <div className="flex items-start gap-2">
+                      <Icon name="sms" size="sm" className="text-neutral-text-secondary mt-0.5 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-neutral-text-secondary mb-1 uppercase tracking-wider">Message</p>
+                        <p className="text-sm text-neutral-text-primary line-clamp-3 break-words">
+                          {automation.message}
+                        </p>
+                      </div>
                     </div>
                   )}
                   {automation.messagesSent !== undefined && (
-                    <div>
-                      <p className="text-xs text-neutral-text-secondary mb-1 uppercase tracking-wider">Messages Sent</p>
-                      <p className="text-sm text-neutral-text-primary font-medium">{automation.messagesSent || 0}</p>
+                    <div className="flex items-center gap-2 pt-2 border-t border-neutral-border/40">
+                      <Icon name="send" size="sm" className="text-neutral-text-secondary flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-xs font-semibold text-neutral-text-secondary mb-1 uppercase tracking-wider">Messages Sent</p>
+                        <p className="text-base font-bold text-neutral-text-primary">{automation.messagesSent || 0}</p>
+                      </div>
                     </div>
                   )}
                 </div>
 
+                {/* Actions */}
                 <div className="flex gap-2 pt-4 border-t border-neutral-border/60">
                   <button
-                    onClick={() => !comingSoon && navigate(`/app/automations/${automation.id}`)}
+                    onClick={() => !comingSoon && navigate(`/shopify/app/automations/${automation.id}`)}
                     disabled={comingSoon}
-                    className={`flex-1 px-3 py-2.5 text-sm rounded-lg bg-neutral-surface-secondary border border-neutral-border transition-colors text-neutral-text-primary font-medium focus-ring min-h-[44px] ${
+                    className={clsx(
+                      'flex-1 px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 font-medium focus-ring min-h-[44px] flex items-center justify-center gap-2',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:border-ice-primary hover:text-ice-primary'
-                    }`}
+                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-neutral-text-secondary' 
+                        : 'bg-neutral-surface-secondary border-neutral-border text-neutral-text-primary hover:border-ice-primary hover:text-ice-primary hover:bg-ice-soft/20 hover:shadow-glass-light-md'
+                    )}
                     aria-label="View automation"
                     aria-disabled={comingSoon}
                   >
-                    View
+                    <Icon name="eye" size="sm" />
+                    <span>View</span>
                   </button>
                   <button
                     onClick={() => !comingSoon && handleToggleStatus(automation.id, automation.status)}
                     disabled={comingSoon}
-                    className={`flex-1 px-3 py-2.5 text-sm rounded-lg bg-neutral-surface-secondary border border-neutral-border transition-colors text-neutral-text-primary font-medium focus-ring min-h-[44px] ${
+                    className={clsx(
+                      'flex-1 px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 font-medium focus-ring min-h-[44px] flex items-center justify-center gap-2',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed' 
-                        : 'hover:border-ice-primary hover:text-ice-primary'
-                    }`}
+                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-neutral-text-secondary' 
+                        : 'bg-neutral-surface-secondary border-neutral-border text-neutral-text-primary hover:border-ice-primary hover:text-ice-primary hover:bg-ice-soft/20 hover:shadow-glass-light-md'
+                    )}
                     aria-label={automation.status === 'active' ? 'Pause automation' : 'Activate automation'}
                     aria-disabled={comingSoon}
                   >
-                    {automation.status === 'active' ? 'Pause' : 'Activate'}
+                    <Icon name={automation.status === 'active' ? 'pause' : 'play'} size="sm" />
+                    <span>{automation.status === 'active' ? 'Pause' : 'Activate'}</span>
                   </button>
                   <button
                     onClick={() => !comingSoon && handleDeleteClick(automation.id, automation.name)}
                     disabled={comingSoon}
-                    className={`px-3 py-2.5 text-sm rounded-lg bg-neutral-surface-secondary border transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center ${
+                    className={clsx(
+                      'px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed border-neutral-border text-neutral-text-secondary' 
-                        : 'border-red-200 hover:border-red-500 hover:bg-red-50 text-red-500'
-                    }`}
+                        ? 'opacity-50 cursor-not-allowed border-neutral-border text-neutral-text-secondary bg-neutral-surface-secondary' 
+                        : 'border-red-200 bg-red-50/50 text-red-500 hover:border-red-500 hover:bg-red-100 hover:shadow-glass-light-md'
+                    )}
                     aria-label="Delete automation"
                     aria-disabled={comingSoon}
                   >

@@ -93,8 +93,16 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">6. SMS Consent Requirements</h2>
+              <h2 className="text-h2 font-bold mb-4">6. SMS Consent Requirements and GDPR Compliance</h2>
               <div className="space-y-4">
+                <div className="p-4 bg-red-500/10 border-2 border-red-500/30 rounded-lg mb-4">
+                  <p className="text-body text-border-subtle leading-relaxed mb-2">
+                    <strong className="text-red-500">Important: Customer Liability for GDPR and Compliance</strong>
+                  </p>
+                  <p className="text-body text-border-subtle leading-relaxed">
+                    <strong>You are solely responsible for ensuring compliance with GDPR regulations, SMS marketing regulations, and all terms of this application.</strong> If you fail to comply with GDPR requirements or violate our application's terms and conditions, <strong>all liability and responsibility rests entirely with you.</strong> Astronote provides tools and features to assist with compliance, but the ultimate responsibility for GDPR compliance and regulatory adherence lies with you as the data controller.
+                  </p>
+                </div>
                 <p className="text-body text-border-subtle leading-relaxed">
                   You are responsible for ensuring compliance with SMS marketing regulations:
                 </p>
@@ -104,22 +112,42 @@ export default function Terms() {
                   <li>You must honor opt-out requests immediately</li>
                   <li>You must maintain records of consent</li>
                   <li>You must comply with GDPR, TCPA, and other applicable regulations</li>
+                  <li>You must ensure all data processing activities comply with GDPR requirements</li>
+                  <li>You must respond to data subject requests within required timeframes</li>
+                  <li>You must report data breaches to relevant authorities as required by law</li>
                 </ul>
                 <p className="text-body text-border-subtle leading-relaxed mt-4">
-                  <strong>Note:</strong> Astronote provides tools to help you manage consent, but you are ultimately responsible for compliance.
+                  <strong>Note:</strong> Astronote provides tools to help you manage consent, but you are ultimately responsible for compliance. Failure to comply may result in account termination, legal action, and regulatory fines for which you will be solely liable.
                 </p>
               </div>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">7. Intellectual Property</h2>
+              <h2 className="text-h2 font-bold mb-4">7. Data Collection and Usage</h2>
+              <p className="text-body text-border-subtle leading-relaxed mb-4">
+                As part of providing our services, we collect and process your data to offer you specialized and quality solutions tailored to your business needs. This includes:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-body text-border-subtle ml-4">
+                <li>Analyzing your revenue and usage patterns to provide personalized solutions</li>
+                <li>Offering targeted solutions and recommendations based on your business performance</li>
+                <li>Providing customized offers and pricing based on your revenue and usage</li>
+                <li>Improving our services to better meet your specific requirements</li>
+                <li>Ensuring compliance with legal obligations and service delivery</li>
+              </ul>
+              <p className="text-body text-border-subtle leading-relaxed mt-4">
+                By using our Service, you consent to this data collection and processing as described in our Privacy Policy and GDPR Policy.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-h2 font-bold mb-4">8. Intellectual Property</h2>
               <p className="text-body text-border-subtle leading-relaxed mb-4">
                 The Service and its original content, features, and functionality are owned by Astronote and are protected by international copyright, trademark, and other intellectual property laws.
               </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">8. Service Availability</h2>
+              <h2 className="text-h2 font-bold mb-4">9. Service Availability</h2>
               <p className="text-body text-border-subtle leading-relaxed mb-4">
                 We strive to maintain high availability of our Service, but we do not guarantee uninterrupted access. The Service may be unavailable due to:
               </p>
@@ -132,21 +160,32 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">9. Limitation of Liability</h2>
+              <h2 className="text-h2 font-bold mb-4">10. Limitation of Liability</h2>
               <p className="text-body text-border-subtle leading-relaxed">
                 To the maximum extent permitted by law, Astronote shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of the Service.
               </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">10. Indemnification</h2>
-              <p className="text-body text-border-subtle leading-relaxed">
-                You agree to indemnify and hold harmless Astronote from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from your use of the Service, violation of these Terms, or violation of any rights of another party.
+              <h2 className="text-h2 font-bold mb-4">11. Indemnification</h2>
+              <p className="text-body text-border-subtle leading-relaxed mb-4">
+                You agree to indemnify and hold harmless Astronote from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-body text-border-subtle ml-4">
+                <li>Your use of the Service</li>
+                <li>Your violation of these Terms</li>
+                <li>Your violation of GDPR or any other applicable data protection regulations</li>
+                <li>Your failure to comply with SMS marketing regulations</li>
+                <li>Your violation of any rights of another party</li>
+                <li>Any data breaches or non-compliance issues for which you are responsible as the data controller</li>
+              </ul>
+              <p className="text-body text-border-subtle leading-relaxed mt-4">
+                <strong>This indemnification includes, but is not limited to, any GDPR fines, regulatory penalties, legal fees, and damages resulting from your non-compliance with GDPR or our terms of service.</strong>
               </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">11. Termination</h2>
+              <h2 className="text-h2 font-bold mb-4">12. Termination</h2>
               <p className="text-body text-border-subtle leading-relaxed mb-4">
                 We may terminate or suspend your account immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties. Upon termination:
               </p>
@@ -158,21 +197,21 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">12. Changes to Terms</h2>
+              <h2 className="text-h2 font-bold mb-4">13. Changes to Terms</h2>
               <p className="text-body text-border-subtle leading-relaxed">
                 We reserve the right to modify these Terms at any time. We will notify you of any material changes by posting the new Terms on this page and updating the "Last updated" date. Your continued use of the Service after such changes constitutes acceptance of the new Terms.
               </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">13. Governing Law</h2>
+              <h2 className="text-h2 font-bold mb-4">14. Governing Law</h2>
               <p className="text-body text-border-subtle leading-relaxed">
                 These Terms shall be governed by and construed in accordance with the laws of the European Union, without regard to its conflict of law provisions.
               </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">14. Contact Information</h2>
+              <h2 className="text-h2 font-bold mb-4">15. Contact Information</h2>
               <p className="text-body text-border-subtle leading-relaxed mb-4">
                 If you have any questions about these Terms, please contact us at:
               </p>

@@ -20,6 +20,7 @@ const HowItWorks = lazy(() => import('./pages/HowItWorks'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const GDPR = lazy(() => import('./pages/GDPR'));
 const Install = lazy(() => import('./pages/Install'));
 const Login = lazy(() => import('./pages/Login'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
@@ -142,6 +143,7 @@ function AppRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/gdpr" element={<GDPR />} />
           <Route path="/install" element={<Install />} />
           <Route path="/login" element={<Login />} />
           <Route path="/shopify/login" element={<Login />} />

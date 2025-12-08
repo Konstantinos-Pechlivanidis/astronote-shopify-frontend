@@ -68,11 +68,25 @@ export default function Privacy() {
                 <li>Monitor and analyze usage patterns and trends</li>
                 <li>Detect, prevent, and address technical issues</li>
                 <li>Comply with legal obligations and enforce our terms</li>
+                <li><strong>Analyze your revenue and usage patterns to provide you with specialized and quality solutions tailored to your business needs</strong></li>
+                <li><strong>Offer targeted solutions and recommendations based on your business performance</strong></li>
+                <li><strong>Provide customized offers and pricing based on your revenue and usage to ensure you receive the most appropriate and cost-effective solutions</strong></li>
               </ul>
+              <p className="text-body text-border-subtle leading-relaxed mt-4">
+                By using our Service, you consent to this data collection and processing for the purposes described above, including the analysis of your revenue and business performance to provide you with personalized solutions and offers.
+              </p>
             </section>
 
             <section>
-              <h2 className="text-h2 font-bold mb-4">4. GDPR Compliance</h2>
+              <h2 className="text-h2 font-bold mb-4">4. GDPR Compliance and Customer Responsibilities</h2>
+              <div className="p-4 bg-red-500/10 border-2 border-red-500/30 rounded-lg mb-4">
+                <p className="text-body text-border-subtle leading-relaxed mb-2">
+                  <strong className="text-red-500">Important: Customer Liability for GDPR Compliance</strong>
+                </p>
+                <p className="text-body text-border-subtle leading-relaxed">
+                  <strong>You are solely responsible for ensuring compliance with GDPR regulations and our application's terms of service.</strong> If you fail to comply with GDPR requirements or violate our application's terms and conditions, <strong>all liability and responsibility rests entirely with you.</strong> Astronote provides tools and features to assist with compliance, but the ultimate responsibility for GDPR compliance lies with you as the data controller.
+                </p>
+              </div>
               <p className="text-body text-border-subtle leading-relaxed mb-4">
                 Astronote is fully compliant with the General Data Protection Regulation (GDPR). We respect your rights regarding your personal data:
               </p>
@@ -86,6 +100,9 @@ export default function Privacy() {
               </ul>
               <p className="text-body text-border-subtle leading-relaxed mt-4">
                 To exercise these rights, please contact us at <a href="mailto:privacy@astronote.com" className="text-ice-accent hover:underline">privacy@astronote.com</a>.
+              </p>
+              <p className="text-body text-border-subtle leading-relaxed mt-4">
+                <strong>For detailed information about GDPR compliance and your responsibilities, please review our <a href="/gdpr" className="text-ice-accent hover:underline">GDPR Policy</a>.</strong>
               </p>
             </section>
 

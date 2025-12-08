@@ -13,6 +13,7 @@ export default function Footer() {
     legal: [
       { path: '/privacy', label: 'Privacy Policy' },
       { path: '/terms', label: 'Terms of Service' },
+      { path: '/gdpr', label: 'GDPR Policy' },
     ],
   };
 
@@ -124,8 +125,21 @@ export default function Footer() {
           </div> */}
         </div>
 
-        <div className="mt-8 pt-8 border-t border-glass-border text-center text-sm text-border-subtle">
-          <p>&copy; {new Date().getFullYear()} Astronote. All rights reserved.</p>
+        <div className="mt-8 pt-8 border-t border-glass-border">
+          <div className="text-center text-sm text-border-subtle mb-4">
+            <p>&copy; {new Date().getFullYear()} Astronote. All rights reserved.</p>
+          </div>
+          <div className="text-center text-xs text-border-subtle/80 space-y-1">
+            <p>
+              <strong>Important:</strong> You are solely responsible for GDPR compliance and adherence to our terms of service.
+            </p>
+            <p>
+              Failure to comply with GDPR regulations or our application's terms results in <strong>full liability on your part.</strong>
+            </p>
+            <p className="mt-2">
+              Please review our <Link to="/gdpr" className="text-ice-accent hover:underline">GDPR Policy</Link>, <Link to="/terms" className="text-ice-accent hover:underline">Terms of Service</Link>, and <Link to="/privacy" className="text-ice-accent hover:underline">Privacy Policy</Link> for complete details.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

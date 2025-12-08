@@ -169,7 +169,7 @@ export default function Campaigns() {
           actionLabel="Create Campaign"
           actionIcon="campaign"
           actionVariant="primary"
-          actionTo="/app/campaigns/new"
+          actionTo="/shopify/app/campaigns/new"
         />
 
         {/* Error State */}
@@ -269,7 +269,7 @@ export default function Campaigns() {
                   : 'Create your first SMS campaign to get started'}
                 actionLabel={!searchQuery && !statusFilter ? "Create Campaign" : undefined}
                 actionIcon={!searchQuery && !statusFilter ? "campaign" : undefined}
-                actionTo={!searchQuery && !statusFilter ? "/app/campaigns/new" : undefined}
+                actionTo={!searchQuery && !statusFilter ? "/shopify/app/campaigns/new" : undefined}
               />
             ) : !error && (
               <>
@@ -290,7 +290,7 @@ export default function Campaigns() {
                       <GlassTableCell>
                         <div>
                           <Link
-                            to={`/app/campaigns/${campaign.id}`}
+                            to={`/shopify/app/campaigns/${campaign.id}`}
                             className="font-semibold text-ice-primary hover:underline"
                           >
                             {campaign.name}
@@ -320,7 +320,7 @@ export default function Campaigns() {
                       <GlassTableCell>
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => navigate(`/app/campaigns/${campaign.id}`)}
+                            onClick={() => navigate(`/shopify/app/campaigns/${campaign.id}`)}
                             className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
                             aria-label="View campaign"
                           >
@@ -337,7 +337,7 @@ export default function Campaigns() {
                           )}
                           {campaign.status === 'draft' && (
                             <button
-                              onClick={() => navigate(`/app/campaigns/${campaign.id}/edit`)}
+                              onClick={() => navigate(`/shopify/app/campaigns/${campaign.id}/edit`)}
                               className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
                               aria-label="Edit campaign"
                             >

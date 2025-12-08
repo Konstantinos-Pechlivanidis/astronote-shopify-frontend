@@ -256,7 +256,7 @@ export default function CampaignCreate() {
           } catch (sendError) {
             toast.warning('Campaign updated but failed to send. You can send it manually from the campaigns list.');
           }
-          setTimeout(() => navigate('/app/campaigns'), 1500);
+          setTimeout(() => navigate('/shopify/app/campaigns'), 1500);
           return;
         }
       } else {
@@ -298,7 +298,7 @@ export default function CampaignCreate() {
       }
       
       if (result?.id) {
-        setTimeout(() => navigate('/app/campaigns'), 1500);
+        setTimeout(() => navigate('/shopify/app/campaigns'), 1500);
       }
     } catch (error) {
       toast.error(error?.message || 'Failed to create campaign. Please check your inputs and try again.');

@@ -297,7 +297,7 @@ export default function Reports() {
                     className={`
                       flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 min-h-[44px]
                       ${activeTab === tab.id
-                        ? 'bg-ice-primary text-primary-dark shadow-glow-ice'
+                        ? 'bg-ice-primary text-white shadow-glow-ice'
                         : 'bg-neutral-surface-secondary text-neutral-text-primary hover:bg-neutral-surface-primary hover:text-ice-primary'
                       }
                     `}

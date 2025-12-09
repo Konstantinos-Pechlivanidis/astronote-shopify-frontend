@@ -165,7 +165,7 @@ export default function Settings() {
                       className={`
                         flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 min-h-[44px]
                         ${activeTab === tab.id
-                          ? 'bg-ice-primary text-primary-dark shadow-glow-ice'
+                          ? 'bg-ice-primary text-white shadow-glow-ice'
                           : 'bg-neutral-surface-secondary text-neutral-text-primary hover:bg-neutral-surface-primary hover:text-ice-primary'
                         }
                       `}
@@ -179,7 +179,7 @@ export default function Settings() {
 
                 {/* Desktop Sidebar */}
                 <div className="hidden lg:block">
-                  <GlassCard className="p-0 overflow-hidden">
+                  <GlassCard className="p-0 overflow-hidden sticky top-6">
                     <nav className="space-y-1 p-2 sm:p-3">
                       {tabs.map((tab) => (
                         <button
@@ -205,7 +205,7 @@ export default function Settings() {
               {/* Content */}
               <div className="lg:grid lg:grid-cols-4 lg:gap-6">
                 {/* Desktop: Content takes 3 columns, Sidebar is separate */}
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-3 space-y-4 sm:space-y-6">
                   {/* General Settings */}
                   {activeTab === 'general' && (
                     <GlassCard className="p-4 sm:p-6">
@@ -286,17 +286,17 @@ export default function Settings() {
                             <label className="block text-sm font-medium text-neutral-text-secondary mb-3">
                               Store Information
                             </label>
-                            <GlassCard variant="ice" className="p-4 border border-ice-primary/20">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-xs text-neutral-text-secondary">Store Name</span>
-                                  <span className="text-sm font-medium text-neutral-text-primary">
+                            <GlassCard variant="ice" className="p-4 sm:p-5 border border-ice-primary/20">
+                              <div className="space-y-2.5 sm:space-y-3">
+                                <div className="flex items-center justify-between gap-3">
+                                  <span className="text-xs sm:text-sm text-neutral-text-secondary">Store Name</span>
+                                  <span className="text-sm sm:text-base font-medium text-neutral-text-primary text-right break-all">
                                     {storeInfo.shopName || storeInfo.shopDomain || 'N/A'}
                                   </span>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-xs text-neutral-text-secondary">Domain</span>
-                                  <span className="text-sm font-medium text-neutral-text-primary">
+                                <div className="flex items-center justify-between gap-3">
+                                  <span className="text-xs sm:text-sm text-neutral-text-secondary">Domain</span>
+                                  <span className="text-sm sm:text-base font-medium text-neutral-text-primary text-right break-all">
                                     {storeInfo.shopDomain || 'N/A'}
                                   </span>
                                 </div>
@@ -363,9 +363,9 @@ export default function Settings() {
                             <label className="block text-sm font-medium text-neutral-text-secondary mb-3">
                               Current Sender ID
                             </label>
-                            <GlassCard className="p-4">
-                              <div className="flex items-center justify-between">
-                                <span className="text-base font-medium text-neutral-text-primary">
+                            <GlassCard className="p-4 sm:p-5">
+                              <div className="flex items-center justify-between gap-3">
+                                <span className="text-base sm:text-lg font-medium text-neutral-text-primary break-all">
                                   {settings.senderId}
                                 </span>
                                 <StatusBadge status="active" />
@@ -416,7 +416,7 @@ export default function Settings() {
                             {storeInfo?.shopDomain && (
                               <div className="pt-4 border-t border-neutral-border/60">
                                 <p className="text-xs text-neutral-text-secondary mb-2">Shop Domain</p>
-                                <code className="text-sm text-neutral-text-primary font-mono break-all">
+                                <code className="text-sm text-neutral-text-primary font-mono break-all bg-neutral-surface-secondary/50 px-2 py-1.5 rounded-lg">
                                   {storeInfo.shopDomain}
                                 </code>
                               </div>
@@ -435,7 +435,7 @@ export default function Settings() {
                                 <Icon name="webhook" size="md" variant="ice" className="flex-shrink-0 mt-0.5" />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-xs text-neutral-text-secondary mb-2">Use this URL in your Shopify webhook settings</p>
-                                  <code className="block text-sm text-neutral-text-primary break-all font-mono bg-neutral-surface-secondary p-3 rounded-lg border border-neutral-border/60">
+                                  <code className="block text-sm text-neutral-text-primary break-all font-mono bg-neutral-surface-secondary/80 p-3 rounded-lg border border-neutral-border/60 text-neutral-text-primary">
                                     {window.location.origin}/webhooks/shopify
                                   </code>
                                 </div>
@@ -519,39 +519,39 @@ export default function Settings() {
                               Usage Statistics
                             </label>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                              <GlassCard variant="ice" className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
+                              <GlassCard variant="ice" className="p-4 sm:p-5">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
                                   <Icon name="personal" size="sm" variant="ice" />
-                                  <p className="text-xs text-neutral-text-secondary">Contacts</p>
+                                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Contacts</p>
                                 </div>
-                                <p className="text-xl font-bold text-neutral-text-primary">
+                                <p className="text-xl sm:text-2xl font-bold text-neutral-text-primary">
                                   {(account.usage.totalContacts || 0).toLocaleString()}
                                 </p>
                               </GlassCard>
-                              <GlassCard className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
+                              <GlassCard className="p-4 sm:p-5">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
                                   <Icon name="campaign" size="sm" variant="ice" />
-                                  <p className="text-xs text-neutral-text-secondary">Campaigns</p>
+                                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Campaigns</p>
                                 </div>
-                                <p className="text-xl font-bold text-neutral-text-primary">
+                                <p className="text-xl sm:text-2xl font-bold text-neutral-text-primary">
                                   {(account.usage.totalCampaigns || 0).toLocaleString()}
                                 </p>
                               </GlassCard>
-                              <GlassCard className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
+                              <GlassCard className="p-4 sm:p-5">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
                                   <Icon name="automation" size="sm" variant="ice" />
-                                  <p className="text-xs text-neutral-text-secondary">Automations</p>
+                                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Automations</p>
                                 </div>
-                                <p className="text-xl font-bold text-neutral-text-primary">
+                                <p className="text-xl sm:text-2xl font-bold text-neutral-text-primary">
                                   {(account.usage.totalAutomations || 0).toLocaleString()}
                                 </p>
                               </GlassCard>
-                              <GlassCard className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
+                              <GlassCard className="p-4 sm:p-5">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
                                   <Icon name="send" size="sm" variant="ice" />
-                                  <p className="text-xs text-neutral-text-secondary">Messages</p>
+                                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Messages</p>
                                 </div>
-                                <p className="text-xl font-bold text-neutral-text-primary">
+                                <p className="text-xl sm:text-2xl font-bold text-neutral-text-primary">
                                   {(account.usage.totalMessages || 0).toLocaleString()}
                                 </p>
                               </GlassCard>
@@ -570,7 +570,7 @@ export default function Settings() {
                                 <Icon name="settings" size="md" variant="ice" className="flex-shrink-0 mt-0.5" />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-xs text-neutral-text-secondary mb-2">Your API token is stored securely</p>
-                                  <code className="block text-sm text-neutral-text-primary break-all font-mono bg-neutral-surface-secondary p-3 rounded-lg border border-neutral-border/60">
+                                  <code className="block text-sm text-neutral-text-primary break-all font-mono bg-neutral-surface-secondary/80 p-3 rounded-lg border border-neutral-border/60 text-neutral-text-primary">
                                     {localStorage.getItem(TOKEN_KEY) ? '••••••••••••••••' : 'No token'}
                                   </code>
                                 </div>

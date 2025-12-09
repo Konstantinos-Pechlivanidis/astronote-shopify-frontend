@@ -250,6 +250,50 @@ export default function Templates() {
                     <p className="text-sm sm:text-base text-primary line-clamp-3 mb-5 flex-grow leading-relaxed">
                       {template.content}
                     </p>
+
+                    {/* Statistics */}
+                    {(template.conversionRate || template.productViewsIncrease || template.clickThroughRate) && (
+                      <div className="mb-5 p-4 rounded-xl bg-gradient-to-br from-ice-soft/40 to-ice-primary/10 border border-ice-primary/20">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Icon name="analytics" size="sm" variant="ice" />
+                          <h4 className="text-sm font-bold text-neutral-text-primary uppercase tracking-wider">Performance Stats</h4>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          {template.conversionRate && (
+                            <div className="flex flex-col">
+                              <span className="text-xs text-primary mb-1">Conversion Rate</span>
+                              <span className="text-lg font-bold text-ice-primary">{template.conversionRate.toFixed(1)}%</span>
+                            </div>
+                          )}
+                          {template.productViewsIncrease && (
+                            <div className="flex flex-col">
+                              <span className="text-xs text-primary mb-1">Product Views</span>
+                              <span className="text-lg font-bold text-ice-primary">+{template.productViewsIncrease.toFixed(1)}%</span>
+                            </div>
+                          )}
+                          {template.clickThroughRate && (
+                            <div className="flex flex-col">
+                              <span className="text-xs text-primary mb-1">Click-Through</span>
+                              <span className="text-lg font-bold text-ice-primary">{template.clickThroughRate.toFixed(1)}%</span>
+                            </div>
+                          )}
+                          {template.averageOrderValue && (
+                            <div className="flex flex-col">
+                              <span className="text-xs text-primary mb-1">Avg Order Value</span>
+                              <span className="text-lg font-bold text-ice-primary">+{template.averageOrderValue.toFixed(1)}%</span>
+                            </div>
+                          )}
+                        </div>
+                        {template.customerRetention && (
+                          <div className="mt-3 pt-3 border-t border-ice-primary/20">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-primary">Customer Retention</span>
+                              <span className="text-base font-bold text-ice-primary">+{template.customerRetention.toFixed(1)}%</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     
                     {/* Tags */}
                     {template.tags && Array.isArray(template.tags) && template.tags.length > 0 && (

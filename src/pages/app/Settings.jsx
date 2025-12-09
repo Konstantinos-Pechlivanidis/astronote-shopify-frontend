@@ -208,14 +208,14 @@ export default function Settings() {
                 <div className="lg:col-span-3 space-y-4 sm:space-y-6">
                   {/* General Settings */}
                   {activeTab === 'general' && (
-                    <GlassCard className="p-5 sm:p-6 lg:p-8">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80 shadow-sm">
+                    <GlassCard className="p-5 sm:p-6 lg:p-8 animate-fade-in shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6 pb-4 sm:pb-5 border-b border-neutral-border/40">
+                        <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-md">
                           <Icon name="settings" size="md" variant="ice" />
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">General Settings</h2>
-                          <p className="text-sm sm:text-base text-neutral-text-primary opacity-80 mt-1">Configure your store preferences</p>
+                          <p className="text-sm sm:text-base text-primary-light mt-1">Configure your store preferences</p>
                         </div>
                       </div>
 
@@ -286,16 +286,16 @@ export default function Settings() {
                             <label className="block text-sm sm:text-base font-semibold text-neutral-text-primary mb-3 sm:mb-4">
                               Store Information
                             </label>
-                            <GlassCard variant="ice" className="p-4 sm:p-5 lg:p-6 border border-ice-primary/20 shadow-sm">
+                            <GlassCard variant="ice" className="p-4 sm:p-5 lg:p-6 border border-ice-primary/20 shadow-md hover:shadow-lg transition-shadow duration-200">
                               <div className="space-y-3 sm:space-y-4">
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                                  <span className="text-xs sm:text-sm text-neutral-text-primary opacity-75 font-medium">Store Name</span>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-ice-soft/30 transition-colors">
+                                  <span className="text-xs sm:text-sm text-primary-light font-medium">Store Name</span>
                                   <span className="text-sm sm:text-base font-semibold text-neutral-text-primary text-left sm:text-right break-all">
                                     {storeInfo.shopName || storeInfo.shopDomain || 'N/A'}
                                   </span>
                                 </div>
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                                  <span className="text-xs sm:text-sm text-neutral-text-primary opacity-75 font-medium">Domain</span>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-ice-soft/30 transition-colors">
+                                  <span className="text-xs sm:text-sm text-primary-light font-medium">Domain</span>
                                   <span className="text-sm sm:text-base font-semibold text-neutral-text-primary text-left sm:text-right break-all">
                                     {storeInfo.shopDomain || 'N/A'}
                                   </span>
@@ -306,13 +306,13 @@ export default function Settings() {
                         )}
 
                         {/* Save Button */}
-                        <div className="flex justify-end pt-4 border-t border-neutral-border/60">
+                        <div className="flex justify-end pt-5 sm:pt-6 border-t border-neutral-border/60 mt-6 sm:mt-8">
                           <GlassButton 
                             variant="primary" 
                             size="lg" 
                             onClick={handleSave}
                             disabled={updateSettings.isPending}
-                            className="min-w-[140px] min-h-[44px]"
+                            className="min-w-[160px] min-h-[48px] shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                           >
                             {updateSettings.isPending ? (
                               <span className="flex items-center gap-2">
@@ -333,14 +333,14 @@ export default function Settings() {
 
                   {/* SMS Settings */}
                   {activeTab === 'sms' && (
-                    <GlassCard className="p-5 sm:p-6 lg:p-8">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80 shadow-sm">
+                    <GlassCard className="p-5 sm:p-6 lg:p-8 animate-fade-in shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6 pb-4 sm:pb-5 border-b border-neutral-border/40">
+                        <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-md">
                           <Icon name="sms" size="md" variant="ice" />
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">SMS Settings</h2>
-                          <p className="text-sm sm:text-base text-neutral-text-primary opacity-80 mt-1">Configure your SMS messaging preferences</p>
+                          <p className="text-sm sm:text-base text-primary-light mt-1">Configure your SMS messaging preferences</p>
                         </div>
                       </div>
 
@@ -379,14 +379,14 @@ export default function Settings() {
 
                   {/* Integrations */}
                   {activeTab === 'integrations' && (
-                    <GlassCard className="p-5 sm:p-6 lg:p-8">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80 shadow-sm">
+                    <GlassCard className="p-5 sm:p-6 lg:p-8 animate-fade-in shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6 pb-4 sm:pb-5 border-b border-neutral-border/40">
+                        <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-md">
                           <Icon name="integration" size="md" variant="ice" />
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Integrations</h2>
-                          <p className="text-sm sm:text-base text-neutral-text-primary opacity-80 mt-1">Manage your third-party integrations</p>
+                          <p className="text-sm sm:text-base text-primary-light mt-1">Manage your third-party integrations</p>
                         </div>
                       </div>
 
@@ -459,14 +459,14 @@ export default function Settings() {
 
                   {/* Account */}
                   {activeTab === 'account' && (
-                    <GlassCard className="p-5 sm:p-6 lg:p-8">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80 shadow-sm">
+                    <GlassCard className="p-5 sm:p-6 lg:p-8 animate-fade-in shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6 pb-4 sm:pb-5 border-b border-neutral-border/40">
+                        <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-md">
                           <Icon name="personal" size="md" variant="ice" />
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Account Information</h2>
-                          <p className="text-sm sm:text-base text-neutral-text-primary opacity-80 mt-1">View your account details and usage statistics</p>
+                          <p className="text-sm sm:text-base text-primary-light mt-1">View your account details and usage statistics</p>
                         </div>
                       </div>
 

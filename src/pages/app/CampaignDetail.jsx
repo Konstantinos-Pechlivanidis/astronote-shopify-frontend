@@ -96,7 +96,7 @@ export default function CampaignDetail() {
                 <div className="flex items-center gap-3 mt-2">
                   <StatusBadge status={campaign.status} />
                   {campaign.createdAt && (
-                    <span className="text-sm text-neutral-text-secondary">
+                    <span className="text-sm text-primary-light">
                       Created {format(new Date(campaign.createdAt), 'MMM d, yyyy')}
                     </span>
                   )}
@@ -146,18 +146,18 @@ export default function CampaignDetail() {
                 <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Campaign Details</h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-neutral-text-secondary mb-1">Message</label>
+                    <label className="text-sm font-medium text-primary-light mb-1">Message</label>
                     <p className="text-neutral-text-primary mt-1 whitespace-pre-wrap">{campaign.message}</p>
                   </div>
                   {campaign.audience && (
                     <div>
-                      <label className="text-sm font-medium text-neutral-text-secondary mb-1">Audience</label>
+                      <label className="text-sm font-medium text-primary-light mb-1">Audience</label>
                       <p className="text-neutral-text-primary mt-1">{campaign.audience}</p>
                     </div>
                   )}
                   {campaign.scheduleAt && (
                     <div>
-                      <label className="text-sm font-medium text-neutral-text-secondary mb-1">Scheduled For</label>
+                      <label className="text-sm font-medium text-primary-light mb-1">Scheduled For</label>
                       <p className="text-neutral-text-primary mt-1">
                         {format(new Date(campaign.scheduleAt), 'PPp')}
                       </p>
@@ -172,25 +172,25 @@ export default function CampaignDetail() {
                   <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Performance Metrics</h2>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                     <div>
-                      <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Sent</p>
+                      <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Sent</p>
                       <p className="text-2xl font-bold text-neutral-text-primary">
                         {metrics.sent || 0}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Delivered</p>
+                      <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Delivered</p>
                       <p className="text-2xl font-bold text-ice-primary">
                         {metrics.delivered || 0}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Failed</p>
+                      <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Failed</p>
                       <p className="text-2xl font-bold text-red-500">
                         {metrics.failed || 0}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Delivery Rate</p>
+                      <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Delivery Rate</p>
                       <p className="text-2xl font-bold text-ice-primary">
                         {metrics.deliveryRate ? `${metrics.deliveryRate.toFixed(1)}%` : '0%'}
                       </p>
@@ -207,18 +207,18 @@ export default function CampaignDetail() {
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-neutral-text-primary">Quick Info</h3>
                 <div className="space-y-2 sm:space-y-3">
                   <div>
-                    <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Recipients</p>
+                    <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Recipients</p>
                     <p className="text-lg font-semibold text-neutral-text-primary">
                       {campaign.recipientCount || campaign.totalRecipients || 0}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Status</p>
+                    <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Status</p>
                     <StatusBadge status={campaign.status} />
                   </div>
                   {campaign.createdAt && (
                     <div>
-                      <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Created</p>
+                      <p className="text-xs font-medium text-primary-light mb-1 uppercase tracking-wider">Created</p>
                       <p className="text-sm text-neutral-text-primary">
                         {format(new Date(campaign.createdAt), 'MMM d, yyyy')}
                       </p>

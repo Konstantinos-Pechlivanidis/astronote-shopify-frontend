@@ -328,7 +328,7 @@ export default function Reports() {
                       <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                         {(overview.overview?.totalSmsSent || overview.campaignPerformance?.summary?.totalMessages || 0).toLocaleString()}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Messages Sent</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Messages Sent</p>
                     </GlassCard>
 
                     <GlassCard className="p-5 hover:shadow-glass-light-lg transition-shadow">
@@ -342,7 +342,7 @@ export default function Reports() {
                           ? `${(overview.overview.deliveryRate || overview.campaignPerformance.summary.deliveryRate).toFixed(1)}%`
                           : '0%'}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Delivery Rate</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Delivery Rate</p>
                     </GlassCard>
 
                     <GlassCard className="p-5 hover:shadow-glass-light-lg transition-shadow">
@@ -354,7 +354,7 @@ export default function Reports() {
                       <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                         {(overview.overview?.totalCampaigns || kpis.overview?.totalCampaigns || 0).toLocaleString()}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Campaigns</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Campaigns</p>
                     </GlassCard>
 
                     <GlassCard className="p-5 hover:shadow-glass-light-lg transition-shadow">
@@ -366,7 +366,7 @@ export default function Reports() {
                       <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                         {(overview.overview?.totalContacts || kpis.overview?.totalContacts || 0).toLocaleString()}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Contacts</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Contacts</p>
                     </GlassCard>
 
                     <GlassCard variant="fuchsia" className="p-5 hover:shadow-glass-light-lg transition-shadow">
@@ -378,7 +378,7 @@ export default function Reports() {
                       <p className="text-2xl sm:text-3xl font-bold text-fuchsia-primary mb-1">
                         {(overview.overview?.creditsRemaining || kpis.overview?.creditsRemaining || 0).toLocaleString()}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Credits</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Credits</p>
                     </GlassCard>
                   </div>
 
@@ -438,19 +438,19 @@ export default function Reports() {
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(campaigns.campaignStats.totalSent || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Total Sent</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Total Sent</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                           {(campaigns.campaignStats.totalDelivered || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Delivered</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Delivered</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-red-500 mb-1">
                           {(campaigns.campaignStats.totalFailed || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Failed</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Failed</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
@@ -458,7 +458,7 @@ export default function Reports() {
                             ? `${campaigns.campaignStats.avgDeliveryRate.toFixed(1)}%`
                             : '0%'}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Avg Delivery Rate</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Avg Delivery Rate</p>
                       </GlassCard>
                     </div>
                   )}
@@ -527,7 +527,7 @@ export default function Reports() {
                                   <span className="text-neutral-text-primary font-medium">{campaign.delivered || 0}</span>
                                 </GlassTableCell>
                                 <GlassTableCell>
-                                  <span className="text-sm text-neutral-text-secondary">
+                                  <span className="text-sm text-primary-light">
                                     {campaign.createdAt ? format(new Date(campaign.createdAt), 'MMM d, yyyy') : '-'}
                                   </span>
                                 </GlassTableCell>
@@ -573,7 +573,7 @@ export default function Reports() {
                                   <span className="text-neutral-text-primary font-medium">{campaign.messageCount || 0}</span>
                                 </GlassTableCell>
                                 <GlassTableCell>
-                                  <span className="text-sm text-neutral-text-secondary">
+                                  <span className="text-sm text-primary-light">
                                     {campaign.createdAt ? format(new Date(campaign.createdAt), 'MMM d, yyyy') : '-'}
                                   </span>
                                 </GlassTableCell>
@@ -605,7 +605,7 @@ export default function Reports() {
                       <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                         {(messaging.totalMessages || 0).toLocaleString()}
                       </p>
-                      <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Total Messages</p>
+                      <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Total Messages</p>
                     </GlassCard>
                     {messaging.byDirection && (
                       <>
@@ -613,13 +613,13 @@ export default function Reports() {
                           <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                             {(messaging.byDirection.outbound || 0).toLocaleString()}
                           </p>
-                          <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Outbound</p>
+                          <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Outbound</p>
                         </GlassCard>
                         <GlassCard className="p-5">
                           <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                             {(messaging.byDirection.inbound || 0).toLocaleString()}
                           </p>
-                          <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Inbound</p>
+                          <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Inbound</p>
                         </GlassCard>
                       </>
                     )}
@@ -628,7 +628,7 @@ export default function Reports() {
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                           {(messaging.byStatus.delivered || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Delivered</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Delivered</p>
                       </GlassCard>
                     )}
                   </div>
@@ -699,31 +699,31 @@ export default function Reports() {
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(credits.summary.totalCredits || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Total Credits</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Total Credits</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-fuchsia-primary mb-1">
                           {(credits.summary.usedCredits || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Used</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Used</p>
                       </GlassCard>
                       <GlassCard variant="ice" className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                           {(credits.summary.remainingCredits || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Remaining</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Remaining</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(credits.summary.avgDailyUsage || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Avg Daily</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Avg Daily</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(credits.summary.totalPurchases || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Purchases</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Purchases</p>
                       </GlassCard>
                     </div>
                   )}
@@ -791,7 +791,7 @@ export default function Reports() {
                                   </span>
                                 </GlassTableCell>
                                 <GlassTableCell>
-                                  <span className="text-sm text-neutral-text-secondary">
+                                  <span className="text-sm text-primary-light">
                                     {purchase.createdAt ? format(new Date(purchase.createdAt), 'MMM d, yyyy') : '-'}
                                   </span>
                                 </GlassTableCell>
@@ -824,13 +824,13 @@ export default function Reports() {
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(contacts.summary.totalContacts || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Total Contacts</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Total Contacts</p>
                       </GlassCard>
                       <GlassCard variant="ice" className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                           {(contacts.summary.optedInContacts || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Opted In</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Opted In</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
@@ -838,13 +838,13 @@ export default function Reports() {
                             ? `${contacts.summary.consentRate}%`
                             : '0%'}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Consent Rate</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Consent Rate</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(contacts.summary.recentContacts || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Recent (30d)</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Recent (30d)</p>
                       </GlassCard>
                     </div>
                   )}
@@ -888,7 +888,7 @@ export default function Reports() {
                           <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                             {(contacts.summary.birthdayContacts || 0).toLocaleString()}
                           </p>
-                          <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">With Birthday</p>
+                          <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">With Birthday</p>
                         </GlassCard>
                       )}
                       {contacts.summary.engagedContacts !== undefined && (
@@ -896,7 +896,7 @@ export default function Reports() {
                           <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                             {(contacts.summary.engagedContacts || 0).toLocaleString()}
                           </p>
-                          <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Engaged</p>
+                          <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Engaged</p>
                         </GlassCard>
                       )}
                       {contacts.summary.engagementRate !== undefined && (
@@ -904,7 +904,7 @@ export default function Reports() {
                           <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                             {contacts.summary.engagementRate}%
                           </p>
-                          <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Engagement Rate</p>
+                          <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Engagement Rate</p>
                         </GlassCard>
                       )}
                     </div>
@@ -931,19 +931,19 @@ export default function Reports() {
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(automations.summary.totalTriggered || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Total Triggered</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Total Triggered</p>
                       </GlassCard>
                       <GlassCard variant="ice" className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
                           {(automations.summary.totalActive || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Active</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Active</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                           {(automations.summary.totalInactive || 0).toLocaleString()}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Inactive</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Inactive</p>
                       </GlassCard>
                       <GlassCard className="p-5">
                         <p className="text-2xl sm:text-3xl font-bold text-ice-primary mb-1">
@@ -951,7 +951,7 @@ export default function Reports() {
                             ? `${automations.summary.completionRate}%`
                             : '0%'}
                         </p>
-                        <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">Completion Rate</p>
+                        <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">Completion Rate</p>
                       </GlassCard>
                     </div>
                   )}
@@ -978,10 +978,10 @@ export default function Reports() {
                                   <span className="font-semibold text-neutral-text-primary">{automation.title}</span>
                                 </GlassTableCell>
                                 <GlassTableCell>
-                                  <span className="text-sm text-neutral-text-secondary">{automation.triggerEvent}</span>
+                                  <span className="text-sm text-primary-light">{automation.triggerEvent}</span>
                                 </GlassTableCell>
                                 <GlassTableCell>
-                                  <span className={`text-sm ${automation.isActive ? 'text-ice-primary' : 'text-neutral-text-secondary'}`}>
+                                  <span className={`text-sm ${automation.isActive ? 'text-ice-primary' : 'text-primary-light'}`}>
                                     {automation.isActive ? 'Active' : 'Inactive'}
                                   </span>
                                 </GlassTableCell>

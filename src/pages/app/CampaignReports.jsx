@@ -135,7 +135,7 @@ export default function CampaignReports() {
                         </span>
                       </GlassTableCell>
                       <GlassTableCell>
-                        <span className="text-neutral-text-secondary text-sm">
+                        <span className="text-primary-light text-sm">
                           {report.date ? format(new Date(report.date), 'MMM d, yyyy') : '-'}
                         </span>
                       </GlassTableCell>

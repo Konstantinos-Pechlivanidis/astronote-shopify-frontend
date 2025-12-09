@@ -67,7 +67,7 @@ export default function Dashboard() {
                 <p className="text-3xl sm:text-4xl font-bold text-ice-primary mb-1">
                   {dashboardData.credits?.toLocaleString() || '0'}
                 </p>
-                <p className="text-xs sm:text-sm text-neutral-text-secondary">Available credits</p>
+                <p className="text-xs sm:text-sm text-primary-light">Available credits</p>
               </GlassCard>
 
               {/* Total Campaigns */}
@@ -81,7 +81,7 @@ export default function Dashboard() {
                 <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
                   {dashboardData.totalCampaigns || 0}
                 </p>
-                <p className="text-xs sm:text-sm text-neutral-text-secondary">Total campaigns</p>
+                <p className="text-xs sm:text-sm text-primary-light">Total campaigns</p>
               </GlassCard>
 
               {/* Total Contacts */}
@@ -95,7 +95,7 @@ export default function Dashboard() {
                 <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
                   {dashboardData.totalContacts?.toLocaleString() || 0}
                 </p>
-                <p className="text-xs sm:text-sm text-neutral-text-secondary">Total contacts</p>
+                <p className="text-xs sm:text-sm text-primary-light">Total contacts</p>
               </GlassCard>
 
               {/* Messages Sent */}
@@ -109,7 +109,7 @@ export default function Dashboard() {
                 <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
                   {dashboardData.totalMessagesSent?.toLocaleString() || 0}
                 </p>
-                <p className="text-xs sm:text-sm text-neutral-text-secondary">All time</p>
+                <p className="text-xs sm:text-sm text-primary-light">All time</p>
               </GlassCard>
             </div>
           )}
@@ -136,7 +136,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-base sm:text-lg font-semibold mb-1 text-neutral-text-primary">Create Campaign</h3>
-                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Start a new SMS campaign</p>
+                  <p className="text-xs sm:text-sm text-primary-light">Start a new SMS campaign</p>
                 </div>
                 <Icon name="arrowRight" size="sm" variant="ice" className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -161,7 +161,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-base sm:text-lg font-semibold mb-1 text-neutral-text-primary">Manage Contacts</h3>
-                  <p className="text-xs sm:text-sm text-neutral-text-secondary">View and manage your contacts</p>
+                  <p className="text-xs sm:text-sm text-primary-light">View and manage your contacts</p>
                 </div>
                 <Icon name="arrowRight" size="sm" variant="ice" className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -186,7 +186,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-base sm:text-lg font-semibold mb-1 text-neutral-text-primary">Automations</h3>
-                  <p className="text-xs sm:text-sm text-neutral-text-secondary">Set up automated workflows</p>
+                  <p className="text-xs sm:text-sm text-primary-light">Set up automated workflows</p>
                 </div>
                 <Icon name="arrowRight" size="sm" variant="ice" className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>

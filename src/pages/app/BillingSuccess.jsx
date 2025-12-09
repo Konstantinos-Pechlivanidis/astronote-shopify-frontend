@@ -133,13 +133,13 @@ export default function BillingSuccess() {
                 <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-2">
                   {successInfo.title}
                 </h2>
-                <p className="text-base text-neutral-text-secondary">
+                <p className="text-base text-primary-light">
                   {successInfo.message}
                 </p>
               </div>
 
               {isVerifying && (
-                <div className="flex items-center gap-3 text-sm text-neutral-text-secondary">
+                <div className="flex items-center gap-3 text-sm text-primary-light">
                   <LoadingSpinner size="sm" />
                   <span>
                     {paymentType === 'subscription' 
@@ -157,7 +157,7 @@ export default function BillingSuccess() {
                       <p className="text-sm font-medium text-neutral-text-primary mb-1">
                         Verification Pending
                       </p>
-                      <p className="text-xs text-neutral-text-secondary">
+                      <p className="text-xs text-primary-light">
                         Your payment is being processed. If your subscription doesn't activate within a few minutes, please contact support.
                       </p>
                     </div>
@@ -173,7 +173,7 @@ export default function BillingSuccess() {
                       <p className="text-sm font-medium text-neutral-text-primary">
                         Subscription Active
                       </p>
-                      <p className="text-xs text-neutral-text-secondary capitalize">
+                      <p className="text-xs text-primary-light capitalize">
                         {subscription.planType} Plan
                       </p>
                     </div>

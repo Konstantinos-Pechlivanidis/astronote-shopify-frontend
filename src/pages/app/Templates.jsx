@@ -150,7 +150,7 @@ export default function Templates() {
               {/* Results Summary */}
               {pagination.total !== undefined && (
                 <div className="mt-4 pt-4 border-t border-neutral-border/60">
-                  <p className="text-sm text-neutral-text-secondary">
+                  <p className="text-sm text-primary-light">
                     Showing {templates.length} of {pagination.total || 0} template{pagination.total !== 1 ? 's' : ''}
                     {(categoryFilter || searchQuery) && (
                       <span className="ml-2">
@@ -236,7 +236,7 @@ export default function Templates() {
                     </h3>
 
                     {/* Content Preview */}
-                    <p className="text-sm text-neutral-text-secondary line-clamp-3 mb-4 flex-grow">
+                    <p className="text-sm text-primary-light line-clamp-3 mb-4 flex-grow">
                       {template.content}
                     </p>
                     
@@ -246,13 +246,13 @@ export default function Templates() {
                         {template.tags.slice(0, 3).map((tag, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 text-xs rounded-full bg-neutral-surface-secondary/50 border border-neutral-border/30 text-neutral-text-secondary"
+                            className="px-2 py-0.5 text-xs rounded-full bg-neutral-surface-secondary/50 border border-neutral-border/30 text-primary-light"
                           >
                             {tag}
                           </span>
                         ))}
                         {template.tags.length > 3 && (
-                          <span className="px-2 py-0.5 text-xs text-neutral-text-secondary">
+                          <span className="px-2 py-0.5 text-xs text-primary-light">
                             +{template.tags.length - 3}
                           </span>
                         )}
@@ -262,13 +262,13 @@ export default function Templates() {
                     {/* Footer Info */}
                     <div className="flex items-center justify-between mb-4 pt-4 border-t border-neutral-border/60">
                       {template.useCount !== undefined && template.useCount > 0 && (
-                        <div className="flex items-center gap-1.5 text-xs text-neutral-text-secondary">
+                        <div className="flex items-center gap-1.5 text-xs text-primary-light">
                           <Icon name="check" size="xs" variant="ice" />
                           <span>Used {template.useCount} time{template.useCount !== 1 ? 's' : ''}</span>
                         </div>
                       )}
                       {template.createdAt && (
-                        <span className="text-xs text-neutral-text-secondary">
+                        <span className="text-xs text-primary-light">
                           {format(new Date(template.createdAt), 'MMM d, yyyy')}
                         </span>
                       )}
@@ -294,7 +294,7 @@ export default function Templates() {
               {pagination.totalPages > 1 && (
                 <GlassCard className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-sm text-neutral-text-secondary">
+                    <div className="text-sm text-primary-light">
                       Page {pagination.page || currentPage} of {pagination.totalPages}
                     </div>
                     <div className="flex items-center gap-2">

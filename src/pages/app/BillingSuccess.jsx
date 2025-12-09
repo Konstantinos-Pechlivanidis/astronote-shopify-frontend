@@ -14,28 +14,38 @@ export default function BillingSuccess() {
   const [searchParams] = useSearchParams();
   const toast = useToastContext();
   const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState(null);
+  const [balanceUpdated, setBalanceUpdated] = useState(false);
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('type') || 'unknown';
   const verifySession = useVerifySubscriptionSession();
   const { data: subscriptionData, refetch: refetchSubscription } = useSubscriptionStatus();
-  const { refetch: refetchBalance } = useBillingBalance();
+  const { data: balanceData, refetch: refetchBalance } = useBillingBalance();
 
   useEffect(() => {
     // If session_id is present and it's a subscription, verify it
     if (sessionId && !isVerifying && paymentType === 'subscription') {
       setIsVerifying(true);
+      setVerificationError(null);
       verifySession.mutate(
         { sessionId },
         {
           onSuccess: () => {
             refetchSubscription();
             refetchBalance();
+            setBalanceUpdated(true);
             toast.success('Payment verified successfully!');
           },
           onError: (error) => {
-            // Don't show error - webhook will handle the verification in the background
-            // Silently handle verification errors as they're not critical
+            // Show a warning but don't block the user - webhook will handle verification
+            const errorMessage = error?.response?.data?.message || error?.message || 'Verification pending';
+            setVerificationError(errorMessage);
             console.warn('Subscription verification failed:', error);
+            // Still refetch to get latest status (webhook may have processed it)
+            setTimeout(() => {
+              refetchSubscription();
+              refetchBalance();
+            }, 2000);
           },
           onSettled: () => {
             setIsVerifying(false);
@@ -43,16 +53,29 @@ export default function BillingSuccess() {
         },
       );
     } else if (sessionId && paymentType !== 'subscription') {
-      // For top-up and pack purchases, just refresh balance after a delay
+      // For top-up and pack purchases, refresh balance after a delay
       // Webhook will process the payment
+      setIsVerifying(true);
       setTimeout(() => {
-        refetchBalance();
-        toast.success('Payment processed! Credits will be added shortly.');
+        refetchBalance().then(() => {
+          setBalanceUpdated(true);
+          setIsVerifying(false);
+          toast.success('Payment processed! Credits have been added to your account.');
+        }).catch(() => {
+          setIsVerifying(false);
+          // Still show success - webhook will process it
+          toast.success('Payment processed! Credits will be added shortly.');
+        });
       }, 2000);
+    } else if (!sessionId) {
+      // No session ID - might be a direct visit or webhook already processed
+      // Just show success message
+      setBalanceUpdated(true);
     }
   }, [sessionId, paymentType, isVerifying, verifySession, refetchSubscription, refetchBalance, toast]);
 
   const subscription = subscriptionData?.data || subscriptionData || {};
+  const balance = balanceData?.data?.balance || balanceData?.balance || 0;
 
   // Determine success message based on payment type
   const getSuccessMessage = () => {
@@ -61,21 +84,25 @@ export default function BillingSuccess() {
         return {
           title: 'Subscription Activated!',
           message: 'Your subscription has been activated successfully. Free credits have been allocated to your account.',
+          icon: 'billing',
         };
       case 'credit_topup':
         return {
           title: 'Credits Added!',
           message: 'Your credit top-up has been processed successfully. Credits have been added to your account.',
+          icon: 'billing',
         };
       case 'credit_pack':
         return {
           title: 'Purchase Complete!',
           message: 'Your credit pack purchase has been completed successfully. Credits have been added to your account.',
+          icon: 'billing',
         };
       default:
         return {
           title: 'Payment Successful!',
           message: 'Your payment has been processed successfully. Credits have been added to your account.',
+          icon: 'check',
         };
     }
   };
@@ -111,15 +138,35 @@ export default function BillingSuccess() {
                 </p>
               </div>
 
-              {isVerifying && paymentType === 'subscription' && (
+              {isVerifying && (
                 <div className="flex items-center gap-3 text-sm text-neutral-text-secondary">
                   <LoadingSpinner size="sm" />
-                  <span>Verifying subscription...</span>
+                  <span>
+                    {paymentType === 'subscription' 
+                      ? 'Verifying subscription...' 
+                      : 'Processing payment...'}
+                  </span>
                 </div>
               )}
 
-              {paymentType === 'subscription' && subscription.active && (
-                <GlassCard variant="ice" className="p-4 w-full">
+              {verificationError && (
+                <GlassCard variant="ice" className="p-4 w-full border-yellow-500/30">
+                  <div className="flex items-start gap-3">
+                    <Icon name="error" size="sm" variant="ice" className="text-yellow-500 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-neutral-text-primary mb-1">
+                        Verification Pending
+                      </p>
+                      <p className="text-xs text-neutral-text-secondary">
+                        Your payment is being processed. If your subscription doesn't activate within a few minutes, please contact support.
+                      </p>
+                    </div>
+                  </div>
+                </GlassCard>
+              )}
+
+              {paymentType === 'subscription' && subscription.active && !verificationError && (
+                <GlassCard variant="ice" className="p-4 sm:p-6 w-full">
                   <div className="flex items-center gap-3 mb-2">
                     <Icon name="billing" size="md" variant="ice" />
                     <div className="flex-1">
@@ -128,6 +175,22 @@ export default function BillingSuccess() {
                       </p>
                       <p className="text-xs text-neutral-text-secondary capitalize">
                         {subscription.planType} Plan
+                      </p>
+                    </div>
+                  </div>
+                </GlassCard>
+              )}
+
+              {(paymentType === 'credit_topup' || paymentType === 'credit_pack') && balanceUpdated && (
+                <GlassCard variant="ice" className="p-4 sm:p-6 w-full">
+                  <div className="flex items-center gap-3">
+                    <Icon name="billing" size="md" variant="ice" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-neutral-text-primary">
+                        Current Balance
+                      </p>
+                      <p className="text-lg font-bold text-neutral-text-primary">
+                        {balance.toLocaleString()} Credits
                       </p>
                     </div>
                   </div>

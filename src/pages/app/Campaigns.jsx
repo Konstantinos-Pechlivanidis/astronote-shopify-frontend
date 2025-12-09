@@ -173,16 +173,18 @@ export default function Campaigns() {
         path="/shopify/app/campaigns"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1400px] mx-auto w-full">
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Header */}
-          <PageHeader
-            title="Campaigns"
-            subtitle="Create and manage your SMS marketing campaigns"
-            actionLabel="Create Campaign"
-            actionIcon="campaign"
-            actionVariant="primary"
-            actionTo="/shopify/app/campaigns/new"
-          />
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <PageHeader
+              title="Campaigns"
+              subtitle="Create and manage your SMS marketing campaigns"
+              actionLabel="Create Campaign"
+              actionIcon="campaign"
+              actionVariant="primary"
+              actionTo="/shopify/app/campaigns/new"
+            />
+          </div>
 
           {/* Error State */}
           {error && (
@@ -197,35 +199,35 @@ export default function Campaigns() {
           {/* Stats Cards */}
           {!error && (
             <>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-6 sm:mb-8 lg:mb-10">
                 {stats.map((stat) => (
                   <GlassCard 
                     key={stat.label} 
                     variant={stat.variant} 
-                    className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200 group"
+                    className="p-5 sm:p-6 lg:p-7 hover:shadow-xl transition-all duration-300 group border border-neutral-border/40"
                   >
-                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <div className={`p-2.5 sm:p-3 rounded-xl transition-colors ${
+                    <div className="flex items-center justify-between mb-4 sm:mb-5">
+                      <div className={`p-3 sm:p-3.5 rounded-2xl transition-all duration-300 shadow-lg ${
                         stat.color === 'ice' 
-                          ? 'bg-ice-soft/80 group-hover:bg-ice-soft' 
-                          : 'bg-neutral-surface-secondary/60 group-hover:bg-neutral-surface-secondary'
+                          ? 'bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 group-hover:from-ice-soft group-hover:to-ice-primary/30' 
+                          : 'bg-gradient-to-br from-neutral-surface-secondary/80 to-neutral-surface-secondary/60 group-hover:from-neutral-surface-secondary group-hover:to-neutral-surface-secondary/80'
                       }`}>
                         <Icon 
                           name={stat.icon} 
-                          size="md" 
+                          size="lg" 
                           variant={stat.color === 'ice' ? 'ice' : 'default'} 
                           className={stat.color === 'ice' ? 'text-ice-primary' : 'text-primary'}
                         />
                       </div>
                     </div>
-                    <p className={`text-2xl sm:text-3xl font-bold mb-1 transition-colors ${
+                    <p className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 transition-colors ${
                       stat.color === 'ice' 
                         ? 'text-ice-primary' 
                         : 'text-neutral-text-primary'
                     }`}>
                       {stat.value.toLocaleString()}
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-primary uppercase tracking-wider">
+                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">
                       {stat.label}
                     </p>
                   </GlassCard>
@@ -233,13 +235,15 @@ export default function Campaigns() {
               </div>
 
               {/* Filters and Search */}
-              <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Icon name="filter" size="sm" variant="ice" />
-                  <h3 className="text-lg font-semibold text-neutral-text-primary">Filters & Search</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <GlassCard className="p-5 sm:p-6 lg:p-8 mb-6 sm:mb-8 lg:mb-10 shadow-xl border border-neutral-border/40">
+                <div className="space-y-5 sm:space-y-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20">
+                      <Icon name="filter" size="md" variant="ice" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Filters & Search</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
                   <GlassInput
                     label="Search Campaigns"
                     type="text"
@@ -267,7 +271,7 @@ export default function Campaigns() {
                       { value: 'cancelled', label: 'Cancelled' },
                     ]}
                   />
-                </div>
+                  </div>
                 </div>
               </GlassCard>
 
@@ -285,8 +289,19 @@ export default function Campaigns() {
               />
             ) : !error && (
               <>
-                <GlassCard className="p-0 overflow-hidden">
-              <GlassTable>
+                <GlassCard className="p-0 overflow-hidden shadow-xl border border-neutral-border/40">
+                  <div className="p-4 sm:p-6 border-b border-neutral-border/40 bg-neutral-surface-secondary/30">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-bold text-neutral-text-primary">Campaigns List</h3>
+                        <p className="text-sm text-primary mt-1">
+                          {pagination.total || campaigns.length} {pagination.total === 1 ? 'campaign' : 'campaigns'} total
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <GlassTable>
                 <GlassTableHeader>
                   <GlassTableRow>
                     <GlassTableHeaderCell>Name</GlassTableHeaderCell>
@@ -333,45 +348,50 @@ export default function Campaigns() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => navigate(`/shopify/app/campaigns/${campaign.id}`)}
-                            className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
                             aria-label="View campaign"
+                            title="View campaign"
                           >
-                            <Icon name="view" size="sm" variant="ice" />
+                            <Icon name="view" size="sm" variant="ice" className="group-hover:scale-110 transition-transform" />
                           </button>
                           {campaign.status === 'draft' && (
-                            <button
-                              onClick={() => handleSend(campaign.id)}
-                              className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
-                              aria-label="Send campaign"
-                            >
-                              <Icon name="send" size="sm" variant="ice" />
-                            </button>
-                          )}
-                          {campaign.status === 'draft' && (
-                            <button
-                              onClick={() => navigate(`/shopify/app/campaigns/${campaign.id}/edit`)}
-                              className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
-                              aria-label="Edit campaign"
-                            >
-                              <Icon name="edit" size="sm" variant="ice" />
-                            </button>
+                            <>
+                              <button
+                                onClick={() => handleSend(campaign.id)}
+                                className="p-2.5 rounded-lg hover:bg-ice-soft/50 transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
+                                aria-label="Send campaign"
+                                title="Send campaign"
+                              >
+                                <Icon name="send" size="sm" variant="ice" className="group-hover:scale-110 transition-transform" />
+                              </button>
+                              <button
+                                onClick={() => navigate(`/shopify/app/campaigns/${campaign.id}/edit`)}
+                                className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
+                                aria-label="Edit campaign"
+                                title="Edit campaign"
+                              >
+                                <Icon name="edit" size="sm" variant="ice" className="group-hover:scale-110 transition-transform" />
+                              </button>
+                            </>
                           )}
                           {(campaign.status === 'draft' || campaign.status === 'cancelled') && (
                             <button
                               onClick={() => handleDeleteClick(campaign.id, campaign.name)}
-                              className="p-2.5 rounded-lg hover:bg-red-50 transition-colors focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center"
+                              className="p-2.5 rounded-lg hover:bg-red-500/10 transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
                               aria-label="Delete campaign"
+                              title="Delete campaign"
                             >
-                              <Icon name="delete" size="sm" className="text-red-500" />
+                              <Icon name="delete" size="sm" className="text-red-500 group-hover:scale-110 transition-transform" />
                             </button>
                           )}
                         </div>
                       </GlassTableCell>
                     </GlassTableRow>
                   ))}
-                </GlassTableBody>
-              </GlassTable>
-            </GlassCard>
+                    </GlassTableBody>
+                  </GlassTable>
+                  </div>
+                </GlassCard>
 
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (

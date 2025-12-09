@@ -248,10 +248,10 @@ export default function ContactDetail() {
         path={isNewContact ? '/app/contacts/new' : `/app/contacts/${id}`}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1400px] mx-auto w-full">
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Header */}
-          <div className="mb-6 sm:mb-8">
-            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <div className="flex items-center gap-3 mb-4 sm:mb-5">
               <BackButton to="/shopify/app/contacts" label="Back" />
             </div>
             <PageHeader
@@ -336,14 +336,19 @@ export default function ContactDetail() {
             />
           </div>
 
-          <div className={`grid grid-cols-1 ${!isNewContact ? 'lg:grid-cols-3' : ''} gap-4 sm:gap-6`}>
+          <div className={`grid grid-cols-1 ${!isNewContact ? 'lg:grid-cols-3' : ''} gap-6 sm:gap-8 lg:gap-10`}>
             {/* Main Content */}
-            <div className={`${!isNewContact ? 'lg:col-span-2' : ''} space-y-4 sm:space-y-6`}>
+            <div className={`${!isNewContact ? 'lg:col-span-2' : ''} space-y-6 sm:space-y-8`}>
               {/* Contact Details */}
-              <GlassCard className="p-4 sm:p-6">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-neutral-text-primary">Contact Details</h2>
+              <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20">
+                    <Icon name="segment" size="lg" variant="ice" />
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary">Contact Details</h2>
+                </div>
                 {isEditing ? (
-                  <div className="space-y-4 sm:space-y-5">
+                  <div className="space-y-5 sm:space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <GlassInput
                         label="First Name"
@@ -573,11 +578,16 @@ export default function ContactDetail() {
 
             {/* Sidebar */}
             {!isNewContact && (
-              <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Quick Info */}
-                <GlassCard variant="ice" className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-5 text-neutral-text-primary">Quick Info</h3>
-                  <div className="space-y-3 sm:space-y-4">
+                <GlassCard variant="ice" className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40">
+                  <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                    <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20">
+                      <Icon name="info" size="lg" variant="ice" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Quick Info</h3>
+                  </div>
+                  <div className="space-y-4 sm:space-y-5">
                     <div>
                       <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">SMS Consent Status</p>
                       <StatusBadge status={contact?.smsConsent || contact?.consentStatus} />

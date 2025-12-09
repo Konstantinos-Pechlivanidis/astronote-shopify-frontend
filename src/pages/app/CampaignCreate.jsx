@@ -412,9 +412,9 @@ export default function CampaignCreate() {
         path={isEditMode ? `/shopify/app/campaigns/${id}/edit` : '/shopify/app/campaigns/new'}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1400px] mx-auto w-full">
-          <div className="mb-6 sm:mb-8">
-            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+        <div className="max-w-[1600px] mx-auto w-full">
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <div className="flex items-center gap-3 mb-4 sm:mb-5">
               <BackButton to="/shopify/app/campaigns" label="Back" />
             </div>
             <PageHeader
@@ -427,11 +427,11 @@ export default function CampaignCreate() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
             {/* Campaign Form */}
             <div>
-              <GlassCard className="p-4 sm:p-6">
-                <div className="space-y-4 sm:space-y-6">
+              <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40">
+                <div className="space-y-6 sm:space-y-8">
                   <GlassInput
                     label="Campaign Name"
                     name="name"
@@ -712,13 +712,13 @@ export default function CampaignCreate() {
                     )}
                   </div>
 
-                  <div className="flex gap-4 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-neutral-border/40">
                     <GlassButton
                       variant="ghost"
                       size="lg"
                       onClick={handleSaveDraft}
                       disabled={createCampaign.isPending || updateCampaign.isPending || sendCampaign.isPending || scheduleCampaign.isPending}
-                      className="flex-1"
+                      className="flex-1 min-h-[48px] shadow-md hover:shadow-lg transition-all duration-200"
                     >
                       {createCampaign.isPending || updateCampaign.isPending ? (
                         <span className="flex items-center gap-2">
@@ -740,7 +740,7 @@ export default function CampaignCreate() {
                         scheduleCampaign.isPending ||
                         (isScheduled && (!formData.scheduleAt || formData.scheduleAt.trim() === ''))
                       }
-                      className="flex-1"
+                      className="flex-1 min-h-[48px] shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {createCampaign.isPending || updateCampaign.isPending || sendCampaign.isPending || scheduleCampaign.isPending ? (
                         <span className="flex items-center gap-2">
@@ -758,12 +758,19 @@ export default function CampaignCreate() {
 
             {/* iPhone Preview */}
             <div className="lg:sticky lg:top-8">
-              <GlassCard variant="default" className="p-4">
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold mb-2 text-neutral-text-primary">Live Preview</h3>
-                  <p className="text-sm text-primary">
-                    See how your message will appear on a mobile device
-                  </p>
+              <GlassCard variant="default" className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40">
+                <div className="mb-6 sm:mb-8">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20">
+                      <Icon name="sms" size="md" variant="ice" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Live Preview</h3>
+                      <p className="text-sm text-primary mt-1">
+                        See how your message will appear on a mobile device
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <IPhonePreviewWithDiscount
                   message={formData.message || 'Type your message to see preview...'}

@@ -112,12 +112,13 @@ export default function Contacts() {
         path="/shopify/app/contacts"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1400px] mx-auto w-full">
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Header */}
-          <PageHeader
-            title="Contacts"
-            subtitle="Manage your SMS marketing contact list"
-          >
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <PageHeader
+              title="Contacts"
+              subtitle="Manage your SMS marketing contact list"
+            >
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <GlassButton
                 variant="ghost"
@@ -144,7 +145,8 @@ export default function Contacts() {
                 </span>
               </GlassButton>
             </div>
-          </PageHeader>
+            </PageHeader>
+          </div>
 
           {/* Error State */}
           {error && (
@@ -159,30 +161,32 @@ export default function Contacts() {
           {/* Stats Cards */}
           {!error && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 mb-6 sm:mb-8 lg:mb-10">
                 {statsCards.map((stat) => (
-                  <GlassCard key={stat.label} variant={stat.variant} className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
-                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80">
-                        <Icon name={stat.icon} size="md" variant="ice" />
+                  <GlassCard key={stat.label} variant={stat.variant} className="p-5 sm:p-6 lg:p-7 hover:shadow-xl transition-all duration-300 group border border-neutral-border/40">
+                    <div className="flex items-center justify-between mb-4 sm:mb-5">
+                      <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 group-hover:from-ice-soft group-hover:to-ice-primary/30 transition-all duration-300 shadow-lg">
+                        <Icon name={stat.icon} size="lg" variant="ice" />
                       </div>
                     </div>
-                    <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
+                    <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-text-primary mb-2">
                       {stat.value.toLocaleString()}
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-primary uppercase tracking-wider">{stat.label}</p>
+                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">{stat.label}</p>
                   </GlassCard>
                 ))}
               </div>
 
               {/* Filters and Search */}
-              <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Icon name="filter" size="sm" variant="ice" />
-                  <h3 className="text-lg font-semibold text-neutral-text-primary">Filters & Search</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <GlassCard className="p-5 sm:p-6 lg:p-8 mb-6 sm:mb-8 lg:mb-10 shadow-xl border border-neutral-border/40">
+                <div className="space-y-5 sm:space-y-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20">
+                      <Icon name="filter" size="md" variant="ice" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Filters & Search</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
                   <GlassInput
                     label="Search Contacts"
                     type="text"
@@ -207,7 +211,7 @@ export default function Contacts() {
                       { value: 'unknown', label: 'Unknown' },
                     ]}
                   />
-                </div>
+                  </div>
                 </div>
               </GlassCard>
 
@@ -227,7 +231,7 @@ export default function Contacts() {
                         Import Contacts
                       </span>
                     </GlassButton>
-                    <GlassButton variant="primary" size="lg" as={Link} to="/app/contacts/new" className="group">
+                    <GlassButton variant="primary" size="lg" as={Link} to="/shopify/app/contacts/new" className="group">
                       <span className="flex items-center gap-2">
                         <Icon name="segment" size="sm" variant="ice" />
                         Add Contact
@@ -239,18 +243,19 @@ export default function Contacts() {
               />
             ) : (
               <>
-                <GlassCard className="p-0 overflow-hidden">
-                  <div className="p-4 sm:p-6 border-b border-neutral-border/40">
+                <GlassCard className="p-0 overflow-hidden shadow-xl border border-neutral-border/40">
+                  <div className="p-4 sm:p-6 border-b border-neutral-border/40 bg-neutral-surface-secondary/30">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-neutral-text-primary">Contacts List</h3>
+                        <h3 className="text-lg sm:text-xl font-bold text-neutral-text-primary">Contacts List</h3>
                         <p className="text-sm text-primary mt-1">
                           {pagination.total || contacts.length} {pagination.total === 1 ? 'contact' : 'contacts'} total
                         </p>
                       </div>
                     </div>
                   </div>
-                  <GlassTable>
+                  <div className="overflow-x-auto">
+                    <GlassTable>
                     <GlassTableHeader>
                       <GlassTableRow>
                         <GlassTableHeaderCell>Name</GlassTableHeaderCell>
@@ -267,7 +272,7 @@ export default function Contacts() {
                           <GlassTableCell>
                             <div className="flex flex-col">
                               <Link
-                                to={`/app/contacts/${contact.id}`}
+                                to={`/shopify/app/contacts/${contact.id}`}
                                 className="font-semibold text-ice-primary hover:underline transition-colors"
                               >
                                 {contact.firstName && contact.lastName
@@ -308,30 +313,30 @@ export default function Contacts() {
                             <StatusBadge status={contact.smsConsent || contact.consentStatus} />
                           </GlassTableCell>
                           <GlassTableCell>
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-2">
                               <button
-                                onClick={() => navigate(`/app/contacts/${contact.id}`)}
-                                className="p-2 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[40px] min-h-[40px] flex items-center justify-center"
+                                onClick={() => navigate(`/shopify/app/contacts/${contact.id}`)}
+                                className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
                                 aria-label="View contact"
-                                title="View"
+                                title="View contact"
                               >
-                                <Icon name="view" size="sm" variant="ice" />
+                                <Icon name="view" size="sm" variant="ice" className="group-hover:scale-110 transition-transform" />
                               </button>
                               <button
-                                onClick={() => navigate(`/app/contacts/${contact.id}`, { state: { edit: true } })}
-                                className="p-2 rounded-lg hover:bg-neutral-surface-secondary transition-colors focus-ring min-w-[40px] min-h-[40px] flex items-center justify-center"
+                                onClick={() => navigate(`/shopify/app/contacts/${contact.id}`, { state: { edit: true } })}
+                                className="p-2.5 rounded-lg hover:bg-neutral-surface-secondary transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
                                 aria-label="Edit contact"
-                                title="Edit"
+                                title="Edit contact"
                               >
-                                <Icon name="edit" size="sm" variant="ice" />
+                                <Icon name="edit" size="sm" variant="ice" className="group-hover:scale-110 transition-transform" />
                               </button>
                               <button
                                 onClick={() => handleDeleteClick(contact.id, contact.name || contact.firstName || contact.lastName || 'this contact')}
-                                className="p-2 rounded-lg hover:bg-red-50 transition-colors focus-ring min-w-[40px] min-h-[40px] flex items-center justify-center"
+                                className="p-2.5 rounded-lg hover:bg-red-500/10 transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
                                 aria-label="Delete contact"
-                                title="Delete"
+                                title="Delete contact"
                               >
-                                <Icon name="delete" size="sm" className="text-red-500" />
+                                <Icon name="delete" size="sm" className="text-red-500 group-hover:scale-110 transition-transform" />
                               </button>
                             </div>
                           </GlassTableCell>
@@ -339,6 +344,7 @@ export default function Contacts() {
                       ))}
                     </GlassTableBody>
                   </GlassTable>
+                  </div>
                 </GlassCard>
 
             {/* Pagination */}

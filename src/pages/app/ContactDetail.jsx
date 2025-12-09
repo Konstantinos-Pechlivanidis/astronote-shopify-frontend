@@ -267,7 +267,7 @@ export default function ContactDetail() {
                   <div className="flex items-center gap-3 mt-2">
                     <StatusBadge status={contact?.smsConsent || contact?.consentStatus} />
                     {contact?.createdAt && (
-                      <span className="text-sm text-neutral-text-secondary">
+                      <span className="text-sm text-neutral-text-primary opacity-80">
                         Added {format(new Date(contact.createdAt), 'MMM d, yyyy')}
                       </span>
                     )}
@@ -275,11 +275,16 @@ export default function ContactDetail() {
                 ) : undefined
               }
               action={
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 w-full sm:w-auto">
                   {isEditing ? (
                     <>
                       {!isNewContact && (
-                        <GlassButton variant="ghost" size="md" onClick={() => setIsEditing(false)}>
+                        <GlassButton 
+                          variant="ghost" 
+                          size="md" 
+                          onClick={() => setIsEditing(false)}
+                          className="w-full sm:w-auto"
+                        >
                           Cancel
                         </GlassButton>
                       )}
@@ -288,6 +293,7 @@ export default function ContactDetail() {
                         size="md" 
                         onClick={handleSave}
                         disabled={createContact.isPending || updateContact.isPending}
+                        className="w-full sm:w-auto"
                       >
                         {createContact.isPending || updateContact.isPending ? (
                           <span className="flex items-center gap-2">
@@ -305,13 +311,19 @@ export default function ContactDetail() {
                         variant="ghost"
                         size="md"
                         onClick={() => setIsEditing(true)}
+                        className="w-full sm:w-auto"
                       >
                         <span className="flex items-center gap-2">
                           <Icon name="edit" size="sm" variant="ice" />
                           Edit
                         </span>
                       </GlassButton>
-                      <GlassButton variant="ghost" size="md" onClick={() => setShowDeleteDialog(true)}>
+                      <GlassButton 
+                        variant="ghost" 
+                        size="md" 
+                        onClick={() => setShowDeleteDialog(true)}
+                        className="w-full sm:w-auto"
+                      >
                         <span className="flex items-center gap-2">
                           <Icon name="delete" size="sm" className="text-red-500" />
                           Delete
@@ -324,9 +336,9 @@ export default function ContactDetail() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className={`grid grid-cols-1 ${!isNewContact ? 'lg:grid-cols-3' : ''} gap-4 sm:gap-6`}>
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+            <div className={`${!isNewContact ? 'lg:col-span-2' : ''} space-y-4 sm:space-y-6`}>
               {/* Contact Details */}
               <GlassCard className="p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-neutral-text-primary">Contact Details</h2>
@@ -351,7 +363,7 @@ export default function ContactDetail() {
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">
+                      <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">
                         Phone Number <span className="text-red-500">*</span>
                       </label>
                       <div onBlur={() => handleBlur('phone')}>
@@ -457,7 +469,7 @@ export default function ContactDetail() {
                     />
                     
                     <div>
-                      <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">
+                      <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">
                         Tags
                       </label>
                       <div className="flex flex-wrap gap-2 mb-3">
@@ -508,40 +520,40 @@ export default function ContactDetail() {
                     </div>
                   </div>
                 ) : !isNewContact && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 sm:space-y-5">
                     <div>
-                      <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Name</label>
-                      <p className="text-base text-neutral-text-primary font-medium">
+                      <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Name</label>
+                      <p className="text-base sm:text-lg text-neutral-text-primary font-medium">
                         {contact?.firstName && contact?.lastName
                           ? `${contact.firstName} ${contact.lastName}`
                           : contact?.firstName || contact?.lastName || 'Unnamed Contact'}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Phone</label>
-                      <p className="text-base text-neutral-text-primary font-medium">{contact?.phoneE164 || '-'}</p>
+                      <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Phone</label>
+                      <p className="text-base sm:text-lg text-neutral-text-primary font-medium break-all">{contact?.phoneE164 || '-'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Email</label>
-                      <p className="text-base text-neutral-text-primary font-medium">{contact?.email || '-'}</p>
+                      <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Email</label>
+                      <p className="text-base sm:text-lg text-neutral-text-primary font-medium break-all">{contact?.email || '-'}</p>
                     </div>
                     {contact?.gender && (
                       <div>
-                        <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Gender</label>
-                        <p className="text-base text-neutral-text-primary font-medium capitalize">{contact.gender}</p>
+                        <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Gender</label>
+                        <p className="text-base sm:text-lg text-neutral-text-primary font-medium capitalize">{contact.gender}</p>
                       </div>
                     )}
                     {contact?.birthDate && (
                       <div>
-                        <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Birth Date</label>
-                        <p className="text-base text-neutral-text-primary font-medium">
+                        <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Birth Date</label>
+                        <p className="text-base sm:text-lg text-neutral-text-primary font-medium">
                           {format(new Date(contact.birthDate), 'MMMM d, yyyy')}
                         </p>
                       </div>
                     )}
                     {contact?.tags && contact.tags.length > 0 && (
                       <div>
-                        <label className="text-sm font-semibold text-neutral-text-secondary mb-1.5 block">Tags</label>
+                        <label className="text-sm font-semibold text-neutral-text-primary opacity-90 mb-1.5 block">Tags</label>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {contact.tags.map((tag, idx) => (
                             <span
@@ -560,52 +572,50 @@ export default function ContactDetail() {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Quick Info */}
-              <GlassCard variant="ice" className="p-4 sm:p-6">
-                <h3 className="text-xl font-semibold mb-4 text-neutral-text-primary">Quick Info</h3>
-                <div className="space-y-3">
-                      {!isNewContact && (
-                        <>
-                          <div>
-                            <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">SMS Consent Status</p>
-                            <StatusBadge status={contact?.smsConsent || contact?.consentStatus} />
-                          </div>
-                          {contact?.gender && (
-                            <div>
-                              <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Gender</p>
-                              <p className="text-sm text-neutral-text-primary capitalize">{contact.gender}</p>
-                            </div>
-                          )}
-                          {contact?.birthDate && (
-                            <div>
-                              <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Birth Date</p>
-                              <p className="text-sm text-neutral-text-primary">
-                                {format(new Date(contact.birthDate), 'MMM d, yyyy')}
-                              </p>
-                            </div>
-                          )}
-                      {contact?.createdAt && (
-                        <div>
-                          <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Created</p>
-                          <p className="text-sm text-neutral-text-primary">
-                            {format(new Date(contact.createdAt), 'MMM d, yyyy')}
-                          </p>
-                        </div>
-                      )}
-                      {contact?.updatedAt && (
-                        <div>
-                          <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Last Updated</p>
-                          <p className="text-sm text-neutral-text-primary">
-                            {format(new Date(contact.updatedAt), 'MMM d, yyyy')}
-                          </p>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </GlassCard>
-            </div>
+            {!isNewContact && (
+              <div className="space-y-4 sm:space-y-6">
+                {/* Quick Info */}
+                <GlassCard variant="ice" className="p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-5 text-neutral-text-primary">Quick Info</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div>
+                      <p className="text-xs font-medium text-neutral-text-primary opacity-75 mb-1.5 uppercase tracking-wider">SMS Consent Status</p>
+                      <StatusBadge status={contact?.smsConsent || contact?.consentStatus} />
+                    </div>
+                    {contact?.gender && (
+                      <div>
+                        <p className="text-xs font-medium text-neutral-text-primary opacity-75 mb-1.5 uppercase tracking-wider">Gender</p>
+                        <p className="text-sm sm:text-base text-neutral-text-primary capitalize">{contact.gender}</p>
+                      </div>
+                    )}
+                    {contact?.birthDate && (
+                      <div>
+                        <p className="text-xs font-medium text-neutral-text-primary opacity-75 mb-1.5 uppercase tracking-wider">Birth Date</p>
+                        <p className="text-sm sm:text-base text-neutral-text-primary">
+                          {format(new Date(contact.birthDate), 'MMM d, yyyy')}
+                        </p>
+                      </div>
+                    )}
+                    {contact?.createdAt && (
+                      <div>
+                        <p className="text-xs font-medium text-neutral-text-primary opacity-75 mb-1.5 uppercase tracking-wider">Created</p>
+                        <p className="text-sm sm:text-base text-neutral-text-primary">
+                          {format(new Date(contact.createdAt), 'MMM d, yyyy')}
+                        </p>
+                      </div>
+                    )}
+                    {contact?.updatedAt && (
+                      <div>
+                        <p className="text-xs font-medium text-neutral-text-primary opacity-75 mb-1.5 uppercase tracking-wider">Last Updated</p>
+                        <p className="text-sm sm:text-base text-neutral-text-primary">
+                          {format(new Date(contact.updatedAt), 'MMM d, yyyy')}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </GlassCard>
+              </div>
+            )}
           </div>
         </div>
       </div>

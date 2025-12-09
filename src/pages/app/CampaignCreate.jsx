@@ -478,7 +478,7 @@ export default function CampaignCreate() {
                             e.stopPropagation();
                             setIsPlaceholderMenuOpen(!isPlaceholderMenuOpen);
                           }}
-                          className="px-3 py-1.5 text-sm rounded-lg bg-neutral-surface-secondary border border-neutral-border/60 hover:border-neutral-border hover:bg-neutral-surface-primary transition-colors flex items-center gap-1.5 text-primary-light hover:text-neutral-text-primary"
+                          className="px-3 py-1.5 text-sm rounded-lg bg-neutral-surface-secondary border border-neutral-border/60 hover:border-neutral-border hover:bg-neutral-surface-primary transition-colors flex items-center gap-1.5 text-primary hover:text-neutral-text-primary"
                         >
                           <span>+</span>
                           <span>Insert variable</span>
@@ -600,7 +600,7 @@ export default function CampaignCreate() {
                     </label>
                     <div className="p-3 rounded-lg bg-neutral-surface-secondary border border-neutral-border">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-primary-light">
+                        <span className="text-primary">
                           {smsInfo.characters} characters
                         </span>
                         <span className={`font-semibold ${smsInfo.parts > 1 ? 'text-fuchsia-primary' : 'text-ice-primary'}`}>
@@ -638,7 +638,7 @@ export default function CampaignCreate() {
                       disabled={isLoadingDiscounts || discountOptions.length === 1}
                     />
                     {isLoadingDiscounts && (
-                      <p className="mt-1 text-xs text-primary-light flex items-center gap-1">
+                      <p className="mt-1 text-xs text-primary flex items-center gap-1">
                         <LoadingSpinner size="sm" />
                         Loading discounts...
                       </p>
@@ -649,7 +649,7 @@ export default function CampaignCreate() {
                       </p>
                     )}
                     {!isLoadingDiscounts && !discountsError && discountOptions.length === 1 && (
-                      <p className="mt-1 text-xs text-primary-light">
+                      <p className="mt-1 text-xs text-primary">
                         No discount codes available in your Shopify store.
                       </p>
                     )}
@@ -674,7 +674,7 @@ export default function CampaignCreate() {
                         name="schedule" 
                         size="md" 
                         variant={isScheduled ? "ice" : "default"}
-                        className={isScheduled ? 'text-ice-primary' : 'text-primary-light'}
+                        className={isScheduled ? 'text-ice-primary' : 'text-primary'}
                       />
                       <span className={`text-sm font-medium ${isScheduled ? 'text-ice-primary' : 'text-neutral-text-primary'}`}>
                         Schedule for later
@@ -761,7 +761,7 @@ export default function CampaignCreate() {
               <GlassCard variant="default" className="p-4">
                 <div className="mb-4">
                   <h3 className="text-xl font-semibold mb-2 text-neutral-text-primary">Live Preview</h3>
-                  <p className="text-sm text-primary-light">
+                  <p className="text-sm text-primary">
                     See how your message will appear on a mobile device
                   </p>
                 </div>

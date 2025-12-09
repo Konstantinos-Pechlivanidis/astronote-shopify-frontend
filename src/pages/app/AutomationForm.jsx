@@ -170,7 +170,7 @@ export default function AutomationForm() {
                   }))}
                 />
                 {triggerOptions.find(opt => opt.value === formData.trigger)?.note && (
-                  <p className="text-xs text-primary-light mt-2 flex items-center gap-1">
+                  <p className="text-xs text-primary mt-2 flex items-center gap-1">
                     <Icon name="info" size="xs" />
                     {triggerOptions.find(opt => opt.value === formData.trigger).note}
                   </p>

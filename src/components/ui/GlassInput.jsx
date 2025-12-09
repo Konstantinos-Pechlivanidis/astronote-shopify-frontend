@@ -13,7 +13,7 @@ const GlassInput = forwardRef(({
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-primary-light mb-2">
+        <label htmlFor={inputId} className="block text-sm font-medium text-primary mb-2">
           {label}
         </label>
       )}

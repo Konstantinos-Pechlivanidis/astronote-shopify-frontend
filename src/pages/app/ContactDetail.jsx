@@ -363,7 +363,7 @@ export default function ContactDetail() {
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-primary-light mb-2 block">
+                      <label className="text-sm font-medium text-primary mb-2 block">
                         Phone Number <span className="text-red-500">*</span>
                       </label>
                       <div onBlur={() => handleBlur('phone')}>
@@ -469,7 +469,7 @@ export default function ContactDetail() {
                     />
                     
                     <div>
-                      <label className="text-sm font-medium text-primary-light mb-2 block">
+                      <label className="text-sm font-medium text-primary mb-2 block">
                         Tags
                       </label>
                       <div className="flex flex-wrap gap-2 mb-3">
@@ -522,7 +522,7 @@ export default function ContactDetail() {
                 ) : !isNewContact && (
                   <div className="space-y-4 sm:space-y-5">
                     <div>
-                      <label className="text-sm font-medium text-primary-light mb-2 block">Name</label>
+                      <label className="text-sm font-medium text-primary mb-2 block">Name</label>
                       <p className="text-base sm:text-lg text-neutral-text-primary font-medium">
                         {contact?.firstName && contact?.lastName
                           ? `${contact.firstName} ${contact.lastName}`
@@ -530,22 +530,22 @@ export default function ContactDetail() {
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-primary-light mb-2 block">Phone</label>
+                      <label className="text-sm font-medium text-primary mb-2 block">Phone</label>
                       <p className="text-base sm:text-lg text-neutral-text-primary font-medium break-all">{contact?.phoneE164 || '-'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-primary-light mb-2 block">Email</label>
+                      <label className="text-sm font-medium text-primary mb-2 block">Email</label>
                       <p className="text-base sm:text-lg text-neutral-text-primary font-medium break-all">{contact?.email || '-'}</p>
                     </div>
                     {contact?.gender && (
                       <div>
-                        <label className="text-sm font-medium text-primary-light mb-2 block">Gender</label>
+                        <label className="text-sm font-medium text-primary mb-2 block">Gender</label>
                         <p className="text-base sm:text-lg text-neutral-text-primary font-medium capitalize">{contact.gender}</p>
                       </div>
                     )}
                     {contact?.birthDate && (
                       <div>
-                        <label className="text-sm font-medium text-primary-light mb-2 block">Birth Date</label>
+                        <label className="text-sm font-medium text-primary mb-2 block">Birth Date</label>
                         <p className="text-base sm:text-lg text-neutral-text-primary font-medium">
                           {format(new Date(contact.birthDate), 'MMMM d, yyyy')}
                         </p>
@@ -553,7 +553,7 @@ export default function ContactDetail() {
                     )}
                     {contact?.tags && contact.tags.length > 0 && (
                       <div>
-                        <label className="text-sm font-medium text-primary-light mb-2 block">Tags</label>
+                        <label className="text-sm font-medium text-primary mb-2 block">Tags</label>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {contact.tags.map((tag, idx) => (
                             <span
@@ -579,18 +579,18 @@ export default function ContactDetail() {
                   <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-5 text-neutral-text-primary">Quick Info</h3>
                   <div className="space-y-3 sm:space-y-4">
                     <div>
-                      <p className="text-xs font-medium text-primary-light mb-1.5 uppercase tracking-wider">SMS Consent Status</p>
+                      <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">SMS Consent Status</p>
                       <StatusBadge status={contact?.smsConsent || contact?.consentStatus} />
                     </div>
                     {contact?.gender && (
                       <div>
-                        <p className="text-xs font-medium text-primary-light mb-1.5 uppercase tracking-wider">Gender</p>
+                        <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">Gender</p>
                         <p className="text-sm sm:text-base text-neutral-text-primary capitalize">{contact.gender}</p>
                       </div>
                     )}
                     {contact?.birthDate && (
                       <div>
-                        <p className="text-xs font-medium text-primary-light mb-1.5 uppercase tracking-wider">Birth Date</p>
+                        <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">Birth Date</p>
                         <p className="text-sm sm:text-base text-neutral-text-primary">
                           {format(new Date(contact.birthDate), 'MMM d, yyyy')}
                         </p>
@@ -598,7 +598,7 @@ export default function ContactDetail() {
                     )}
                     {contact?.createdAt && (
                       <div>
-                        <p className="text-xs font-medium text-primary-light mb-1.5 uppercase tracking-wider">Created</p>
+                        <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">Created</p>
                         <p className="text-sm sm:text-base text-neutral-text-primary">
                           {format(new Date(contact.createdAt), 'MMM d, yyyy')}
                         </p>
@@ -606,7 +606,7 @@ export default function ContactDetail() {
                     )}
                     {contact?.updatedAt && (
                       <div>
-                        <p className="text-xs font-medium text-primary-light mb-1.5 uppercase tracking-wider">Last Updated</p>
+                        <p className="text-xs font-medium text-primary mb-1.5 uppercase tracking-wider">Last Updated</p>
                         <p className="text-sm sm:text-base text-neutral-text-primary">
                           {format(new Date(contact.updatedAt), 'MMM d, yyyy')}
                         </p>

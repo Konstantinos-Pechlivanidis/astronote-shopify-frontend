@@ -203,7 +203,7 @@ export default function Campaigns() {
                           name={stat.icon} 
                           size="md" 
                           variant={stat.color === 'ice' ? 'ice' : 'default'} 
-                          className={stat.color === 'ice' ? 'text-ice-primary' : 'text-primary-light'}
+                          className={stat.color === 'ice' ? 'text-ice-primary' : 'text-primary'}
                         />
                       </div>
                     </div>
@@ -214,7 +214,7 @@ export default function Campaigns() {
                     }`}>
                       {stat.value.toLocaleString()}
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">
+                    <p className="text-xs sm:text-sm font-medium text-primary uppercase tracking-wider">
                       {stat.label}
                     </p>
                   </GlassCard>
@@ -297,7 +297,7 @@ export default function Campaigns() {
                             {campaign.name}
                           </Link>
                           {campaign.message && (
-                            <p className="text-xs text-primary-light mt-1 truncate max-w-md">
+                            <p className="text-xs text-primary mt-1 truncate max-w-md">
                               {campaign.message}
                             </p>
                           )}
@@ -312,7 +312,7 @@ export default function Campaigns() {
                         </span>
                       </GlassTableCell>
                       <GlassTableCell>
-                        <span className="text-primary-light text-sm">
+                        <span className="text-primary text-sm">
                           {campaign.createdAt
                             ? format(new Date(campaign.createdAt), 'MMM d, yyyy')
                             : '-'}

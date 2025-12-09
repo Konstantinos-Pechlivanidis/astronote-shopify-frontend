@@ -66,11 +66,11 @@ export default function BillingCancel() {
                 <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-3">
                   {cancelInfo.title}
                 </h2>
-                <p className="text-base text-primary-light mb-4">
+                <p className="text-base text-primary mb-4">
                   {cancelInfo.message}
                 </p>
                 {cancelInfo.helpText && (
-                  <p className="text-sm text-primary-light opacity-80">
+                  <p className="text-sm text-primary opacity-80">
                     {cancelInfo.helpText}
                   </p>
                 )}
@@ -83,7 +83,7 @@ export default function BillingCancel() {
                     <p className="text-sm font-medium text-neutral-text-primary mb-1">
                       Need Help?
                     </p>
-                    <p className="text-xs text-primary-light">
+                    <p className="text-xs text-primary">
                       If you experienced any issues during checkout or have questions about our pricing, please contact our support team.
                     </p>
                   </div>

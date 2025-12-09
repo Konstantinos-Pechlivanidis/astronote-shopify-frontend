@@ -215,7 +215,7 @@ export default function Settings() {
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">General Settings</h2>
-                          <p className="text-sm sm:text-base text-primary-light mt-1">Configure your store preferences</p>
+                          <p className="text-sm sm:text-base text-primary mt-1">Configure your store preferences</p>
                         </div>
                       </div>
 
@@ -289,13 +289,13 @@ export default function Settings() {
                             <GlassCard variant="ice" className="p-4 sm:p-5 lg:p-6 border border-ice-primary/20 shadow-md hover:shadow-lg transition-shadow duration-200">
                               <div className="space-y-3 sm:space-y-4">
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-ice-soft/30 transition-colors">
-                                  <span className="text-xs sm:text-sm text-primary-light font-medium">Store Name</span>
+                                  <span className="text-xs sm:text-sm text-primary font-medium">Store Name</span>
                                   <span className="text-sm sm:text-base font-semibold text-neutral-text-primary text-left sm:text-right break-all">
                                     {storeInfo.shopName || storeInfo.shopDomain || 'N/A'}
                                   </span>
                                 </div>
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-ice-soft/30 transition-colors">
-                                  <span className="text-xs sm:text-sm text-primary-light font-medium">Domain</span>
+                                  <span className="text-xs sm:text-sm text-primary font-medium">Domain</span>
                                   <span className="text-sm sm:text-base font-semibold text-neutral-text-primary text-left sm:text-right break-all">
                                     {storeInfo.shopDomain || 'N/A'}
                                   </span>
@@ -340,7 +340,7 @@ export default function Settings() {
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">SMS Settings</h2>
-                          <p className="text-sm sm:text-base text-primary-light mt-1">Configure your SMS messaging preferences</p>
+                          <p className="text-sm sm:text-base text-primary mt-1">Configure your SMS messaging preferences</p>
                         </div>
                       </div>
 
@@ -386,7 +386,7 @@ export default function Settings() {
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Integrations</h2>
-                          <p className="text-sm sm:text-base text-primary-light mt-1">Manage your third-party integrations</p>
+                          <p className="text-sm sm:text-base text-primary mt-1">Manage your third-party integrations</p>
                         </div>
                       </div>
 
@@ -466,7 +466,7 @@ export default function Settings() {
                         </div>
                         <div>
                           <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Account Information</h2>
-                          <p className="text-sm sm:text-base text-primary-light mt-1">View your account details and usage statistics</p>
+                          <p className="text-sm sm:text-base text-primary mt-1">View your account details and usage statistics</p>
                         </div>
                       </div>
 

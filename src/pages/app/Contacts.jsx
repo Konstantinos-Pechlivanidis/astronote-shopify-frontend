@@ -159,7 +159,7 @@ export default function Contacts() {
                     <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
                       {stat.value.toLocaleString()}
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-primary-light uppercase tracking-wider">{stat.label}</p>
+                    <p className="text-xs sm:text-sm font-medium text-primary uppercase tracking-wider">{stat.label}</p>
                   </GlassCard>
                 ))}
               </div>
@@ -233,7 +233,7 @@ export default function Contacts() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h3 className="text-lg font-semibold text-neutral-text-primary">Contacts List</h3>
-                        <p className="text-sm text-primary-light mt-1">
+                        <p className="text-sm text-primary mt-1">
                           {pagination.total || contacts.length} {pagination.total === 1 ? 'contact' : 'contacts'} total
                         </p>
                       </div>
@@ -263,7 +263,7 @@ export default function Contacts() {
                                   ? `${contact.firstName} ${contact.lastName}`
                                   : contact.firstName || contact.lastName || contact.name || 'Unnamed Contact'}
                               </Link>
-                              <span className="text-xs text-primary-light sm:hidden mt-1">
+                              <span className="text-xs text-primary sm:hidden mt-1">
                                 {contact.phoneE164 || contact.phone || '-'}
                               </span>
                             </div>
@@ -286,10 +286,10 @@ export default function Contacts() {
                                   </span>
                                 ))
                               ) : (
-                                <span className="text-primary-light text-xs">-</span>
+                                <span className="text-primary text-xs">-</span>
                               )}
                               {contact.tags && contact.tags.length > 2 && (
-                                <span className="text-primary-light text-xs">+{contact.tags.length - 2}</span>
+                                <span className="text-primary text-xs">+{contact.tags.length - 2}</span>
                               )}
                             </div>
                           </GlassTableCell>

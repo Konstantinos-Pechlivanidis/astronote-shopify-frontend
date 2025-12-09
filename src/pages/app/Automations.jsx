@@ -119,7 +119,7 @@ export default function Automations() {
               <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.total || automations.length}
               </p>
-              <p className="text-xs sm:text-sm font-semibold text-primary-light uppercase tracking-wider">Total Automations</p>
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">Total Automations</p>
             </GlassCard>
             <GlassCard 
               className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group"
@@ -132,7 +132,7 @@ export default function Automations() {
               <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.messagesSent || 0}
               </p>
-              <p className="text-xs sm:text-sm font-semibold text-primary-light uppercase tracking-wider">Messages Sent</p>
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">Messages Sent</p>
             </GlassCard>
             <GlassCard 
               className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group sm:col-span-2 lg:col-span-1"
@@ -145,7 +145,7 @@ export default function Automations() {
               <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-2 leading-tight">
                 {stats.successRate ? `${stats.successRate.toFixed(1)}%` : '0%'}
               </p>
-              <p className="text-xs sm:text-sm font-semibold text-primary-light uppercase tracking-wider">Success Rate</p>
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">Success Rate</p>
               </GlassCard>
             </div>
           )}
@@ -154,7 +154,7 @@ export default function Automations() {
           {!hasError && (
             <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <h3 className="text-sm font-semibold text-primary-light uppercase tracking-wider">Filter by Status</h3>
+              <h3 className="text-sm font-semibold text-primary uppercase tracking-wider">Filter by Status</h3>
               <div className="flex flex-wrap gap-2">
                 {[
                   { value: '', label: 'All Statuses', icon: 'filter' },
@@ -224,18 +224,18 @@ export default function Automations() {
                 <div className="space-y-3 mb-5">
                   {automation.trigger && (
                     <div className="flex items-start gap-2">
-                      <Icon name="automation" size="sm" className="text-primary-light mt-0.5 flex-shrink-0" />
+                      <Icon name="automation" size="sm" className="text-primary mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-primary-light mb-1 uppercase tracking-wider">Trigger</p>
+                        <p className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Trigger</p>
                         <p className="text-sm text-neutral-text-primary font-medium break-words">{automation.trigger}</p>
                       </div>
                     </div>
                   )}
                   {automation.message && (
                     <div className="flex items-start gap-2">
-                      <Icon name="sms" size="sm" className="text-primary-light mt-0.5 flex-shrink-0" />
+                      <Icon name="sms" size="sm" className="text-primary mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-primary-light mb-1 uppercase tracking-wider">Message</p>
+                        <p className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Message</p>
                         <p className="text-sm text-neutral-text-primary line-clamp-3 break-words">
                           {automation.message}
                         </p>
@@ -244,9 +244,9 @@ export default function Automations() {
                   )}
                   {automation.messagesSent !== undefined && (
                     <div className="flex items-center gap-2 pt-2 border-t border-neutral-border/40">
-                      <Icon name="send" size="sm" className="text-primary-light flex-shrink-0" />
+                      <Icon name="send" size="sm" className="text-primary flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-xs font-semibold text-primary-light mb-1 uppercase tracking-wider">Messages Sent</p>
+                        <p className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Messages Sent</p>
                         <p className="text-base font-bold text-neutral-text-primary">{automation.messagesSent || 0}</p>
                       </div>
                     </div>
@@ -261,7 +261,7 @@ export default function Automations() {
                     className={clsx(
                       'flex-1 px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 font-medium focus-ring min-h-[44px] flex items-center justify-center gap-2',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-primary-light' 
+                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-primary' 
                         : 'bg-neutral-surface-secondary border-neutral-border text-neutral-text-primary hover:border-ice-primary hover:text-ice-primary hover:bg-ice-soft/20 hover:shadow-glass-light-md'
                     )}
                     aria-label="View automation"
@@ -276,7 +276,7 @@ export default function Automations() {
                     className={clsx(
                       'flex-1 px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 font-medium focus-ring min-h-[44px] flex items-center justify-center gap-2',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-primary-light' 
+                        ? 'opacity-50 cursor-not-allowed bg-neutral-surface-secondary border-neutral-border text-primary' 
                         : 'bg-neutral-surface-secondary border-neutral-border text-neutral-text-primary hover:border-ice-primary hover:text-ice-primary hover:bg-ice-soft/20 hover:shadow-glass-light-md'
                     )}
                     aria-label={automation.status === 'active' ? 'Pause automation' : 'Activate automation'}
@@ -291,7 +291,7 @@ export default function Automations() {
                     className={clsx(
                       'px-4 py-2.5 text-sm rounded-lg border transition-all duration-200 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center',
                       comingSoon 
-                        ? 'opacity-50 cursor-not-allowed border-neutral-border text-primary-light bg-neutral-surface-secondary' 
+                        ? 'opacity-50 cursor-not-allowed border-neutral-border text-primary bg-neutral-surface-secondary' 
                         : 'border-red-200 bg-red-50/50 text-red-500 hover:border-red-500 hover:bg-red-100 hover:shadow-glass-light-md'
                     )}
                     aria-label="Delete automation"

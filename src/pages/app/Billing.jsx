@@ -322,7 +322,7 @@ export default function Billing() {
                         <Icon name="billing" size="md" variant="ice" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-primary-light uppercase tracking-wider">Current Balance</p>
+                        <p className="text-sm font-medium text-primary uppercase tracking-wider">Current Balance</p>
                         <p className={`text-3xl sm:text-4xl font-bold mt-1 ${isLowBalance ? 'text-red-500' : 'text-ice-primary'}`}>
                           {balance.toLocaleString()} credits
                         </p>
@@ -339,7 +339,7 @@ export default function Billing() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="text-right">
-                      <p className="text-xs text-primary-light">Currency</p>
+                      <p className="text-xs text-primary">Currency</p>
                       <p className="text-sm font-semibold text-neutral-text-primary">{currency}</p>
                     </div>
                   </div>
@@ -354,7 +354,7 @@ export default function Billing() {
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Subscription</h2>
-                    <p className="text-sm text-primary-light mt-1">Manage your subscription plan</p>
+                    <p className="text-sm text-primary mt-1">Manage your subscription plan</p>
                   </div>
                 </div>
 
@@ -372,7 +372,7 @@ export default function Billing() {
                             {subscriptionPlan} Plan
                           </h3>
                         </div>
-                        <p className="text-sm text-primary-light">
+                        <p className="text-sm text-primary">
                           {subscriptionPlan === 'starter' 
                             ? '€40/month - 100 free credits per month'
                             : '€240/year - 500 free credits per year'}
@@ -424,8 +424,8 @@ export default function Billing() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <GlassCard className="p-5 sm:p-6">
                       <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Starter Plan</h3>
-                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€40<span className="text-sm font-normal text-primary-light">/month</span></p>
-                      <ul className="space-y-2 mb-4 text-sm text-primary-light">
+                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€40<span className="text-sm font-normal text-primary">/month</span></p>
+                      <ul className="space-y-2 mb-4 text-sm text-primary">
                         <li className="flex items-center gap-2">
                           <Icon name="check" size="xs" variant="ice" />
                           <span>100 free credits per month</span>
@@ -452,8 +452,8 @@ export default function Billing() {
                         </span>
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Pro Plan</h3>
-                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€240<span className="text-sm font-normal text-primary-light">/year</span></p>
-                      <ul className="space-y-2 mb-4 text-sm text-primary-light">
+                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€240<span className="text-sm font-normal text-primary">/year</span></p>
+                      <ul className="space-y-2 mb-4 text-sm text-primary">
                         <li className="flex items-center gap-2">
                           <Icon name="check" size="xs" variant="ice" />
                           <span>500 free credits per year</span>
@@ -489,7 +489,7 @@ export default function Billing() {
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Top-up</h2>
-                    <p className="text-sm text-primary-light mt-1">Purchase additional credits at €0.045 per credit (24% VAT included)</p>
+                    <p className="text-sm text-primary mt-1">Purchase additional credits at €0.045 per credit (24% VAT included)</p>
                   </div>
                 </div>
 
@@ -506,7 +506,7 @@ export default function Billing() {
                         placeholder="Enter credits (e.g., 1000)"
                       />
                       {topupCredits && parseInt(topupCredits) > 0 && (
-                        <p className="text-xs text-primary-light mt-2">
+                        <p className="text-xs text-primary mt-2">
                           Max 1,000,000 credits per purchase
                         </p>
                       )}
@@ -518,16 +518,16 @@ export default function Billing() {
                       {isLoadingTopupPrice ? (
                         <div className="flex items-center gap-2 py-3">
                           <LoadingSpinner size="sm" />
-                          <span className="text-sm text-primary-light">Calculating...</span>
+                          <span className="text-sm text-primary">Calculating...</span>
                         </div>
                       ) : topupPrice.priceEurWithVat ? (
                         <div className="space-y-1 py-3">
                           <div className="flex justify-between text-sm">
-                            <span className="text-primary-light">Base Price:</span>
+                            <span className="text-primary">Base Price:</span>
                             <span className="text-neutral-text-primary">€{topupPrice.priceEur?.toFixed(2) || '0.00'}</span>
                           </div>
                           <div className="flex justify-between text-sm">
-                            <span className="text-primary-light">VAT (24%):</span>
+                            <span className="text-primary">VAT (24%):</span>
                             <span className="text-neutral-text-primary">€{topupPrice.vatAmount?.toFixed(2) || '0.00'}</span>
                           </div>
                           <div className="flex justify-between text-base font-semibold pt-2 border-t border-neutral-border">
@@ -536,7 +536,7 @@ export default function Billing() {
                           </div>
                         </div>
                       ) : (
-                        <p className="text-sm text-primary-light py-3">
+                        <p className="text-sm text-primary py-3">
                           Enter credits to see price
                         </p>
                       )}
@@ -576,7 +576,7 @@ export default function Billing() {
                       </div>
                       <div>
                         <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Packs</h2>
-                        <p className="text-sm text-primary-light mt-1">Purchase credit packs at discounted rates (subscription required)</p>
+                        <p className="text-sm text-primary mt-1">Purchase credit packs at discounted rates (subscription required)</p>
                       </div>
                     </div>
                     <div className="w-full sm:w-auto sm:min-w-[200px]">
@@ -625,7 +625,7 @@ export default function Billing() {
                             {pkg.name}
                           </h3>
                           {pkg.description && (
-                            <p className="text-xs text-primary-light mb-3">
+                            <p className="text-xs text-primary mb-3">
                               {pkg.description}
                             </p>
                           )}
@@ -634,7 +634,7 @@ export default function Billing() {
                               {pkg.price?.toFixed(2)} {pkg.currency || currency}
                             </span>
                             {pkg.originalPrice && (
-                              <span className="text-sm text-primary-light line-through">
+                              <span className="text-sm text-primary line-through">
                                 {pkg.originalPrice} {pkg.currency || currency}
                               </span>
                             )}
@@ -649,7 +649,7 @@ export default function Billing() {
                           {pkg.features && Array.isArray(pkg.features) && pkg.features.length > 0 && (
                             <ul className="space-y-2 mt-4">
                               {pkg.features.map((feature, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-primary-light">
+                                <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-primary">
                                   <Icon name="check" size="xs" variant="ice" className="flex-shrink-0 mt-0.5" />
                                   <span>{feature}</span>
                                 </li>
@@ -693,7 +693,7 @@ export default function Billing() {
                       <h3 className="text-lg font-semibold text-neutral-text-primary mb-2">
                         Subscription Required
                       </h3>
-                      <p className="text-sm text-primary-light mb-4">
+                      <p className="text-sm text-primary mb-4">
                         Credit packs are only available with an active subscription. Subscribe to a plan above to unlock discounted credit packs.
                       </p>
                     </div>
@@ -709,7 +709,7 @@ export default function Billing() {
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Purchase History</h2>
-                    <p className="text-sm text-primary-light mt-1">View your credit purchase transactions</p>
+                    <p className="text-sm text-primary mt-1">View your credit purchase transactions</p>
                   </div>
                 </div>
                 
@@ -751,7 +751,7 @@ export default function Billing() {
                               return (
                                 <GlassTableRow key={transaction.id}>
                                   <GlassTableCell>
-                                    <span className="text-sm text-primary-light">
+                                    <span className="text-sm text-primary">
                                       {transaction.createdAt
                                         ? format(new Date(transaction.createdAt), 'MMM d, yyyy')
                                         : '-'}
@@ -788,7 +788,7 @@ export default function Billing() {
                       <div className="mt-6 sm:mt-8">
                         <GlassCard className="p-4 sm:p-6">
                           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div className="text-sm text-primary-light">
+                            <div className="text-sm text-primary">
                               Page {pagination.page || page} of {pagination.totalPages}
                             </div>
                             <div className="flex items-center gap-2">

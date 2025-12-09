@@ -291,12 +291,14 @@ export default function Billing() {
         path="/shopify/app/billing"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1400px] mx-auto w-full">
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Header */}
-          <PageHeader
-            title="Billing"
-            subtitle="Manage your SMS credits and purchase history"
-          />
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <PageHeader
+              title="Billing"
+              subtitle="Manage your SMS credits and purchase history"
+            />
+          </div>
 
           {/* Error State */}
           {hasError && (
@@ -309,82 +311,92 @@ export default function Billing() {
           )}
 
           {!hasError && (
-            <>
+            <div className="space-y-8 sm:space-y-10">
               {/* Current Balance */}
               <GlassCard 
                 variant={isLowBalance ? 'default' : 'ice'} 
-                className={`p-5 sm:p-6 mb-6 sm:mb-8 ${isLowBalance ? 'border-2 border-red-500/50 bg-red-500/10' : ''}`}
+                className={`p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40 hover:shadow-2xl transition-all duration-300 ${
+                  isLowBalance ? 'border-2 border-red-500/50 bg-red-500/10' : ''
+                }`}
               >
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                        <Icon name="billing" size="md" variant="ice" />
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-lg">
+                        <Icon name="billing" size="lg" variant="ice" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-primary uppercase tracking-wider">Current Balance</p>
-                        <p className={`text-3xl sm:text-4xl font-bold mt-1 ${isLowBalance ? 'text-red-500' : 'text-ice-primary'}`}>
-                          {balance.toLocaleString()} credits
+                        <p className="text-sm font-medium text-primary uppercase tracking-wider mb-1">Current Balance</p>
+                        <p className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${isLowBalance ? 'text-red-500' : 'text-ice-primary'}`}>
+                          {balance.toLocaleString()}
                         </p>
+                        <p className="text-base sm:text-lg text-primary mt-1">SMS credits</p>
                       </div>
                     </div>
                     {isLowBalance && (
-                      <div className="flex items-center gap-2 mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                        <Icon name="error" size="sm" variant="default" className="text-red-500" />
-                        <p className="text-sm text-red-500 font-medium">
+                      <div className="flex items-center gap-3 mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                        <Icon name="error" size="md" variant="default" className="text-red-500 flex-shrink-0" />
+                        <p className="text-sm sm:text-base text-red-500 font-medium">
                           Low balance. Consider purchasing more credits to continue sending messages.
                         </p>
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-4 p-4 rounded-xl bg-neutral-surface-secondary/50 border border-neutral-border/40">
                     <div className="text-right">
-                      <p className="text-xs text-primary">Currency</p>
-                      <p className="text-sm font-semibold text-neutral-text-primary">{currency}</p>
+                      <p className="text-xs font-medium text-primary uppercase tracking-wider mb-1">Currency</p>
+                      <p className="text-xl font-bold text-neutral-text-primary">{currency}</p>
                     </div>
                   </div>
                 </div>
               </GlassCard>
 
               {/* Subscription Section */}
-              <div className="mb-6 sm:mb-8 lg:mb-10">
-                <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                    <Icon name="billing" size="md" variant="ice" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Subscription</h2>
-                    <p className="text-sm text-primary mt-1">Manage your subscription plan</p>
-                  </div>
-                </div>
-
-                {isLoadingSubscription ? (
-                  <div className="flex items-center justify-center py-12">
-                    <LoadingSpinner size="lg" />
-                  </div>
-                ) : isSubscriptionActive ? (
-                  <GlassCard className="p-5 sm:p-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <StatusBadge status="active" />
-                          <h3 className="text-lg font-semibold text-neutral-text-primary capitalize">
-                            {subscriptionPlan} Plan
-                          </h3>
-                        </div>
-                        <p className="text-sm text-primary">
-                          {subscriptionPlan === 'starter' 
-                            ? '€40/month - 100 free credits per month'
-                            : '€240/year - 500 free credits per year'}
-                        </p>
+              <div className="space-y-6">
+                <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40 hover:shadow-2xl transition-all duration-300">
+                  {/* Section Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-neutral-border/40">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-lg">
+                        <Icon name="billing" size="lg" variant="ice" />
                       </div>
-                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">Subscription</h2>
+                        <p className="text-sm sm:text-base text-primary">Manage your subscription plan and benefits</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {isLoadingSubscription ? (
+                    <div className="flex items-center justify-center py-16">
+                      <LoadingSpinner size="lg" />
+                    </div>
+                  ) : isSubscriptionActive ? (
+                    <div className="space-y-6">
+                      <div className="p-5 sm:p-6 rounded-xl bg-gradient-to-r from-ice-soft/30 to-transparent border border-ice-primary/20">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-3">
+                              <StatusBadge status="active" />
+                              <h3 className="text-xl sm:text-2xl font-bold text-neutral-text-primary capitalize">
+                                {subscriptionPlan} Plan
+                              </h3>
+                            </div>
+                            <p className="text-base text-primary">
+                              {subscriptionPlan === 'starter' 
+                                ? '€40/month - 100 free credits per month'
+                                : '€240/year - 500 free credits per year'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-3">
                         <GlassButton
                           variant="primary"
-                          size="md"
+                          size="lg"
                           onClick={handleManageSubscription}
                           disabled={getPortal.isPending}
-                          className="flex items-center gap-2"
+                          className="flex items-center justify-center gap-2 min-h-[48px] shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                         >
                           <Icon name="settings" size="sm" variant="ice" />
                           Manage Subscription
@@ -392,308 +404,345 @@ export default function Billing() {
                         {subscriptionPlan === 'starter' ? (
                           <GlassButton
                             variant="ghost"
-                            size="md"
+                            size="lg"
                             onClick={() => handleUpdateSubscription('pro')}
                             disabled={updateSubscription.isPending}
+                            className="min-h-[48px]"
                           >
                             Upgrade to Pro
                           </GlassButton>
                         ) : (
                           <GlassButton
                             variant="ghost"
-                            size="md"
+                            size="lg"
                             onClick={() => handleUpdateSubscription('starter')}
                             disabled={updateSubscription.isPending}
+                            className="min-h-[48px]"
                           >
                             Downgrade to Starter
                           </GlassButton>
                         )}
                         <GlassButton
                           variant="ghost"
-                          size="md"
+                          size="lg"
                           onClick={handleCancelSubscription}
                           disabled={cancelSubscription.isPending}
-                          className="text-red-500 hover:text-red-600"
+                          className="text-red-500 hover:text-red-600 hover:bg-red-500/10 min-h-[48px]"
                         >
                           Cancel Subscription
                         </GlassButton>
                       </div>
                     </div>
-                  </GlassCard>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <GlassCard className="p-5 sm:p-6">
-                      <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Starter Plan</h3>
-                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€40<span className="text-sm font-normal text-primary">/month</span></p>
-                      <ul className="space-y-2 mb-4 text-sm text-primary">
-                        <li className="flex items-center gap-2">
-                          <Icon name="check" size="xs" variant="ice" />
-                          <span>100 free credits per month</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Icon name="check" size="xs" variant="ice" />
-                          <span>All features included</span>
-                        </li>
-                      </ul>
-                      <GlassButton
-                        variant="primary"
-                        size="lg"
-                        onClick={() => handleSubscribe('starter')}
-                        disabled={subscribe.isPending}
-                        className="w-full"
-                      >
-                        Subscribe to Starter
-                      </GlassButton>
-                    </GlassCard>
-                    <GlassCard variant="fuchsia" className="p-5 sm:p-6 border-2 border-fuchsia-primary relative">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                        <span className="px-3 py-1 text-xs font-semibold rounded-full bg-fuchsia-primary text-white">
-                          Best Value
-                        </span>
-                      </div>
-                      <h3 className="text-lg font-semibold mb-2 text-neutral-text-primary">Pro Plan</h3>
-                      <p className="text-2xl font-bold mb-2 text-neutral-text-primary">€240<span className="text-sm font-normal text-primary">/year</span></p>
-                      <ul className="space-y-2 mb-4 text-sm text-primary">
-                        <li className="flex items-center gap-2">
-                          <Icon name="check" size="xs" variant="ice" />
-                          <span>500 free credits per year</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Icon name="check" size="xs" variant="ice" />
-                          <span>All features included</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Icon name="check" size="xs" variant="ice" />
-                          <span>Save 50% vs monthly</span>
-                        </li>
-                      </ul>
-                      <GlassButton
-                        variant="fuchsia"
-                        size="lg"
-                        onClick={() => handleSubscribe('pro')}
-                        disabled={subscribe.isPending}
-                        className="w-full"
-                      >
-                        Subscribe to Pro
-                      </GlassButton>
-                    </GlassCard>
-                  </div>
-                )}
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+                      <GlassCard className="p-6 sm:p-8 hover:shadow-lg transition-all duration-200">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-xl sm:text-2xl font-bold mb-2 text-neutral-text-primary">Starter Plan</h3>
+                            <div className="flex items-baseline gap-2 mb-4">
+                              <span className="text-3xl sm:text-4xl font-bold text-neutral-text-primary">€40</span>
+                              <span className="text-base text-primary">/month</span>
+                            </div>
+                          </div>
+                          <ul className="space-y-3 mb-6">
+                            <li className="flex items-center gap-3">
+                              <Icon name="check" size="sm" variant="ice" className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base text-primary">100 free credits per month</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <Icon name="check" size="sm" variant="ice" className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base text-primary">All features included</span>
+                            </li>
+                          </ul>
+                          <GlassButton
+                            variant="primary"
+                            size="lg"
+                            onClick={() => handleSubscribe('starter')}
+                            disabled={subscribe.isPending}
+                            className="w-full min-h-[48px] shadow-md hover:shadow-lg transition-all duration-200"
+                          >
+                            Subscribe to Starter
+                          </GlassButton>
+                        </div>
+                      </GlassCard>
+                      <GlassCard variant="fuchsia" className="p-6 sm:p-8 border-2 border-fuchsia-primary relative hover:shadow-lg transition-all duration-200">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                          <span className="px-4 py-1.5 text-xs font-bold rounded-full bg-fuchsia-primary text-white shadow-glow-fuchsia-light">
+                            Best Value
+                          </span>
+                        </div>
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-xl sm:text-2xl font-bold mb-2 text-neutral-text-primary">Pro Plan</h3>
+                            <div className="flex items-baseline gap-2 mb-4">
+                              <span className="text-3xl sm:text-4xl font-bold text-neutral-text-primary">€240</span>
+                              <span className="text-base text-primary">/year</span>
+                            </div>
+                          </div>
+                          <ul className="space-y-3 mb-6">
+                            <li className="flex items-center gap-3">
+                              <Icon name="check" size="sm" variant="ice" className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base text-primary">500 free credits per year</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <Icon name="check" size="sm" variant="ice" className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base text-primary">All features included</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                              <Icon name="check" size="sm" variant="ice" className="flex-shrink-0" />
+                              <span className="text-sm sm:text-base text-primary">Save 50% vs monthly</span>
+                            </li>
+                          </ul>
+                          <GlassButton
+                            variant="fuchsia"
+                            size="lg"
+                            onClick={() => handleSubscribe('pro')}
+                            disabled={subscribe.isPending}
+                            className="w-full min-h-[48px] shadow-md hover:shadow-lg transition-all duration-200"
+                          >
+                            Subscribe to Pro
+                          </GlassButton>
+                        </div>
+                      </GlassCard>
+                    </div>
+                  )}
+                </GlassCard>
               </div>
 
               {/* Credit Top-up Section */}
-              <div className="mb-6 sm:mb-8 lg:mb-10">
-                <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                    <Icon name="billing" size="md" variant="ice" />
+              <div className="space-y-6">
+                <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40 hover:shadow-2xl transition-all duration-300">
+                  {/* Section Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-neutral-border/40">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-lg">
+                        <Icon name="billing" size="lg" variant="ice" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">Credit Top-up</h2>
+                        <p className="text-sm sm:text-base text-primary">Purchase additional credits at €0.045 per credit (24% VAT included)</p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Top-up</h2>
-                    <p className="text-sm text-primary mt-1">Purchase additional credits at €0.045 per credit (24% VAT included)</p>
-                  </div>
-                </div>
 
-                <GlassCard className="p-5 sm:p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div>
-                      <GlassInput
-                        type="number"
-                        min="1"
-                        max="1000000"
-                        label="Number of Credits"
-                        value={topupCredits}
-                        onChange={(e) => setTopupCredits(e.target.value)}
-                        placeholder="Enter credits (e.g., 1000)"
-                      />
-                      {topupCredits && parseInt(topupCredits) > 0 && (
-                        <p className="text-xs text-primary mt-2">
-                          Max 1,000,000 credits per purchase
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-neutral-text-primary mb-2">
-                        Price Breakdown
-                      </label>
-                      {isLoadingTopupPrice ? (
-                        <div className="flex items-center gap-2 py-3">
-                          <LoadingSpinner size="sm" />
-                          <span className="text-sm text-primary">Calculating...</span>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-neutral-text-primary mb-1">Purchase Credits</h3>
+                          <p className="text-sm text-primary">Enter the number of credits you want to purchase</p>
                         </div>
-                      ) : topupPrice.priceEurWithVat ? (
-                        <div className="space-y-1 py-3">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-primary">Base Price:</span>
-                            <span className="text-neutral-text-primary">€{topupPrice.priceEur?.toFixed(2) || '0.00'}</span>
-                          </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-primary">VAT (24%):</span>
-                            <span className="text-neutral-text-primary">€{topupPrice.vatAmount?.toFixed(2) || '0.00'}</span>
-                          </div>
-                          <div className="flex justify-between text-base font-semibold pt-2 border-t border-neutral-border">
-                            <span className="text-neutral-text-primary">Total:</span>
-                            <span className="text-ice-primary">€{topupPrice.priceEurWithVat?.toFixed(2) || '0.00'}</span>
-                          </div>
+                        <GlassInput
+                          type="number"
+                          min="1"
+                          max="1000000"
+                          label="Number of Credits"
+                          value={topupCredits}
+                          onChange={(e) => setTopupCredits(e.target.value)}
+                          placeholder="Enter credits (e.g., 1000)"
+                        />
+                        {topupCredits && parseInt(topupCredits) > 0 && (
+                          <p className="text-xs text-primary">
+                            Max 1,000,000 credits per purchase
+                          </p>
+                        )}
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-neutral-text-primary mb-1">Price Breakdown</h3>
+                          <p className="text-sm text-primary">Total cost including VAT</p>
                         </div>
-                      ) : (
-                        <p className="text-sm text-primary py-3">
-                          Enter credits to see price
-                        </p>
-                      )}
+                        {isLoadingTopupPrice ? (
+                          <div className="flex items-center gap-3 p-6 rounded-xl bg-neutral-surface-secondary/50">
+                            <LoadingSpinner size="sm" />
+                            <span className="text-sm text-primary">Calculating...</span>
+                          </div>
+                        ) : topupPrice.priceEurWithVat ? (
+                          <GlassCard variant="ice" className="p-5 sm:p-6 border border-ice-primary/20">
+                            <div className="space-y-3">
+                              <div className="flex justify-between items-center text-sm">
+                                <span className="text-primary">Base Price:</span>
+                                <span className="text-neutral-text-primary font-semibold">€{topupPrice.priceEur?.toFixed(2) || '0.00'}</span>
+                              </div>
+                              <div className="flex justify-between items-center text-sm">
+                                <span className="text-primary">VAT (24%):</span>
+                                <span className="text-neutral-text-primary font-semibold">€{topupPrice.vatAmount?.toFixed(2) || '0.00'}</span>
+                              </div>
+                              <div className="pt-3 border-t border-neutral-border/40">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-base font-semibold text-neutral-text-primary">Total:</span>
+                                  <span className="text-xl font-bold text-ice-primary">€{topupPrice.priceEurWithVat?.toFixed(2) || '0.00'}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </GlassCard>
+                        ) : (
+                          <GlassCard className="p-6 rounded-xl bg-neutral-surface-secondary/50">
+                            <p className="text-sm text-primary text-center">
+                              Enter credits to see price
+                            </p>
+                          </GlassCard>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="mt-4">
-                    <GlassButton
-                      variant="primary"
-                      size="lg"
-                      onClick={handleTopup}
-                      disabled={!topupCredits || parseInt(topupCredits) <= 0 || createTopup.isPending || isLoadingTopupPrice}
-                      className="w-full sm:w-auto"
-                    >
-                      {createTopup.isPending ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <LoadingSpinner size="sm" />
-                          Processing...
-                        </span>
-                      ) : (
-                        <span className="flex items-center justify-center gap-2">
-                          <Icon name="billing" size="sm" variant="ice" />
-                          Purchase Credits
-                        </span>
-                      )}
-                    </GlassButton>
+                    <div className="pt-4 border-t border-neutral-border/40">
+                      <GlassButton
+                        variant="primary"
+                        size="lg"
+                        onClick={handleTopup}
+                        disabled={!topupCredits || parseInt(topupCredits) <= 0 || createTopup.isPending || isLoadingTopupPrice}
+                        className="min-w-[200px] min-h-[48px] shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        {createTopup.isPending ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <LoadingSpinner size="sm" />
+                            Processing...
+                          </span>
+                        ) : (
+                          <span className="flex items-center justify-center gap-2">
+                            <Icon name="billing" size="sm" variant="ice" />
+                            Purchase Credits
+                          </span>
+                        )}
+                      </GlassButton>
+                    </div>
                   </div>
                 </GlassCard>
               </div>
 
               {/* Purchase Packages (Credit Packs) - Only if subscription active */}
               {isSubscriptionActive && (
-                <div className="mb-6 sm:mb-8 lg:mb-10">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                        <Icon name="billing" size="md" variant="ice" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Credit Packs</h2>
-                        <p className="text-sm text-primary mt-1">Purchase credit packs at discounted rates (subscription required)</p>
-                      </div>
-                    </div>
-                    <div className="w-full sm:w-auto sm:min-w-[200px]">
-                      <GlassSelectCustom
-                        label="Currency"
-                        value={selectedCurrency}
-                        onChange={(e) => setSelectedCurrency(e.target.value)}
-                        options={[
-                          { value: 'EUR', label: 'EUR (€)' },
-                          { value: 'USD', label: 'USD ($)' },
-                        ]}
-                      />
-                    </div>
-                  </div>
-                
-                {isLoadingPackages ? (
-                  <div className="flex items-center justify-center py-12">
-                    <LoadingSpinner size="lg" />
-                  </div>
-                ) : packages.length === 0 ? (
-                  <EmptyState
-                    icon="billing"
-                    title="No packages available"
-                    message={subscriptionRequired ? "Credit packs require an active subscription. Please subscribe first." : "Credit packages are currently unavailable. Please try again later."}
-                  />
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                    {packages.map((pkg) => (
-                      <GlassCard
-                        key={pkg.id}
-                        variant={pkg.popular ? 'fuchsia' : 'default'}
-                        className={`p-5 sm:p-6 relative hover:shadow-glass-light-lg transition-all duration-200 flex flex-col ${
-                          pkg.popular ? 'border-2 border-fuchsia-primary' : ''
-                        }`}
-                      >
-                        {pkg.popular && (
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                            <span className="px-3 py-1 text-xs font-semibold rounded-full bg-fuchsia-primary text-white shadow-glow-fuchsia-light">
-                              Most Popular
-                            </span>
-                          </div>
-                        )}
-                        
-                        <div className="mb-4 flex-grow">
-                          <h3 className="text-lg sm:text-xl font-semibold mb-2 text-neutral-text-primary">
-                            {pkg.name}
-                          </h3>
-                          {pkg.description && (
-                            <p className="text-xs text-primary mb-3">
-                              {pkg.description}
-                            </p>
-                          )}
-                          <div className="flex items-baseline gap-2 mb-3">
-                            <span className="text-2xl sm:text-3xl font-bold text-neutral-text-primary">
-                              {pkg.price?.toFixed(2)} {pkg.currency || currency}
-                            </span>
-                            {pkg.originalPrice && (
-                              <span className="text-sm text-primary line-through">
-                                {pkg.originalPrice} {pkg.currency || currency}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 mb-4">
-                            <Icon name="sms" size="sm" variant="ice" />
-                            <p className="text-sm font-medium text-neutral-text-primary">
-                              {pkg.credits?.toLocaleString() || 0} SMS credits
-                            </p>
-                          </div>
-                          
-                          {pkg.features && Array.isArray(pkg.features) && pkg.features.length > 0 && (
-                            <ul className="space-y-2 mt-4">
-                              {pkg.features.map((feature, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-primary">
-                                  <Icon name="check" size="xs" variant="ice" className="flex-shrink-0 mt-0.5" />
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+                <div className="space-y-6">
+                  <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40 hover:shadow-2xl transition-all duration-300">
+                    {/* Section Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-neutral-border/40">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-lg">
+                          <Icon name="billing" size="lg" variant="ice" />
                         </div>
-                        
-                        <GlassButton
-                          variant={pkg.popular ? 'fuchsia' : 'primary'}
-                          size="lg"
-                          onClick={() => handlePurchase(pkg.id)}
-                          disabled={createPurchase.isPending}
-                          className="w-full min-h-[44px] mt-auto"
-                        >
-                          {createPurchase.isPending ? (
-                            <span className="flex items-center justify-center gap-2">
-                              <LoadingSpinner size="sm" />
-                              Processing...
-                            </span>
-                          ) : (
-                            <span className="flex items-center justify-center gap-2">
-                              <Icon name="billing" size="sm" variant="ice" />
-                              Purchase
-                            </span>
-                          )}
-                        </GlassButton>
-                      </GlassCard>
-                    ))}
-                  </div>
-                )}
+                        <div>
+                          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">Credit Packs</h2>
+                          <p className="text-sm sm:text-base text-primary">Purchase credit packs at discounted rates</p>
+                        </div>
+                      </div>
+                      <div className="w-full sm:w-auto sm:min-w-[200px]">
+                        <GlassSelectCustom
+                          label="Currency"
+                          value={selectedCurrency}
+                          onChange={(e) => setSelectedCurrency(e.target.value)}
+                          options={[
+                            { value: 'EUR', label: 'EUR (€)' },
+                            { value: 'USD', label: 'USD ($)' },
+                          ]}
+                        />
+                      </div>
+                    </div>
+                  
+                    {isLoadingPackages ? (
+                      <div className="flex items-center justify-center py-16">
+                        <LoadingSpinner size="lg" />
+                      </div>
+                    ) : packages.length === 0 ? (
+                      <EmptyState
+                        icon="billing"
+                        title="No packages available"
+                        message={subscriptionRequired ? "Credit packs require an active subscription. Please subscribe first." : "Credit packages are currently unavailable. Please try again later."}
+                      />
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+                        {packages.map((pkg) => (
+                          <GlassCard
+                            key={pkg.id}
+                            variant={pkg.popular ? 'fuchsia' : 'default'}
+                            className={`p-5 sm:p-6 relative hover:shadow-xl transition-all duration-200 flex flex-col ${
+                              pkg.popular ? 'border-2 border-fuchsia-primary shadow-lg' : 'shadow-md'
+                            }`}
+                          >
+                            {pkg.popular && (
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                                <span className="px-3 py-1.5 text-xs font-bold rounded-full bg-fuchsia-primary text-white shadow-glow-fuchsia-light">
+                                  Most Popular
+                                </span>
+                              </div>
+                            )}
+                            
+                            <div className="mb-5 flex-grow space-y-4">
+                              <div>
+                                <h3 className="text-lg sm:text-xl font-bold mb-2 text-neutral-text-primary">
+                                  {pkg.name}
+                                </h3>
+                                {pkg.description && (
+                                  <p className="text-xs sm:text-sm text-primary mb-3">
+                                    {pkg.description}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex items-baseline gap-2 mb-3">
+                                <span className="text-2xl sm:text-3xl font-bold text-neutral-text-primary">
+                                  {pkg.price?.toFixed(2)} {pkg.currency || currency}
+                                </span>
+                                {pkg.originalPrice && (
+                                  <span className="text-sm text-primary line-through">
+                                    {pkg.originalPrice} {pkg.currency || currency}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 mb-4">
+                                <Icon name="sms" size="md" variant="ice" />
+                                <p className="text-base font-semibold text-neutral-text-primary">
+                                  {pkg.credits?.toLocaleString() || 0} SMS credits
+                                </p>
+                              </div>
+                              
+                              {pkg.features && Array.isArray(pkg.features) && pkg.features.length > 0 && (
+                                <ul className="space-y-2.5 mt-4">
+                                  {pkg.features.map((feature, idx) => (
+                                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-primary">
+                                      <Icon name="check" size="xs" variant="ice" className="flex-shrink-0 mt-0.5" />
+                                      <span>{feature}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                            
+                            <GlassButton
+                              variant={pkg.popular ? 'fuchsia' : 'primary'}
+                              size="lg"
+                              onClick={() => handlePurchase(pkg.id)}
+                              disabled={createPurchase.isPending}
+                              className="w-full min-h-[48px] mt-auto shadow-md hover:shadow-lg transition-all duration-200"
+                            >
+                              {createPurchase.isPending ? (
+                                <span className="flex items-center justify-center gap-2">
+                                  <LoadingSpinner size="sm" />
+                                  Processing...
+                                </span>
+                              ) : (
+                                <span className="flex items-center justify-center gap-2">
+                                  <Icon name="billing" size="sm" variant="ice" />
+                                  Purchase
+                                </span>
+                              )}
+                            </GlassButton>
+                          </GlassCard>
+                        ))}
+                      </div>
+                    )}
+                  </GlassCard>
                 </div>
               )}
 
               {/* Info message if subscription required but not active */}
               {subscriptionRequired && !isSubscriptionActive && (
-                <GlassCard variant="default" className="p-5 sm:p-6 mb-8 border-2 border-ice-primary/50">
-                  <div className="flex items-start gap-3">
-                    <Icon name="info" size="md" variant="ice" />
+                <GlassCard variant="default" className="p-6 sm:p-8 border-2 border-ice-primary/50 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <Icon name="info" size="lg" variant="ice" className="flex-shrink-0 mt-0.5" />
                     <div>
-                      <h3 className="text-lg font-semibold text-neutral-text-primary mb-2">
+                      <h3 className="text-lg sm:text-xl font-semibold text-neutral-text-primary mb-2">
                         Subscription Required
                       </h3>
-                      <p className="text-sm text-primary mb-4">
+                      <p className="text-sm sm:text-base text-primary leading-relaxed">
                         Credit packs are only available with an active subscription. Subscribe to a plan above to unlock discounted credit packs.
                       </p>
                     </div>
@@ -702,30 +751,33 @@ export default function Billing() {
               )}
 
               {/* Purchase History */}
-              <div>
-                <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                    <Icon name="chart" size="md" variant="ice" />
+              <div className="space-y-6">
+                <GlassCard className="p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-border/40 hover:shadow-2xl transition-all duration-300">
+                  {/* Section Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-neutral-border/40">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-2xl bg-gradient-to-br from-ice-soft/90 to-ice-primary/20 shadow-lg">
+                        <Icon name="chart" size="lg" variant="ice" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">Purchase History</h2>
+                        <p className="text-sm sm:text-base text-primary">View your credit purchase transactions</p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">Purchase History</h2>
-                    <p className="text-sm text-primary mt-1">View your credit purchase transactions</p>
-                  </div>
-                </div>
-                
-                {isLoadingHistory ? (
-                  <div className="flex items-center justify-center py-12">
-                    <LoadingSpinner size="lg" />
-                  </div>
-                ) : history.length === 0 ? (
-                  <EmptyState
-                    icon="billing"
-                    title="No purchase history"
-                    message="Your purchase history will appear here once you make your first credit purchase."
-                  />
-                ) : (
-                  <>
-                    <GlassCard className="p-0 overflow-hidden">
+                  
+                  {isLoadingHistory ? (
+                    <div className="flex items-center justify-center py-16">
+                      <LoadingSpinner size="lg" />
+                    </div>
+                  ) : history.length === 0 ? (
+                    <EmptyState
+                      icon="billing"
+                      title="No purchase history"
+                      message="Your purchase history will appear here once you make your first credit purchase."
+                    />
+                  ) : (
+                    <>
                       <div className="overflow-x-auto">
                         <GlassTable>
                           <GlassTableHeader>
@@ -781,12 +833,10 @@ export default function Billing() {
                           </GlassTableBody>
                         </GlassTable>
                       </div>
-                    </GlassCard>
 
-                    {/* Pagination */}
-                    {pagination.totalPages > 1 && (
-                      <div className="mt-6 sm:mt-8">
-                        <GlassCard className="p-4 sm:p-6">
+                      {/* Pagination */}
+                      {pagination.totalPages > 1 && (
+                        <div className="mt-6 sm:mt-8 pt-6 border-t border-neutral-border/40">
                           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div className="text-sm text-primary">
                               Page {pagination.page || page} of {pagination.totalPages}
@@ -842,13 +892,13 @@ export default function Billing() {
                               </GlassButton>
                             </div>
                           </div>
-                        </GlassCard>
-                      </div>
-                    )}
-                  </>
-                )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </GlassCard>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

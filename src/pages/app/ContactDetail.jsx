@@ -228,7 +228,7 @@ export default function ContactDetail() {
   if (!isNewContact && error && !contact) {
     return (
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1200px] mx-auto w-full">
+        <div className="max-w-[1400px] mx-auto w-full">
           <ErrorState
             title="Contact Not Found"
             message={error?.message || 'The contact you are looking for does not exist.'}
@@ -248,7 +248,7 @@ export default function ContactDetail() {
         path={isNewContact ? '/app/contacts/new' : `/app/contacts/${id}`}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1200px] mx-auto w-full">
+        <div className="max-w-[1400px] mx-auto w-full">
           {/* Header */}
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center gap-3 mb-3 sm:mb-4">

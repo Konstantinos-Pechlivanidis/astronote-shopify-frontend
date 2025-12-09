@@ -162,66 +162,67 @@ export default function Campaigns() {
         path="/shopify/app/campaigns"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        {/* Header */}
-        <PageHeader
-          title="Campaigns"
-          subtitle="Create and manage your SMS marketing campaigns"
-          actionLabel="Create Campaign"
-          actionIcon="campaign"
-          actionVariant="primary"
-          actionTo="/shopify/app/campaigns/new"
-        />
-
-        {/* Error State */}
-        {error && (
-          <ErrorState
-            title="Error Loading Campaigns"
-            message={error.message || 'Failed to load campaigns. Please try refreshing the page.'}
-            onAction={() => window.location.reload()}
-            actionLabel="Refresh Page"
+        <div className="max-w-[1400px] mx-auto w-full">
+          {/* Header */}
+          <PageHeader
+            title="Campaigns"
+            subtitle="Create and manage your SMS marketing campaigns"
+            actionLabel="Create Campaign"
+            actionIcon="campaign"
+            actionVariant="primary"
+            actionTo="/shopify/app/campaigns/new"
           />
-        )}
 
-        {/* Stats Cards */}
-        {!error && (
-          <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6 lg:mb-8">
-              {stats.map((stat) => (
-                <GlassCard 
-                  key={stat.label} 
-                  variant={stat.variant} 
-                  className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200 group"
-                >
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
-                    <div className={`p-2.5 sm:p-3 rounded-xl transition-colors ${
-                      stat.color === 'ice' 
-                        ? 'bg-ice-soft/80 group-hover:bg-ice-soft' 
-                        : 'bg-neutral-surface-secondary/60 group-hover:bg-neutral-surface-secondary'
-                    }`}>
-                      <Icon 
-                        name={stat.icon} 
-                        size="md" 
-                        variant={stat.color === 'ice' ? 'ice' : 'default'} 
-                        className={stat.color === 'ice' ? 'text-ice-primary' : 'text-neutral-text-secondary'}
-                      />
+          {/* Error State */}
+          {error && (
+            <ErrorState
+              title="Error Loading Campaigns"
+              message={error.message || 'Failed to load campaigns. Please try refreshing the page.'}
+              onAction={() => window.location.reload()}
+              actionLabel="Refresh Page"
+            />
+          )}
+
+          {/* Stats Cards */}
+          {!error && (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
+                {stats.map((stat) => (
+                  <GlassCard 
+                    key={stat.label} 
+                    variant={stat.variant} 
+                    className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200 group"
+                  >
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <div className={`p-2.5 sm:p-3 rounded-xl transition-colors ${
+                        stat.color === 'ice' 
+                          ? 'bg-ice-soft/80 group-hover:bg-ice-soft' 
+                          : 'bg-neutral-surface-secondary/60 group-hover:bg-neutral-surface-secondary'
+                      }`}>
+                        <Icon 
+                          name={stat.icon} 
+                          size="md" 
+                          variant={stat.color === 'ice' ? 'ice' : 'default'} 
+                          className={stat.color === 'ice' ? 'text-ice-primary' : 'text-neutral-text-secondary'}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <p className={`text-2xl sm:text-3xl font-bold mb-1 transition-colors ${
-                    stat.color === 'ice' 
-                      ? 'text-ice-primary' 
-                      : 'text-neutral-text-primary'
-                  }`}>
-                    {stat.value.toLocaleString()}
-                  </p>
-                  <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">
-                    {stat.label}
-                  </p>
-                </GlassCard>
-              ))}
-            </div>
+                    <p className={`text-2xl sm:text-3xl font-bold mb-1 transition-colors ${
+                      stat.color === 'ice' 
+                        ? 'text-ice-primary' 
+                        : 'text-neutral-text-primary'
+                    }`}>
+                      {stat.value.toLocaleString()}
+                    </p>
+                    <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">
+                      {stat.label}
+                    </p>
+                  </GlassCard>
+                ))}
+              </div>
 
-            {/* Filters and Search */}
-            <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6 lg:mb-8">
+              {/* Filters and Search */}
+              <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Icon name="filter" size="sm" variant="ice" />
@@ -256,11 +257,11 @@ export default function Campaigns() {
                     ]}
                   />
                 </div>
-              </div>
-            </GlassCard>
+                </div>
+              </GlassCard>
 
-            {/* Campaigns Table */}
-            {!error && campaigns.length === 0 ? (
+              {/* Campaigns Table */}
+              {!error && campaigns.length === 0 ? (
               <EmptyState
                 icon="campaign"
                 title="No campaigns found"
@@ -371,10 +372,11 @@ export default function Campaigns() {
                 />
               </div>
             )}
-              </>
-            )}
-          </>
-        )}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
       
       <ConfirmDialog

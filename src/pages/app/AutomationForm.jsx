@@ -130,7 +130,7 @@ export default function AutomationForm() {
         path={isEditMode ? `/shopify/app/automations/${id}` : '/shopify/app/automations/new'}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        <div className="max-w-[1000px] mx-auto w-full">
+        <div className="max-w-[1400px] mx-auto w-full">
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <BackButton to="/shopify/app/automations" label="Back" />

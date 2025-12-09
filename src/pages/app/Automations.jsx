@@ -84,28 +84,29 @@ export default function Automations() {
         path="/shopify/app/automations"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        {/* Header */}
-        <PageHeader
-          title="Automations"
-          subtitle="Set up automated SMS workflows for your store"
-          actionLabel="Create Automation"
-          actionIcon="automation"
-          actionTo="/shopify/app/automations/new"
-        />
-
-        {/* Error State */}
-        {hasError && (
-          <ErrorState
-            title="Error Loading Automations"
-            message={error?.message || statsError?.message || 'Failed to load automations. Please try refreshing the page.'}
-            onAction={() => window.location.reload()}
-            actionLabel="Refresh Page"
+        <div className="max-w-[1400px] mx-auto w-full">
+          {/* Header */}
+          <PageHeader
+            title="Automations"
+            subtitle="Set up automated SMS workflows for your store"
+            actionLabel="Create Automation"
+            actionIcon="automation"
+            actionTo="/shopify/app/automations/new"
           />
-        )}
 
-        {/* Stats */}
-        {!hasError && stats && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+          {/* Error State */}
+          {hasError && (
+            <ErrorState
+              title="Error Loading Automations"
+              message={error?.message || statsError?.message || 'Failed to load automations. Please try refreshing the page.'}
+              onAction={() => window.location.reload()}
+              actionLabel="Refresh Page"
+            />
+          )}
+
+          {/* Stats */}
+          {!hasError && stats && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
             <GlassCard 
               variant="ice" 
               className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-300 hover:scale-[1.02] group"
@@ -145,13 +146,13 @@ export default function Automations() {
                 {stats.successRate ? `${stats.successRate.toFixed(1)}%` : '0%'}
               </p>
               <p className="text-xs sm:text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Success Rate</p>
-            </GlassCard>
-          </div>
-        )}
+              </GlassCard>
+            </div>
+          )}
 
-        {/* Filter */}
-        {!hasError && (
-          <div className="mb-6 sm:mb-8">
+          {/* Filter */}
+          {!hasError && (
+            <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <h3 className="text-sm font-semibold text-neutral-text-secondary uppercase tracking-wider">Filter by Status</h3>
               <div className="flex flex-wrap gap-2">
@@ -175,13 +176,13 @@ export default function Automations() {
                     <span>{option.label}</span>
                   </button>
                 ))}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Automations Grid */}
-        {!hasError && filteredAutomations.length === 0 ? (
+          {/* Automations Grid */}
+          {!hasError && filteredAutomations.length === 0 ? (
           <EmptyState
             icon="automation"
             title="No automations found"
@@ -300,10 +301,11 @@ export default function Automations() {
                   </button>
                 </div>
               </GlassCard>
-            );
-            })}
-          </div>
-        )}
+              );
+              })}
+            </div>
+          )}
+        </div>
       </div>
       
       <ConfirmDialog

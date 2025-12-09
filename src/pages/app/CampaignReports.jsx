@@ -53,7 +53,7 @@ export default function CampaignReports() {
           </div>
 
           {/* Filter */}
-          <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
+          <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
             <GlassSelectCustom
               label="Filter by Campaign"
               value={selectedCampaignId}

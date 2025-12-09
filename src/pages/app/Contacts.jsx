@@ -101,69 +101,71 @@ export default function Contacts() {
         path="/shopify/app/contacts"
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
-        {/* Header */}
-        <PageHeader
-          title="Contacts"
-          subtitle="Manage your SMS marketing contact list"
-        >
-          <div className="flex gap-3 mt-4">
-            <GlassButton
-              variant="ghost"
-              size="lg"
-              onClick={() => setIsImportModalOpen(true)}
-            >
-              <span className="flex items-center gap-2">
-                <Icon name="import" size="sm" variant="ice" />
-                Import Contacts
-              </span>
-            </GlassButton>
-            <GlassButton
-              variant="primary"
-              size="lg"
-              as={Link}
-              to="/shopify/app/contacts/new"
-              className="group"
-            >
-              <span className="flex items-center gap-2">
-                <Icon name="segment" size="sm" variant="ice" />
-                Add Contact
-                <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
-              </span>
-            </GlassButton>
-          </div>
-        </PageHeader>
-
-        {/* Error State */}
-        {error && (
-          <ErrorState
-            title="Error Loading Contacts"
-            message={error.message || 'Failed to load contacts. Please try refreshing the page.'}
-            onAction={() => window.location.reload()}
-            actionLabel="Refresh Page"
-          />
-        )}
-
-        {/* Stats Cards */}
-        {!error && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-              {statsCards.map((stat) => (
-                <GlassCard key={stat.label} variant={stat.variant} className="p-5 hover:shadow-glass-light-lg transition-shadow">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2.5 rounded-xl bg-ice-soft/80">
-                      <Icon name={stat.icon} size="md" variant="ice" />
-                    </div>
-                  </div>
-                  <p className="text-2xl font-bold text-neutral-text-primary mb-1">
-                    {stat.value.toLocaleString()}
-                  </p>
-                  <p className="text-xs font-medium text-neutral-text-secondary uppercase tracking-wider">{stat.label}</p>
-                </GlassCard>
-              ))}
+        <div className="max-w-[1400px] mx-auto w-full">
+          {/* Header */}
+          <PageHeader
+            title="Contacts"
+            subtitle="Manage your SMS marketing contact list"
+          >
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <GlassButton
+                variant="ghost"
+                size="lg"
+                onClick={() => setIsImportModalOpen(true)}
+                className="w-full sm:w-auto"
+              >
+                <span className="flex items-center gap-2">
+                  <Icon name="import" size="sm" variant="ice" />
+                  Import Contacts
+                </span>
+              </GlassButton>
+              <GlassButton
+                variant="primary"
+                size="lg"
+                as={Link}
+                to="/shopify/app/contacts/new"
+                className="group w-full sm:w-auto"
+              >
+                <span className="flex items-center gap-2">
+                  <Icon name="segment" size="sm" variant="ice" />
+                  Add Contact
+                  <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
+                </span>
+              </GlassButton>
             </div>
+          </PageHeader>
 
-            {/* Filters and Search */}
-            <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
+          {/* Error State */}
+          {error && (
+            <ErrorState
+              title="Error Loading Contacts"
+              message={error.message || 'Failed to load contacts. Please try refreshing the page.'}
+              onAction={() => window.location.reload()}
+              actionLabel="Refresh Page"
+            />
+          )}
+
+          {/* Stats Cards */}
+          {!error && (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+                {statsCards.map((stat) => (
+                  <GlassCard key={stat.label} variant={stat.variant} className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <div className="p-2.5 sm:p-3 rounded-xl bg-ice-soft/80">
+                        <Icon name={stat.icon} size="md" variant="ice" />
+                      </div>
+                    </div>
+                    <p className="text-2xl sm:text-3xl font-bold text-neutral-text-primary mb-1">
+                      {stat.value.toLocaleString()}
+                    </p>
+                    <p className="text-xs sm:text-sm font-medium text-neutral-text-secondary uppercase tracking-wider">{stat.label}</p>
+                  </GlassCard>
+                ))}
+              </div>
+
+              {/* Filters and Search */}
+              <GlassCard className="p-4 sm:p-6 mb-6 sm:mb-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Icon name="filter" size="sm" variant="ice" />
@@ -195,11 +197,11 @@ export default function Contacts() {
                     ]}
                   />
                 </div>
-              </div>
-            </GlassCard>
+                </div>
+              </GlassCard>
 
-            {/* Contacts Table */}
-            {contacts.length === 0 ? (
+              {/* Contacts Table */}
+              {contacts.length === 0 ? (
               <EmptyState
                 icon="segment"
                 title="No contacts found"
@@ -338,27 +340,28 @@ export default function Contacts() {
                 />
               </div>
             )}
-          </>
-        )}
-          </>
-        )}
+            </>
+          )}
+            </>
+          )}
 
-        {/* Import Modal */}
-        <ImportContactsModal
-          isOpen={isImportModalOpen}
-          onClose={() => setIsImportModalOpen(false)}
-        />
-        
-        <ConfirmDialog
-          isOpen={!!deleteTarget}
-          onClose={() => setDeleteTarget(null)}
-          onConfirm={handleDelete}
-          title="Delete Contact"
-          message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
-          destructive={true}
-        />
+          {/* Import Modal */}
+          <ImportContactsModal
+            isOpen={isImportModalOpen}
+            onClose={() => setIsImportModalOpen(false)}
+          />
+          
+          <ConfirmDialog
+            isOpen={!!deleteTarget}
+            onClose={() => setDeleteTarget(null)}
+            onConfirm={handleDelete}
+            title="Delete Contact"
+            message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
+            confirmLabel="Delete"
+            cancelLabel="Cancel"
+            destructive={true}
+          />
+        </div>
       </div>
     </>
   );

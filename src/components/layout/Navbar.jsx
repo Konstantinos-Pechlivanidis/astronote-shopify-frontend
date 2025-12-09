@@ -54,7 +54,7 @@ export default function Navbar() {
     { path: '/shopify/contact', label: 'Contact', icon: 'segment' },
   ];
 
-  const landingUrl = 'https://astronote-landing.onrender.com';
+  const landingUrl = 'https://astronote.onrender.com';
 
   const isActive = (path) => location.pathname === path;
 

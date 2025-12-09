@@ -409,12 +409,12 @@ export default function CampaignCreate() {
       <SEO
         title={isEditMode ? 'Edit Campaign' : 'Create Campaign - Astronote SMS Marketing'}
         description="Create a new SMS campaign and preview it in real-time"
-        path={isEditMode ? `/app/campaigns/${id}/edit` : '/app/campaigns/new'}
+        path={isEditMode ? `/shopify/app/campaigns/${id}/edit` : '/shopify/app/campaigns/new'}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <BackButton to="/shopify/app/campaigns" label="Back" />
             </div>
             <PageHeader
@@ -430,8 +430,8 @@ export default function CampaignCreate() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             {/* Campaign Form */}
             <div>
-              <GlassCard>
-                <div className="space-y-6">
+              <GlassCard className="p-4 sm:p-6">
+                <div className="space-y-4 sm:space-y-6">
                   <GlassInput
                     label="Campaign Name"
                     name="name"

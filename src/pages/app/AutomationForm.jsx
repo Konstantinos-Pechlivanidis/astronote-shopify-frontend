@@ -127,12 +127,12 @@ export default function AutomationForm() {
       <SEO
         title={isEditMode ? 'Edit Automation' : 'Create Automation - Astronote SMS Marketing'}
         description="Create or edit an SMS automation workflow"
-        path={isEditMode ? `/app/automations/${id}` : '/app/automations/new'}
+        path={isEditMode ? `/shopify/app/automations/${id}` : '/shopify/app/automations/new'}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1000px] mx-auto w-full">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <BackButton to="/shopify/app/automations" label="Back" />
             </div>
             <PageHeader
@@ -145,8 +145,8 @@ export default function AutomationForm() {
             />
           </div>
 
-          <GlassCard className="p-6">
-            <div className="space-y-6">
+          <GlassCard className="p-4 sm:p-6">
+            <div className="space-y-4 sm:space-y-6">
               <GlassInput
                 label="Automation Name"
                 name="name"

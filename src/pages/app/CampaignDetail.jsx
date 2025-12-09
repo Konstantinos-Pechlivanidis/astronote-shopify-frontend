@@ -81,13 +81,13 @@ export default function CampaignDetail() {
       <SEO
         title={`${campaign.name} - Campaign Details`}
         description="View campaign details and metrics"
-        path={`/app/campaigns/${id}`}
+        path={`/shopify/app/campaigns/${id}`}
       />
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1200px] mx-auto w-full">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <BackButton to="/shopify/app/campaigns" label="Back" />
             </div>
             <PageHeader
@@ -117,7 +117,7 @@ export default function CampaignDetail() {
                       variant="ghost"
                       size="md"
                       as={Link}
-                      to={`/app/campaigns/${id}/edit`}
+                      to={`/shopify/app/campaigns/${id}/edit`}
                     >
                       <span className="flex items-center gap-2">
                         <Icon name="edit" size="sm" variant="ice" />
@@ -138,12 +138,12 @@ export default function CampaignDetail() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {/* Campaign Details */}
-              <GlassCard className="p-6">
-                <h2 className="text-2xl font-bold mb-4 text-neutral-text-primary">Campaign Details</h2>
+              <GlassCard className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Campaign Details</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="text-sm font-medium text-neutral-text-secondary mb-1">Message</label>
@@ -168,9 +168,9 @@ export default function CampaignDetail() {
 
               {/* Metrics */}
               {metrics && (
-                <GlassCard className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 text-neutral-text-primary">Performance Metrics</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <GlassCard className="p-4 sm:p-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Performance Metrics</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                     <div>
                       <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Sent</p>
                       <p className="text-2xl font-bold text-neutral-text-primary">
@@ -201,11 +201,11 @@ export default function CampaignDetail() {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Quick Info */}
-              <GlassCard variant="ice" className="p-6">
-                <h3 className="text-xl font-semibold mb-4 text-neutral-text-primary">Quick Info</h3>
-                <div className="space-y-3">
+              <GlassCard variant="ice" className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-neutral-text-primary">Quick Info</h3>
+                <div className="space-y-2 sm:space-y-3">
                   <div>
                     <p className="text-xs font-medium text-neutral-text-secondary mb-1 uppercase tracking-wider">Recipients</p>
                     <p className="text-lg font-semibold text-neutral-text-primary">

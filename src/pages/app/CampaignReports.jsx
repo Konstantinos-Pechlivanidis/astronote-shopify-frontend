@@ -42,8 +42,8 @@ export default function CampaignReports() {
       <div className="min-h-screen pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-neutral-bg-base w-full max-w-full">
         <div className="max-w-[1400px] mx-auto w-full">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <BackButton to="/shopify/app/reports" label="Back" />
             </div>
             <PageHeader
@@ -53,7 +53,7 @@ export default function CampaignReports() {
           </div>
 
           {/* Filter */}
-          <GlassCard className="p-6 mb-6">
+          <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
             <GlassSelectCustom
               label="Filter by Campaign"
               value={selectedCampaignId}

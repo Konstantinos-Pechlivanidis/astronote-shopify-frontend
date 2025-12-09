@@ -209,7 +209,7 @@ export default function Settings() {
                   {/* General Settings */}
                   {activeTab === 'general' && (
                     <GlassCard className="p-4 sm:p-6">
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <div className="p-2.5 rounded-xl bg-ice-soft/80">
                           <Icon name="settings" size="md" variant="ice" />
                         </div>
@@ -219,7 +219,7 @@ export default function Settings() {
                         </div>
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {/* Sender ID */}
                         <div>
                           <GlassInput
@@ -334,7 +334,7 @@ export default function Settings() {
                   {/* SMS Settings */}
                   {activeTab === 'sms' && (
                     <GlassCard className="p-4 sm:p-6">
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <div className="p-2.5 rounded-xl bg-ice-soft/80">
                           <Icon name="sms" size="md" variant="ice" />
                         </div>
@@ -344,7 +344,7 @@ export default function Settings() {
                         </div>
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         <GlassCard variant="ice" className="p-4 sm:p-6 border border-ice-primary/20">
                           <div className="flex items-start gap-3">
                             <Icon name="info" size="md" variant="ice" className="flex-shrink-0 mt-0.5" />
@@ -380,7 +380,7 @@ export default function Settings() {
                   {/* Integrations */}
                   {activeTab === 'integrations' && (
                     <GlassCard className="p-4 sm:p-6">
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <div className="p-2.5 rounded-xl bg-ice-soft/80">
                           <Icon name="integration" size="md" variant="ice" />
                         </div>
@@ -390,7 +390,7 @@ export default function Settings() {
                         </div>
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {/* Shopify Connection */}
                         <div>
                           <label className="block text-sm font-medium text-neutral-text-secondary mb-3">
@@ -460,7 +460,7 @@ export default function Settings() {
                   {/* Account */}
                   {activeTab === 'account' && (
                     <GlassCard className="p-4 sm:p-6">
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <div className="p-2.5 rounded-xl bg-ice-soft/80">
                           <Icon name="personal" size="md" variant="ice" />
                         </div>
@@ -470,7 +470,7 @@ export default function Settings() {
                         </div>
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {/* Account Details */}
                         {storeInfo && (
                           <div>

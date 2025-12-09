@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import GlassCard from '../components/ui/GlassCard';
 import GlassButton from '../components/ui/GlassButton';
 import GlassBadge from '../components/ui/GlassBadge';
@@ -52,29 +52,23 @@ const STATIC_PACKAGES = [
 ];
 
 export default function Pricing() {
-  const navigate = useNavigate();
-  
-  // Use static packages for public landing page
-  const packages = STATIC_PACKAGES;
-  
-  // Handle package card click - redirect to install page
-  const handlePackageClick = () => {
-    navigate('/shopify/install');
-  };
-
-  // Free features that are included with all packages
-  const freeFeatures = [
-    'All features included',
-    'Campaign builder',
-    'Automation workflows',
-    'Analytics dashboard',
-    'Shopify integration',
-    'Message templates',
-    'A/B testing (coming soon)',
-    'Link shortening (coming soon)',
-    'Shopify webhook integration',
-    'Unlimited contacts',
-    'Priority support',
+  const roiStats = [
+    {
+      metric: '3x',
+      label: 'Higher conversion than email',
+    },
+    {
+      metric: '98%',
+      label: 'SMS open rate',
+    },
+    {
+      metric: '45s',
+      label: 'Average response time',
+    },
+    {
+      metric: '20%',
+      label: 'Average revenue increase',
+    },
   ];
 
   const serviceData = {
@@ -88,7 +82,7 @@ export default function Pricing() {
     },
     areaServed: 'Worldwide',
     serviceType: 'SMS Marketing',
-    offers: packages.map(pkg => ({
+    offers: STATIC_PACKAGES.map(pkg => ({
       '@type': 'Offer',
       name: pkg.name,
       price: pkg.price,
@@ -111,7 +105,7 @@ export default function Pricing() {
         '@type': 'ListItem',
         position: 2,
         name: 'Pricing',
-        item: `${FRONTEND_URL}/pricing`,
+        item: `${FRONTEND_URL}/shopify/pricing`,
       },
     ],
   };
@@ -119,48 +113,57 @@ export default function Pricing() {
   return (
     <>
       <SEO
-        title="Pricing - Astronote SMS Marketing"
-        description="Simple, pay-as-you-go pricing. Pay only for SMS credits you use. All features included free."
+        title="Pricing That Scales - SMS Marketing for Shopify | Astronote"
+        description="Start with a free trial. No credit card required. Choose a subscription plan or buy credits. Credits never expire. Pay only for what you use."
         path="/shopify/pricing"
-        keywords="SMS pricing, text message pricing, Shopify SMS cost, SMS credits"
+        keywords="SMS pricing, text message pricing, Shopify SMS cost, SMS credits, subscription plans"
         jsonLd={[serviceData, breadcrumbData]}
       />
-      <main className="min-h-screen pt-24 pb-20 px-4 lg:px-8">
-        <div className="max-w-[1200px] mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-h1 md:text-5xl font-bold mb-4">Simple, Transparent Pricing</h1>
-            <p className="text-xl text-border-subtle mb-4">
-              Pay only for SMS credits you use. All features are included free.
-            </p>
-            <p className="text-body text-border-subtle max-w-2xl mx-auto mb-6">
-              No monthly subscriptions. No hidden fees. Buy SMS credits and use them whenever you need them. Credits never expire.
-            </p>
-            
-            {/* User Journey CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
-                <span className="flex items-center gap-2">
-                  Install on Shopify
-                  <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              </GlassButton>
-              <p className="text-sm text-border-subtle">
-                Free 14-day trial • No credit card required
-              </p>
-            </div>
+      <div className="min-h-screen bg-bg-dark text-primary-light">
+        {/* Hero Section */}
+        <section className="relative pt-36 pb-24 px-4 lg:px-8 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-bg-dark via-surface-dark to-bg-dark">
+            <div className="absolute top-20 right-20 w-96 h-96 bg-ice-accent/10 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-20 left-20 w-96 h-96 bg-zoom-fuchsia/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
           </div>
 
-          {/* Subscription Plans Section */}
-          <section className="mb-16">
-            <div className="text-center mb-8">
+          <div className="relative max-w-[1200px] mx-auto text-center">
+            <h1 className="text-hero md:text-7xl font-bold mb-6 leading-tight">
+              Pricing That <span className="text-ice-accent">Scales With You</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-border-subtle max-w-3xl mx-auto mb-4 leading-relaxed">
+              <strong className="text-primary-light">Start with a free trial. No credit card required.</strong> 
+              Choose a subscription plan or buy credits as you go. Credits never expire. 
+              <strong className="text-primary-light"> Pay only for what you use.</strong>
+            </p>
+            <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm text-border-subtle">
+              <div className="flex items-center gap-2">
+                <Icon name="check" size="sm" variant="ice" />
+                <span>14-day free trial</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="check" size="sm" variant="ice" />
+                <span>Cancel anytime</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="check" size="sm" variant="ice" />
+                <span>All features included</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Plans */}
+        <section className="py-20 px-4 lg:px-8">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="text-center mb-12">
               <h2 className="text-h2 md:text-4xl font-bold mb-4">Subscription Plans</h2>
-              <p className="text-body text-border-subtle max-w-2xl mx-auto">
+              <p className="text-lg text-border-subtle max-w-2xl mx-auto">
                 Choose a subscription plan to get free credits every billing cycle. All plans include full access to all features.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
               {SUBSCRIPTION_PLANS.map((plan) => (
                 <GlassCard
                   key={plan.id}
@@ -175,64 +178,42 @@ export default function Pricing() {
                   
                   <div className="p-6">
                     <div className="text-center mb-6">
-                      <h3 className="text-2xl font-bold mb-2 text-primary-light">{plan.name}</h3>
+                      <div className="flex justify-center mb-4">
+                        <div className="p-3 rounded-xl bg-ice-accent/20">
+                          <Icon name="sms" size="xl" variant={plan.popular ? 'fuchsia' : 'ice'} />
+                        </div>
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold mb-2 text-primary-light">{plan.name}</h3>
                       <div className="mb-2">
-                        <span className="text-4xl font-bold text-primary-light">
+                        <span className="text-4xl md:text-5xl font-bold text-primary-light">
                           €{plan.price}
                         </span>
                         <span className="text-lg text-border-subtle ml-2">
-                          {plan.billingPeriodLabel}
+                          /{plan.billingPeriod}
                         </span>
                       </div>
-                      <div className="flex items-center justify-center gap-2 mb-4">
-                        <Icon name="sms" size="md" variant={plan.popular ? 'fuchsia' : 'ice'} />
-                        <span className="text-lg font-semibold text-primary-light">
-                          {plan.freeCredits} free credits per {plan.freeCreditsPeriod}
-                        </span>
-                      </div>
-                      <p className="text-sm text-border-subtle">{plan.description}</p>
+                      <p className="text-sm text-border-subtle mb-4">
+                        {plan.freeCredits.toLocaleString()} SMS credits per {plan.billingPeriod === 'month' ? 'month' : 'year'}
+                      </p>
+                      {plan.billingPeriod === 'year' && (
+                        <p className="text-xs text-ice-accent font-medium">
+                          Only €{Math.round(plan.price / 12)}/month when billed annually
+                        </p>
+                      )}
                     </div>
 
-                    <div className="mb-6">
-                      <h4 className="text-sm font-semibold text-primary-light mb-3 uppercase tracking-wider">
-                        What's Included
-                      </h4>
-                      <ul className="space-y-2">
-                        {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm">
-                            <Icon name="check" size="sm" variant={plan.popular ? 'fuchsia' : 'ice'} className="mt-0.5 flex-shrink-0" />
-                            <span className="text-primary-light">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <Icon name="check" size="sm" variant={plan.popular ? 'fuchsia' : 'ice'} className="mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-primary-light">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-                    {plan.limits && plan.limits.length > 0 && (
+                    {plan.notes && (
                       <div className="mb-6 pt-4 border-t border-neutral-border">
-                        <h4 className="text-sm font-semibold text-primary-light mb-3 uppercase tracking-wider">
-                          Limits & Flexibility
-                        </h4>
-                        <ul className="space-y-2">
-                          {plan.limits.map((limit, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm">
-                              <Icon name="info" size="sm" variant="ice" className="mt-0.5 flex-shrink-0" />
-                              <span className="text-border-subtle">{limit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {plan.notes && plan.notes.length > 0 && (
-                      <div className="mb-6 pt-4 border-t border-neutral-border">
-                        <ul className="space-y-1">
-                          {plan.notes.map((note, i) => (
-                            <li key={i} className="text-xs text-border-subtle flex items-start gap-2">
-                              <span className="text-ice-accent">•</span>
-                              <span>{note}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-xs text-border-subtle">{plan.notes}</p>
                       </div>
                     )}
 
@@ -249,198 +230,114 @@ export default function Pricing() {
                 </GlassCard>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Free Features Banner */}
-          <GlassCard variant="ice" className="mb-12 p-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-ice-accent/20 flex-shrink-0">
-                <Icon name="check" size="xl" variant="ice" />
-              </div>
-              <div>
-                <h2 className="text-h2 font-bold mb-2">All Features Included Free</h2>
-                <p className="text-body text-border-subtle mb-4">
-                  Every feature is available to all users. Campaign builder, automations, analytics, integrations—everything is free.
-                  You only pay for the SMS messages you send.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {freeFeatures.slice(0, 6).map((feature, i) => (
-                    <GlassBadge key={i} variant="ice" className="text-xs">
-                      {feature}
-                    </GlassBadge>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-
-          {/* How It Works Section */}
-          <GlassCard variant="dark" className="mb-12 p-8">
-            <div className="text-center mb-6">
-              <h2 className="text-h2 font-bold mb-4">How to Get Started</h2>
-              <p className="text-body text-border-subtle max-w-2xl mx-auto">
-                Getting started with Astronote is simple. Follow these steps to begin sending SMS campaigns.
+        {/* ROI Stats Section */}
+        <section className="py-20 px-4 lg:px-8 bg-surface-dark/30">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-h2 md:text-4xl font-bold mb-4">The Numbers Don't Lie</h2>
+              <p className="text-lg text-border-subtle max-w-2xl mx-auto">
+                <strong className="text-primary-light">SMS delivers results that email can't match.</strong> 
+                Here's what Shopify stores using Astronote achieve.
               </p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-ice-accent text-primary-dark flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-glow-ice">
-                  1
-                </div>
-                <h3 className="text-h3 font-semibold mb-2">Install Extension</h3>
-                <p className="text-sm text-border-subtle">
-                  Install Astronote from the Shopify App Store. One-click installation, takes less than 2 minutes.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-ice-accent text-primary-dark flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-glow-ice">
-                  2
-                </div>
-                <h3 className="text-h3 font-semibold mb-2">Connect Your Store</h3>
-                <p className="text-sm text-border-subtle">
-                  Connect your Shopify store. Your customer data syncs automatically. No manual setup required.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-ice-accent text-primary-dark flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-glow-ice">
-                  3
-                </div>
-                <h3 className="text-h3 font-semibold mb-2">Start Sending</h3>
-                <p className="text-sm text-border-subtle">
-                  Create your first campaign and start sending. All features are free—you only pay for SMS credits.
-                </p>
-              </div>
-            </div>
-            
-            <div className="mt-8 text-center">
-              <GlassButton variant="primary" size="lg" as={Link} to="/install" className="group">
-                <span className="flex items-center gap-2">
-                  Get Started Now
-                  <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              </GlassButton>
-            </div>
-          </GlassCard>
 
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-            {packages.map((pkg) => (
-              <GlassCard
-                key={pkg.id}
-                variant={pkg.popular ? 'fuchsia' : 'default'}
-                className={`relative cursor-pointer transition-transform hover:scale-[1.02] ${pkg.popular ? 'shadow-glow-fuchsia' : ''}`}
-                onClick={handlePackageClick}
-              >
-                  {pkg.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <GlassBadge variant="fuchsia">Most Popular</GlassBadge>
-                    </div>
-                  )}
-                  
-                  <div className="text-center mb-6">
-                    <div className="flex justify-center mb-4">
-                      <div className="p-3 rounded-xl bg-ice-accent/20">
-                        <Icon name="sms" size="xl" variant={pkg.popular ? 'fuchsia' : 'ice'} />
-                      </div>
-                    </div>
-                    <h3 className="text-h3 font-bold mb-2">{pkg.name}</h3>
-                    <div className="mb-2">
-                      <span className="text-4xl font-bold">
-                        {pkg.currency === 'USD' ? '$' : '€'}{pkg.price}
-                      </span>
-                    </div>
-                    <p className="text-sm text-border-subtle mb-1">{pkg.credits.toLocaleString()} SMS Credits</p>
-                    <p className="text-xs text-ice-accent">
-                      {pkg.currency === 'USD' ? '$' : '€'}
-                      {(pkg.price / pkg.credits * 1000).toFixed(2)} per 1,000 SMS
-                    </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {roiStats.map((stat, index) => (
+                <GlassCard key={index} variant="ice" className="p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-ice-accent mb-2">
+                    {stat.metric}
                   </div>
-                  
-                  <div className="mb-6">
-                    <p className="text-sm text-border-subtle text-center mb-4">{pkg.description}</p>
-                    <ul className="space-y-2">
-                      {pkg.features?.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm">
-                          <Icon name="check" size="sm" variant={pkg.popular ? 'fuchsia' : 'ice'} className="mt-0.5 flex-shrink-0" />
-                          <span className="text-primary-light">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="text-sm text-border-subtle">
+                    {stat.label}
                   </div>
-                  
-                  <GlassButton
-                    variant={pkg.popular ? 'fuchsia' : 'primary'}
-                    size="lg"
-                    className="w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/shopify/install');
-                    }}
-                  >
-                    Get Started
-                  </GlassButton>
-                  <p className="text-xs text-center text-border-subtle mt-2">
-                    Install app to purchase credits
-                  </p>
                 </GlassCard>
               ))}
+            </div>
           </div>
+        </section>
 
-          {/* FAQ Section */}
-          <section className="max-w-2xl mx-auto">
-            <h2 className="text-h2 font-bold text-center mb-8">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              <GlassCard hover={false} className="p-6">
-                <div className="flex items-start gap-3">
-                  <Icon name="check" size="md" variant="ice" className="flex-shrink-0 mt-1" />
-                  <div className="text-left">
-                    <h3 className="text-h3 font-semibold mb-2">Do I need to pay a monthly subscription?</h3>
-                    <p className="text-body text-border-subtle">
-                      No! There are no monthly subscriptions. You only pay for SMS credits when you need them. All features are included free.
-                    </p>
-                  </div>
-                </div>
+        {/* FAQ Section */}
+        <section className="py-20 px-4 lg:px-8">
+          <div className="max-w-[1200px] mx-auto">
+            <h2 className="text-h2 md:text-4xl font-bold text-center mb-12">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-6 max-w-3xl mx-auto">
+              <GlassCard variant="dark" className="p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">Can I change plans later?</h3>
+                <p className="text-sm md:text-base text-border-subtle">
+                  Yes, you can upgrade or downgrade your plan at any time. Plan changes take effect immediately. Free credits are allocated on each billing cycle renewal.
+                </p>
               </GlassCard>
-              <GlassCard hover={false} className="p-6">
-                <div className="flex items-start gap-3">
-                  <Icon name="check" size="md" variant="ice" className="flex-shrink-0 mt-1" />
-                  <div className="text-left">
-                    <h3 className="text-h3 font-semibold mb-2">Do credits expire?</h3>
-                    <p className="text-body text-border-subtle">
-                      No, your SMS credits never expire. Buy credits once and use them whenever you need them.
-                    </p>
-                  </div>
-                </div>
+
+              <GlassCard variant="dark" className="p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">What happens if I run out of credits?</h3>
+                <p className="text-sm md:text-base text-border-subtle">
+                  You can purchase additional credits at any time through credit top-ups or credit packages. Credits never expire and accumulate in your wallet. Each SMS message costs exactly 1 credit.
+                </p>
               </GlassCard>
-              <GlassCard hover={false} className="p-6">
-                <div className="flex items-start gap-3">
-                  <Icon name="check" size="md" variant="ice" className="flex-shrink-0 mt-1" />
-                  <div className="text-left">
-                    <h3 className="text-h3 font-semibold mb-2">What happens if I run out of credits?</h3>
-                    <p className="text-body text-border-subtle">
-                      We'll notify you when your balance is low. Simply purchase more credits to continue sending SMS messages. All your features remain available.
-                    </p>
-                  </div>
-                </div>
+
+              <GlassCard variant="dark" className="p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">Is there a setup fee?</h3>
+                <p className="text-sm md:text-base text-border-subtle">
+                  No, there are no setup fees or hidden costs. You only pay for your chosen subscription plan. Additional credits can be purchased as needed.
+                </p>
               </GlassCard>
-              <GlassCard hover={false} className="p-6">
-                <div className="flex items-start gap-3">
-                  <Icon name="check" size="md" variant="ice" className="flex-shrink-0 mt-1" />
-                  <div className="text-left">
-                    <h3 className="text-h3 font-semibold mb-2">Are all features really free?</h3>
-                    <p className="text-body text-border-subtle">
-                      Yes! Campaign builder, automations, analytics, Shopify integration, message templates—all core features are free. You only pay for the SMS messages you send. Some advanced features like A/B testing and link shortening are coming soon.
-                    </p>
-                  </div>
-                </div>
+
+              <GlassCard variant="dark" className="p-6">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">Can I purchase additional credits?</h3>
+                <p className="text-sm md:text-base text-border-subtle">
+                  Yes! You can purchase credit top-ups (pay-as-you-go) at any time, or buy credit packages if you have an active subscription. Credit top-ups are available to all users, while credit packages require an active subscription.
+                </p>
               </GlassCard>
             </div>
-          </section>
-        </div>
-      </main>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24 px-4 bg-gradient-to-b from-surface-dark to-bg-dark relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-ice-accent/10 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zoom-fuchsia/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+          </div>
+          <div className="relative max-w-[800px] mx-auto text-center">
+            <div className="bg-surface-dark/50 backdrop-blur-md border border-glass-border rounded-2xl p-10 md:p-12">
+              <div className="flex justify-center mb-6">
+                <div className="p-4 rounded-xl bg-ice-accent/20">
+                  <Icon name="growth" size="xl" variant="ice" />
+                </div>
+              </div>
+              <h2 className="text-h1 md:text-5xl font-bold mb-6">Stop Waiting. Start Growing.</h2>
+              <p className="text-lg text-border-subtle mb-6 leading-relaxed max-w-2xl mx-auto">
+                <strong className="text-primary-light">Your customers are on their phones right now.</strong> 
+                While you're sending emails that get ignored, your competitors are using SMS to drive sales. 
+                <strong className="text-primary-light"> Start your free trial today—no credit card required.</strong>
+              </p>
+              <div className="mb-10 p-4 bg-ice-accent/10 border border-ice-accent/20 rounded-lg max-w-2xl mx-auto">
+                <p className="text-sm text-border-subtle text-center">
+                  <strong className="text-primary-light">Join 10,000+ Shopify stores</strong> already using Astronote to turn SMS into revenue. 
+                  <strong className="text-primary-light"> 98% open rates. Instant delivery. Better conversions.</strong>
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <GlassButton variant="primary" size="lg" as={Link} to="/shopify/install" className="group">
+                  <span className="flex items-center gap-2">
+                    Get Started
+                    <Icon name="arrowRight" size="sm" className="group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </GlassButton>
+                <GlassButton variant="ghost" size="lg" as={Link} to="/shopify/login">
+                  Sign In
+                </GlassButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
 }

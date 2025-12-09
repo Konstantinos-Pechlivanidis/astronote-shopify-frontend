@@ -347,8 +347,8 @@ export default function Billing() {
               </GlassCard>
 
               {/* Subscription Section */}
-              <div className="mb-8 sm:mb-10">
-                <div className="flex items-center gap-3 mb-6">
+              <div className="mb-6 sm:mb-8 lg:mb-10">
+                <div className="flex items-center gap-3 mb-4 sm:mb-6">
                   <div className="p-2.5 rounded-xl bg-ice-soft/80">
                     <Icon name="billing" size="md" variant="ice" />
                   </div>
@@ -482,8 +482,8 @@ export default function Billing() {
               </div>
 
               {/* Credit Top-up Section */}
-              <div className="mb-8 sm:mb-10">
-                <div className="flex items-center gap-3 mb-6">
+              <div className="mb-6 sm:mb-8 lg:mb-10">
+                <div className="flex items-center gap-3 mb-4 sm:mb-6">
                   <div className="p-2.5 rounded-xl bg-ice-soft/80">
                     <Icon name="billing" size="md" variant="ice" />
                   </div>
@@ -568,8 +568,8 @@ export default function Billing() {
 
               {/* Purchase Packages (Credit Packs) - Only if subscription active */}
               {isSubscriptionActive && (
-                <div className="mb-8 sm:mb-10">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                <div className="mb-6 sm:mb-8 lg:mb-10">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6">
                     <div className="flex items-center gap-3">
                       <div className="p-2.5 rounded-xl bg-ice-soft/80">
                         <Icon name="billing" size="md" variant="ice" />
@@ -703,7 +703,7 @@ export default function Billing() {
 
               {/* Purchase History */}
               <div>
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-4 sm:mb-6">
                   <div className="p-2.5 rounded-xl bg-ice-soft/80">
                     <Icon name="chart" size="md" variant="ice" />
                   </div>

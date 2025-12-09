@@ -144,9 +144,9 @@ export default function Unsubscribe() {
         description={`Manage your SMS preferences for ${shopName}`}
         path="/unsubscribe"
       />
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-bg-dark">
         {/* Hero Section */}
-        <section className="relative pt-36 pb-24 px-4 lg:px-8 overflow-hidden">
+        <section className="relative pt-24 sm:pt-32 md:pt-36 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Background gradient with blobs */}
           <div className="absolute inset-0 bg-gradient-to-b from-bg-dark via-surface-dark to-bg-dark">
             <div className="absolute top-20 right-20 w-96 h-96 bg-ice-accent/10 rounded-full blur-3xl animate-float" />
@@ -161,13 +161,13 @@ export default function Unsubscribe() {
                     <Icon name="check" size="xl" variant="ice" className="text-ice-accent" />
                   </div>
                 </div>
-                <h1 className="text-hero md:text-6xl font-bold mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
                   <GradientText>You're Unsubscribed</GradientText>
                 </h1>
-                <p className="text-xl md:text-2xl text-border-subtle max-w-2xl mx-auto mb-8 leading-relaxed">
+                <p className="text-lg sm:text-xl md:text-2xl text-border-subtle max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
                   You have been successfully unsubscribed from SMS messages from <strong className="text-primary-light">{shopName}</strong>.
                 </p>
-                <p className="text-lg text-border-subtle max-w-xl mx-auto mb-10">
+                <p className="text-base sm:text-lg text-border-subtle max-w-xl mx-auto mb-8 sm:mb-10 px-4">
                   You will no longer receive promotional SMS messages. If you change your mind, you can always opt back in by contacting the store directly.
                 </p>
                 <GlassButton variant="primary" size="lg" onClick={() => navigate('/shopify')}>
@@ -178,18 +178,18 @@ export default function Unsubscribe() {
                 </GlassButton>
               </div>
             ) : (
-              <div className="text-center mb-16">
-                <GlassBadge variant="ice" className="mb-6 inline-flex items-center gap-2">
+              <div className="text-center mb-12 sm:mb-16">
+                <GlassBadge variant="ice" className="mb-4 sm:mb-6 inline-flex items-center gap-2 text-xs sm:text-sm">
                   <Icon name="sms" size="sm" variant="ice" />
                   <span>Manage SMS Preferences</span>
                 </GlassBadge>
                 
-                <h1 className="text-hero md:text-6xl font-bold mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 leading-tight px-2">
                   <span className="block mb-2">Stay Connected with</span>
                   <GradientText>{shopName}</GradientText>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-border-subtle max-w-3xl mx-auto mb-4 leading-relaxed">
+                <p className="text-lg sm:text-xl md:text-2xl text-border-subtle max-w-3xl mx-auto mb-4 leading-relaxed px-4">
                   Before you go, here's what you'll miss:
                 </p>
               </div>
@@ -200,18 +200,18 @@ export default function Unsubscribe() {
         {!unsubscribed && (
           <>
             {/* Benefits Section */}
-            <section className="py-20 px-4 lg:px-8 bg-surface-dark/30">
+            <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-surface-dark/30">
               <div className="max-w-[1200px] mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
                   {benefits.map((benefit, index) => (
-                    <GlassCard key={index} className="p-6 hover:shadow-glass-light-lg transition-shadow">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-xl bg-ice-accent/20 flex-shrink-0">
+                    <GlassCard key={index} className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-shadow">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className="p-2.5 sm:p-3 rounded-xl bg-ice-accent/20 flex-shrink-0">
                           <Icon name={benefit.icon} size="lg" variant="ice" />
                         </div>
                         <div>
-                          <h3 className="text-h2 font-semibold mb-2 text-primary-light">{benefit.title}</h3>
-                          <p className="text-body text-border-subtle leading-relaxed">{benefit.description}</p>
+                          <h3 className="text-lg sm:text-xl font-semibold mb-2 text-primary-light">{benefit.title}</h3>
+                          <p className="text-sm sm:text-base text-border-subtle leading-relaxed">{benefit.description}</p>
                         </div>
                       </div>
                     </GlassCard>
@@ -219,52 +219,52 @@ export default function Unsubscribe() {
                 </div>
 
                 {/* Value Proposition */}
-                <GlassCard variant="ice" className="p-8 md:p-12 mb-12">
-                  <div className="text-center mb-8">
-                    <h2 className="text-h1 font-bold mb-4">Why Stay Subscribed?</h2>
-                    <p className="text-lg text-border-subtle max-w-2xl mx-auto">
+                <GlassCard variant="ice" className="p-6 sm:p-8 md:p-12 mb-8 sm:mb-12">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Why Stay Subscribed?</h2>
+                    <p className="text-base sm:text-lg text-border-subtle max-w-2xl mx-auto px-4">
                       SMS messages have a 98% open rate and deliver instant value. Don't miss out on exclusive deals and important updates.
                     </p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                     <div className="text-center">
-                      <div className="text-4xl font-bold text-ice-accent mb-2">98%</div>
-                      <p className="text-sm text-border-subtle">Open Rate</p>
+                      <div className="text-3xl sm:text-4xl font-bold text-ice-accent mb-2">98%</div>
+                      <p className="text-xs sm:text-sm text-border-subtle">Open Rate</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-4xl font-bold text-ice-accent mb-2">3 min</div>
-                      <p className="text-sm text-border-subtle">Average Read Time</p>
+                      <div className="text-3xl sm:text-4xl font-bold text-ice-accent mb-2">3 min</div>
+                      <p className="text-xs sm:text-sm text-border-subtle">Average Read Time</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-4xl font-bold text-ice-accent mb-2">10x</div>
-                      <p className="text-sm text-border-subtle">Better ROI</p>
+                      <div className="text-3xl sm:text-4xl font-bold text-ice-accent mb-2">10x</div>
+                      <p className="text-xs sm:text-sm text-border-subtle">Better ROI</p>
                     </div>
                   </div>
                 </GlassCard>
 
                 {/* Unsubscribe Action */}
                 <div className="text-center">
-                  <GlassCard className="p-8 md:p-12">
-                    <div className="mb-8">
-                      <h2 className="text-h1 font-bold mb-4">Still Want to Unsubscribe?</h2>
-                      <p className="text-lg text-border-subtle max-w-2xl mx-auto mb-6">
+                  <GlassCard className="p-6 sm:p-8 md:p-12">
+                    <div className="mb-6 sm:mb-8">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Still Want to Unsubscribe?</h2>
+                      <p className="text-base sm:text-lg text-border-subtle max-w-2xl mx-auto mb-4 sm:mb-6 px-4">
                         We're sorry to see you go. You can unsubscribe at any time, and you can always opt back in later.
                       </p>
                       {error && (
-                        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-                          <p className="text-red-400 text-sm">{error}</p>
+                        <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl bg-red-500/10 border border-red-500/30 max-w-2xl mx-auto">
+                          <p className="text-red-400 text-xs sm:text-sm">{error}</p>
                         </div>
                       )}
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
                       <GlassButton
                         variant="primary"
                         size="lg"
                         onClick={handleUnsubscribe}
                         disabled={submitting}
-                        className="bg-red-500/20 hover:bg-red-500/30 border-red-500/50 text-red-400"
+                        className="bg-red-500/20 hover:bg-red-500/30 border-red-500/50 text-red-400 w-full sm:w-auto"
                       >
                         <span className="flex items-center gap-2">
                           {submitting ? (
@@ -284,6 +284,7 @@ export default function Unsubscribe() {
                         variant="ghost"
                         size="lg"
                         onClick={() => navigate('/shopify')}
+                        className="w-full sm:w-auto"
                       >
                         <span className="flex items-center gap-2">
                           <Icon name="arrowRight" size="sm" />
@@ -292,7 +293,7 @@ export default function Unsubscribe() {
                       </GlassButton>
                     </div>
                     
-                    <p className="mt-6 text-sm text-border-subtle">
+                    <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-border-subtle px-4">
                       Your phone number: <span className="text-primary-light font-medium">{data?.contact?.phoneE164 || '***'}</span>
                     </p>
                   </GlassCard>

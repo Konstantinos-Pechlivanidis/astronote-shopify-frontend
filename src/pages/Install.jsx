@@ -56,9 +56,14 @@ export default function Install() {
             </div>
             
             <h1 className="text-h1 md:text-5xl font-bold mb-4">Install Astronote</h1>
-            <p className="text-xl text-border-subtle mb-8">
+            <p className="text-xl text-border-subtle mb-4">
               Get started with SMS marketing for your Shopify store in minutes.
             </p>
+            <div className="mb-8 p-4 bg-ice-accent/10 border border-ice-accent/20 rounded-lg">
+              <p className="text-sm text-border-subtle text-center">
+                <strong className="text-primary-light">Trusted by 10,000+ Shopify stores</strong> worldwide. Join them today and start growing your business with SMS marketing.
+              </p>
+            </div>
 
             <div className="space-y-6 mb-8">
               <div className="flex items-start gap-4 text-left">

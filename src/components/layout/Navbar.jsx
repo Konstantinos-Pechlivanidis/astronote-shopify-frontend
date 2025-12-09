@@ -54,6 +54,8 @@ export default function Navbar() {
     { path: '/shopify/contact', label: 'Contact', icon: 'segment' },
   ];
 
+  const landingUrl = 'https://astronote-landing.onrender.com';
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -85,6 +87,14 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
+            <a
+              href={landingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-primary-light/90 hover:text-ice-accent hover:bg-ice-accent/5"
+            >
+              Home
+            </a>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -160,6 +170,22 @@ export default function Navbar() {
           >
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 space-y-4">
               {/* Navigation Links */}
+              <a
+                href={landingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-primary-light/90 hover:text-ice-accent hover:bg-ice-accent/5"
+              >
+                <Icon 
+                  name="home" 
+                  size="md" 
+                  variant="default"
+                />
+                <span className="text-base font-medium">
+                  Home
+                </span>
+              </a>
               {navLinks.map((link) => (
                 <Link
                   key={link.path}

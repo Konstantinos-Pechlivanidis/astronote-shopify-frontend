@@ -4,29 +4,46 @@ import PageHeader from '../../components/ui/PageHeader';
 import Icon from '../../components/ui/Icon';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import { useDashboard } from '../../services/queries';
+import { useDashboard, useBillingBalance } from '../../services/queries';
 import { useStoreInfo } from '../../hooks/useStoreInfo';
 import SEO from '../../components/SEO';
 
 /**
  * Dashboard Page
  * Main dashboard for authenticated users
+ * 
+ * Data Sources:
+ * - Credits: Uses billing balance API for accurate, real-time credit balance
+ * - Campaigns, Contacts, Messages: Uses dashboard API for aggregated stats
  */
 export default function Dashboard() {
   const navigate = useNavigate();
   const storeInfo = useStoreInfo();
+  
   // Use cached data when available - only show loading on initial load
-  const { data: dashboardData, isLoading, error } = useDashboard({
+  const { data: dashboardData, isLoading: isLoadingDashboard, error: dashboardError } = useDashboard({
     refetchInterval: false, // Disable auto-refetch - data is cached and fresh for 2 minutes
   });
 
+  // Fetch credits from billing balance API for accuracy (this is the source of truth)
+  const { data: balanceData, isLoading: isLoadingBalance } = useBillingBalance();
+
+  // Normalize dashboard data
+  const dashboard = dashboardData?.data || dashboardData || {};
+  
+  // Get credits from billing balance (source of truth) or fallback to dashboard
+  const balanceResponse = balanceData?.data || balanceData || {};
+  const credits = balanceResponse.credits || balanceResponse.balance || dashboard.credits || 0;
+
   // Only show full loading state on initial load (no cached data)
   // If we have cached data, show it immediately even if fetching
-  const isInitialLoad = isLoading && !dashboardData;
+  const isInitialLoad = (isLoadingDashboard && !dashboardData) || (isLoadingBalance && !balanceData);
 
   if (isInitialLoad) {
     return <LoadingState size="lg" message="Loading dashboard..." />;
   }
+
+  const error = dashboardError;
 
   return (
     <>
@@ -54,65 +71,63 @@ export default function Dashboard() {
           )}
 
           {/* Dashboard Content - Show cached data immediately, update in background */}
-          {dashboardData && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-6 sm:mb-8 lg:mb-10">
-              {/* Credits Balance */}
-              <GlassCard variant="ice" className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-ice-soft/80">
-                    <Icon name="sms" size="lg" variant="ice" />
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-6 sm:mb-8 lg:mb-10">
+            {/* Credits Balance - Uses billing balance API for accuracy */}
+            <GlassCard variant="ice" className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-ice-soft/80">
+                  <Icon name="sms" size="lg" variant="ice" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">SMS Credits</h3>
-                <p className="text-3xl sm:text-4xl font-bold text-ice-primary mb-1">
-                  {dashboardData.credits?.toLocaleString() || '0'}
-                </p>
-                <p className="text-xs sm:text-sm text-primary">Available credits</p>
-              </GlassCard>
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">SMS Credits</h3>
+              <p className="text-3xl sm:text-4xl font-bold text-ice-primary mb-1">
+                {credits.toLocaleString()}
+              </p>
+              <p className="text-xs sm:text-sm text-primary">Available credits</p>
+            </GlassCard>
 
-              {/* Total Campaigns */}
-              <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-ice-soft/80">
-                    <Icon name="campaign" size="lg" variant="ice" />
-                  </div>
+            {/* Total Campaigns */}
+            <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-ice-soft/80">
+                  <Icon name="campaign" size="lg" variant="ice" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Campaigns</h3>
-                <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
-                  {dashboardData.totalCampaigns || 0}
-                </p>
-                <p className="text-xs sm:text-sm text-primary">Total campaigns</p>
-              </GlassCard>
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Campaigns</h3>
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
+                {dashboard.totalCampaigns || 0}
+              </p>
+              <p className="text-xs sm:text-sm text-primary">Total campaigns</p>
+            </GlassCard>
 
-              {/* Total Contacts */}
-              <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-ice-soft/80">
-                    <Icon name="segment" size="lg" variant="ice" />
-                  </div>
+            {/* Total Contacts */}
+            <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-ice-soft/80">
+                  <Icon name="segment" size="lg" variant="ice" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Contacts</h3>
-                <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
-                  {dashboardData.totalContacts?.toLocaleString() || 0}
-                </p>
-                <p className="text-xs sm:text-sm text-primary">Total contacts</p>
-              </GlassCard>
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Contacts</h3>
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
+                {dashboard.totalContacts?.toLocaleString() || 0}
+              </p>
+              <p className="text-xs sm:text-sm text-primary">Total contacts</p>
+            </GlassCard>
 
-              {/* Messages Sent */}
-              <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-ice-soft/80">
-                    <Icon name="send" size="lg" variant="ice" />
-                  </div>
+            {/* Messages Sent */}
+            <GlassCard className="p-5 sm:p-6 hover:shadow-glass-light-lg transition-all duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-ice-soft/80">
+                  <Icon name="send" size="lg" variant="ice" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Messages Sent</h3>
-                <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
-                  {dashboardData.totalMessagesSent?.toLocaleString() || 0}
-                </p>
-                <p className="text-xs sm:text-sm text-primary">All time</p>
-              </GlassCard>
-            </div>
-          )}
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold mb-2 text-neutral-text-primary">Messages Sent</h3>
+              <p className="text-3xl sm:text-4xl font-bold text-neutral-text-primary mb-1">
+                {dashboard.totalMessagesSent?.toLocaleString() || 0}
+              </p>
+              <p className="text-xs sm:text-sm text-primary">All time</p>
+            </GlassCard>
+          </div>
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">

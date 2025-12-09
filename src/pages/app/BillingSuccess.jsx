@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import GlassCard from '../../components/ui/GlassCard';
 import GlassButton from '../../components/ui/GlassButton';
@@ -16,6 +16,7 @@ export default function BillingSuccess() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState(null);
   const [balanceUpdated, setBalanceUpdated] = useState(false);
+  const hasVerifiedRef = useRef(false); // Prevent multiple verifications
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('type') || 'unknown';
   const verifySession = useVerifySubscriptionSession();
@@ -23,56 +24,76 @@ export default function BillingSuccess() {
   const { data: balanceData, refetch: refetchBalance } = useBillingBalance();
 
   useEffect(() => {
+    // Prevent multiple verifications - only run once per sessionId
+    if (hasVerifiedRef.current) {
+      return;
+    }
+
+    // No session ID - might be a direct visit or webhook already processed
+    if (!sessionId) {
+      setBalanceUpdated(true);
+      return;
+    }
+
+    // Mark as verified immediately to prevent re-runs
+    hasVerifiedRef.current = true;
+
     // If session_id is present and it's a subscription, verify it
-    if (sessionId && !isVerifying && paymentType === 'subscription') {
+    if (paymentType === 'subscription') {
       setIsVerifying(true);
       setVerificationError(null);
+      
       verifySession.mutate(
         { sessionId },
         {
           onSuccess: () => {
-            refetchSubscription();
-            refetchBalance();
-            setBalanceUpdated(true);
-            toast.success('Payment verified successfully!');
+            // Refetch data once
+            Promise.all([refetchSubscription(), refetchBalance()]).then(() => {
+              setBalanceUpdated(true);
+              setIsVerifying(false);
+              toast.success('Payment verified successfully!');
+            }).catch(() => {
+              setIsVerifying(false);
+              // Still show success even if refetch fails
+              toast.success('Payment verified successfully!');
+            });
           },
           onError: (error) => {
             // Show a warning but don't block the user - webhook will handle verification
             const errorMessage = error?.response?.data?.message || error?.message || 'Verification pending';
             setVerificationError(errorMessage);
             console.warn('Subscription verification failed:', error);
-            // Still refetch to get latest status (webhook may have processed it)
-            setTimeout(() => {
-              refetchSubscription();
-              refetchBalance();
-            }, 2000);
-          },
-          onSettled: () => {
             setIsVerifying(false);
+            
+            // Refetch once after delay (webhook may have processed it)
+            setTimeout(() => {
+              Promise.all([refetchSubscription(), refetchBalance()]).catch(() => {
+                // Silently fail - webhook will handle it
+              });
+            }, 2000);
           },
         },
       );
-    } else if (sessionId && paymentType !== 'subscription') {
+    } else {
       // For top-up and pack purchases, refresh balance after a delay
       // Webhook will process the payment
       setIsVerifying(true);
+      
       setTimeout(() => {
-        refetchBalance().then(() => {
-          setBalanceUpdated(true);
-          setIsVerifying(false);
-          toast.success('Payment processed! Credits have been added to your account.');
-        }).catch(() => {
-          setIsVerifying(false);
-          // Still show success - webhook will process it
-          toast.success('Payment processed! Credits will be added shortly.');
-        });
+        refetchBalance()
+          .then(() => {
+            setBalanceUpdated(true);
+            setIsVerifying(false);
+            toast.success('Payment processed! Credits have been added to your account.');
+          })
+          .catch(() => {
+            setIsVerifying(false);
+            // Still show success - webhook will process it
+            toast.success('Payment processed! Credits will be added shortly.');
+          });
       }, 2000);
-    } else if (!sessionId) {
-      // No session ID - might be a direct visit or webhook already processed
-      // Just show success message
-      setBalanceUpdated(true);
     }
-  }, [sessionId, paymentType, isVerifying, verifySession, refetchSubscription, refetchBalance, toast]);
+  }, [sessionId, paymentType, verifySession, refetchSubscription, refetchBalance, toast]); // Minimal dependencies
 
   const subscription = subscriptionData?.data || subscriptionData || {};
   const balance = balanceData?.data?.balance || balanceData?.balance || 0;

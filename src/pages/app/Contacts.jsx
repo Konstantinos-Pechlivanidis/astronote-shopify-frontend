@@ -331,13 +331,25 @@ export default function Contacts() {
                 </GlassCard>
 
             {/* Pagination */}
-            {pagination.totalPages > 1 && (
-              <div className="mt-8">
-                <GlassPagination
-                  currentPage={page}
-                  totalPages={pagination.totalPages || 1}
-                  onPageChange={setPage}
-                />
+            {pagination && pagination.totalPages > 1 && (
+              <div className="mt-6 sm:mt-8">
+                <GlassCard className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-sm text-primary">
+                      Showing page {pagination.page || page} of {pagination.totalPages}
+                      {pagination.total && (
+                        <span className="ml-2">
+                          ({pagination.total} {pagination.total === 1 ? 'contact' : 'contacts'} total)
+                        </span>
+                      )}
+                    </div>
+                    <GlassPagination
+                      currentPage={page}
+                      totalPages={pagination.totalPages || 1}
+                      onPageChange={setPage}
+                    />
+                  </div>
+                </GlassCard>
               </div>
             )}
             </>

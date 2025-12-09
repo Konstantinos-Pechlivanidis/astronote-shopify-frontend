@@ -3,12 +3,16 @@ import Icon from './Icon';
 
 /**
  * Glass Pagination Component
+ * Professional, modern, and fully responsive pagination component
  */
 export default function GlassPagination({
   currentPage = 1,
   totalPages = 1,
   onPageChange,
-  className,
+  className = '',
+  showInfo = true,
+  totalItems = null,
+  itemName = 'items',
 }) {
   if (totalPages <= 1) return null;
 
@@ -26,70 +30,105 @@ export default function GlassPagination({
     pages.push(i);
   }
 
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
+      onPageChange(newPage);
+      // Scroll to top of table/list
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className={`flex items-center justify-center gap-1 sm:gap-2 flex-wrap ${className}`}>
-      {/* Previous Button */}
-      <GlassButton
-        variant="ghost"
-        size="sm"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        aria-label="Previous page"
-      >
-        <Icon name="arrowRight" size="sm" className="rotate-180" />
-      </GlassButton>
-
-      {/* First Page */}
-      {startPage > 1 && (
-        <>
-          <GlassButton
-            variant={1 === currentPage ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => onPageChange(1)}
-          >
-            1
-          </GlassButton>
-          {startPage > 2 && <span className="text-neutral-text-secondary px-2">...</span>}
-        </>
+    <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>
+      {showInfo && (
+        <div className="text-sm text-primary order-2 sm:order-1">
+          <span className="font-medium">
+            Page {currentPage} of {totalPages}
+          </span>
+          {totalItems !== null && (
+            <span className="ml-2 opacity-75">
+              ({totalItems.toLocaleString()} {totalItems === 1 ? itemName.slice(0, -1) : itemName} total)
+            </span>
+          )}
+        </div>
       )}
-
-      {/* Page Numbers */}
-      {pages.map((page) => (
+      
+      <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap order-1 sm:order-2">
+        {/* Previous Button */}
         <GlassButton
-          key={page}
-          variant={page === currentPage ? 'primary' : 'ghost'}
-          size="sm"
-          onClick={() => onPageChange(page)}
+          variant="ghost"
+          size="md"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="min-h-[44px] min-w-[44px]"
+          aria-label="Previous page"
         >
-          {page}
+          <Icon name="arrowRight" size="sm" className="rotate-180" />
         </GlassButton>
-      ))}
 
-      {/* Last Page */}
-      {endPage < totalPages && (
-        <>
-          {endPage < totalPages - 1 && <span className="text-neutral-text-secondary px-2">...</span>}
+        {/* First Page */}
+        {startPage > 1 && (
+          <>
+            <GlassButton
+              variant={1 === currentPage ? 'primary' : 'ghost'}
+              size="md"
+              onClick={() => handlePageChange(1)}
+              className="min-h-[44px] min-w-[44px]"
+              aria-label="Go to page 1"
+            >
+              1
+            </GlassButton>
+            {startPage > 2 && (
+              <span className="text-primary px-2 text-sm">...</span>
+            )}
+          </>
+        )}
+
+        {/* Page Numbers */}
+        {pages.map((page) => (
           <GlassButton
-            variant={totalPages === currentPage ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => onPageChange(totalPages)}
+            key={page}
+            variant={page === currentPage ? 'primary' : 'ghost'}
+            size="md"
+            onClick={() => handlePageChange(page)}
+            className="min-h-[44px] min-w-[44px]"
+            aria-label={`Go to page ${page}`}
+            aria-current={page === currentPage ? 'page' : undefined}
           >
-            {totalPages}
+            {page}
           </GlassButton>
-        </>
-      )}
+        ))}
 
-      {/* Next Button */}
-      <GlassButton
-        variant="ghost"
-        size="sm"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        aria-label="Next page"
-      >
-        <Icon name="arrowRight" size="sm" />
-      </GlassButton>
+        {/* Last Page */}
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && (
+              <span className="text-primary px-2 text-sm">...</span>
+            )}
+            <GlassButton
+              variant={totalPages === currentPage ? 'primary' : 'ghost'}
+              size="md"
+              onClick={() => handlePageChange(totalPages)}
+              className="min-h-[44px] min-w-[44px]"
+              aria-label={`Go to page ${totalPages}`}
+            >
+              {totalPages}
+            </GlassButton>
+          </>
+        )}
+
+        {/* Next Button */}
+        <GlassButton
+          variant="ghost"
+          size="md"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="min-h-[44px] min-w-[44px]"
+          aria-label="Next page"
+        >
+          <Icon name="arrowRight" size="sm" />
+        </GlassButton>
+      </div>
     </div>
   );
 }
-

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GlassCard from '../../components/ui/GlassCard';
 import GlassButton from '../../components/ui/GlassButton';
@@ -45,7 +45,18 @@ export default function Contacts() {
   const deleteContact = useDeleteContact();
 
   const contacts = data?.contacts || data?.items || [];
-  const pagination = data?.pagination || {};
+  const pagination = useMemo(() => {
+    const pag = data?.pagination || {};
+    // Ensure pagination has all required fields
+    return {
+      page: pag.page || page,
+      pageSize: pag.pageSize || pageSize,
+      total: pag.total || 0,
+      totalPages: pag.totalPages || Math.ceil((pag.total || 0) / (pag.pageSize || pageSize)) || 1,
+      hasNextPage: pag.hasNextPage !== undefined ? pag.hasNextPage : (pag.page || page) < (pag.totalPages || Math.ceil((pag.total || 0) / (pag.pageSize || pageSize)) || 1),
+      hasPrevPage: pag.hasPrevPage !== undefined ? pag.hasPrevPage : (pag.page || page) > 1,
+    };
+  }, [data?.pagination, page, pageSize]);
 
   const handleDeleteClick = (id, name) => {
     setDeleteTarget({ id, name });
@@ -333,22 +344,19 @@ export default function Contacts() {
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
               <div className="mt-6 sm:mt-8">
-                <GlassCard className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-sm text-primary">
-                      Showing page {pagination.page || page} of {pagination.totalPages}
-                      {pagination.total && (
-                        <span className="ml-2">
-                          ({pagination.total} {pagination.total === 1 ? 'contact' : 'contacts'} total)
-                        </span>
-                      )}
-                    </div>
-                    <GlassPagination
-                      currentPage={page}
-                      totalPages={pagination.totalPages || 1}
-                      onPageChange={setPage}
-                    />
-                  </div>
+                <GlassCard className="p-5 sm:p-6 shadow-xl border border-neutral-border/40">
+                  <GlassPagination
+                    currentPage={pagination.page || page}
+                    totalPages={pagination.totalPages || 1}
+                    onPageChange={(newPage) => {
+                      setPage(newPage);
+                      // Scroll to top smoothly
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    totalItems={pagination.total}
+                    itemName="contacts"
+                    showInfo={true}
+                  />
                 </GlassCard>
               </div>
             )}

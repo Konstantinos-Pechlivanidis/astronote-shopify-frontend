@@ -46,14 +46,20 @@ export function normalizePaginatedResponse(response, itemKey = 'items') {
   if (response && typeof response === 'object') {
     pagination = response.pagination || {};
     
+    // Calculate pageSize and totalPages
+    const pageSize = pagination.pageSize || pagination.limit || pagination.perPage || 20;
+    const total = pagination.total || pagination.totalCount || 0;
+    const totalPages = pagination.totalPages || pagination.pages || Math.ceil(total / pageSize);
+    const currentPage = pagination.page || pagination.currentPage || 1;
+    
     // Ensure pagination has required fields with defaults
     pagination = {
-      page: pagination.page || pagination.currentPage || 1,
-      pageSize: pagination.pageSize || pagination.limit || pagination.perPage || 20,
-      total: pagination.total || pagination.totalCount || 0,
-      totalPages: pagination.totalPages || pagination.pages || Math.ceil((pagination.total || pagination.totalCount || 0) / (pagination.pageSize || pagination.limit || pagination.perPage || 20)),
-      hasNextPage: pagination.hasNextPage !== undefined ? pagination.hasNextPage : (pagination.page || pagination.currentPage || 1) < (pagination.totalPages || pagination.pages || Math.ceil((pagination.total || pagination.totalCount || 0) / (pagination.pageSize || pagination.limit || pagination.perPage || 20))),
-      hasPrevPage: pagination.hasPrevPage !== undefined ? pagination.hasPrevPage : (pagination.page || pagination.currentPage || 1) > 1,
+      page: currentPage,
+      pageSize: pageSize,
+      total: total,
+      totalPages: totalPages > 0 ? totalPages : 1,
+      hasNextPage: pagination.hasNextPage !== undefined ? pagination.hasNextPage : currentPage < totalPages,
+      hasPrevPage: pagination.hasPrevPage !== undefined ? pagination.hasPrevPage : currentPage > 1,
     };
   }
   

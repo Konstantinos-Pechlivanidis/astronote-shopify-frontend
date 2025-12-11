@@ -40,6 +40,20 @@ export default function AutomationForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [isPlaceholderMenuOpen, setIsPlaceholderMenuOpen] = useState(false);
+  
+  // Close placeholder menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isPlaceholderMenuOpen && !event.target.closest('.placeholder-menu-container')) {
+        setIsPlaceholderMenuOpen(false);
+      }
+    };
+    if (isPlaceholderMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isPlaceholderMenuOpen]);
 
   useEffect(() => {
     if (isEditMode && existingAutomation) {
@@ -177,16 +191,98 @@ export default function AutomationForm() {
                 )}
               </div>
 
-              <GlassTextarea
-                label="Message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                error={errors.message}
-                rows={6}
-                placeholder="Type your SMS message here... Use {{first_name}} for personalization."
-                required
-              />
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-neutral-text-primary">
+                    Message
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <div className="relative placeholder-menu-container">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsPlaceholderMenuOpen(!isPlaceholderMenuOpen);
+                      }}
+                      className="px-3 py-1.5 text-sm rounded-lg bg-neutral-surface-secondary border border-neutral-border/60 hover:border-neutral-border hover:bg-neutral-surface-primary transition-colors flex items-center gap-1.5 text-primary hover:text-neutral-text-primary"
+                    >
+                      <span>+</span>
+                      <span>Insert variable</span>
+                    </button>
+                    {isPlaceholderMenuOpen && (
+                      <div className="absolute right-0 top-full mt-1 z-50 w-48 rounded-xl bg-neutral-surface-primary backdrop-blur-[24px] border border-neutral-border/60 shadow-lg overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const textarea = document.getElementById('automation-message');
+                            const start = textarea.selectionStart || formData.message.length;
+                            const end = textarea.selectionEnd || formData.message.length;
+                            const placeholder = '{{first_name}}';
+                            const newMessage = 
+                              formData.message.substring(0, start) + 
+                              placeholder + 
+                              formData.message.substring(end);
+                            setFormData(prev => ({ ...prev, message: newMessage }));
+                            setIsPlaceholderMenuOpen(false);
+                            setTimeout(() => {
+                              textarea.focus();
+                              const newPosition = start + placeholder.length;
+                              textarea.setSelectionRange(newPosition, newPosition);
+                            }, 10);
+                          }}
+                          className="w-full px-4 py-3 text-left text-sm text-neutral-text-primary hover:bg-neutral-surface-secondary transition-colors border-b border-neutral-border/30"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs bg-neutral-surface-secondary/80 text-neutral-text-primary px-2 py-1 rounded">{'{{first_name}}'}</span>
+                            <span>First Name</span>
+                          </div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const textarea = document.getElementById('automation-message');
+                            const start = textarea.selectionStart || formData.message.length;
+                            const end = textarea.selectionEnd || formData.message.length;
+                            const placeholder = '{{last_name}}';
+                            const newMessage = 
+                              formData.message.substring(0, start) + 
+                              placeholder + 
+                              formData.message.substring(end);
+                            setFormData(prev => ({ ...prev, message: newMessage }));
+                            setIsPlaceholderMenuOpen(false);
+                            setTimeout(() => {
+                              textarea.focus();
+                              const newPosition = start + placeholder.length;
+                              textarea.setSelectionRange(newPosition, newPosition);
+                            }, 10);
+                          }}
+                          className="w-full px-4 py-3 text-left text-sm text-neutral-text-primary hover:bg-neutral-surface-secondary transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs bg-neutral-surface-secondary/80 text-neutral-text-primary px-2 py-1 rounded">{'{{last_name}}'}</span>
+                            <span>Last Name</span>
+                          </div>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <GlassTextarea
+                  id="automation-message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  error={errors.message}
+                  rows={6}
+                  placeholder="Type your SMS message here... Use {{first_name}} and {{last_name}} for personalization."
+                  required
+                />
+              </div>
 
               <GlassSelectCustom
                 label="Status"

@@ -14,7 +14,7 @@ import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import { 
   useCreateCampaign, 
   useUpdateCampaign, 
-  useSendCampaign,
+  useEnqueueCampaign,
   useScheduleCampaign,
   useCampaign,
   useAudiences,
@@ -36,7 +36,7 @@ export default function CampaignCreate() {
   
   const createCampaign = useCreateCampaign();
   const updateCampaign = useUpdateCampaign();
-  const sendCampaign = useSendCampaign();
+  const enqueueCampaign = useEnqueueCampaign();
   const scheduleCampaign = useScheduleCampaign();
   const { data: existingCampaign, isLoading: isLoadingCampaign } = useCampaign(id);
   const { data: audiencesData } = useAudiences();
@@ -251,7 +251,7 @@ export default function CampaignCreate() {
         } else if (!isScheduled && result?.id) {
           // For immediate send in edit mode, send the campaign
           try {
-            await sendCampaign.mutateAsync(result.id);
+            await enqueueCampaign.mutateAsync(result.id);
             toast.success('Campaign queued for sending!');
           } catch (sendError) {
             toast.warning('Campaign updated but failed to send. You can send it manually from the campaigns list.');
@@ -288,7 +288,7 @@ export default function CampaignCreate() {
           
           if (result?.id) {
             try {
-              await sendCampaign.mutateAsync(result.id);
+              await enqueueCampaign.mutateAsync(result.id);
               toast.success('Campaign created and queued for sending!');
             } catch (sendError) {
               toast.warning('Campaign created but failed to send. You can send it manually from the campaigns list.');
@@ -717,7 +717,7 @@ export default function CampaignCreate() {
                       variant="ghost"
                       size="lg"
                       onClick={handleSaveDraft}
-                      disabled={createCampaign.isPending || updateCampaign.isPending || sendCampaign.isPending || scheduleCampaign.isPending}
+                      disabled={createCampaign.isPending || updateCampaign.isPending || enqueueCampaign.isPending || scheduleCampaign.isPending}
                       className="flex-1 min-h-[48px] shadow-md hover:shadow-lg transition-all duration-200"
                     >
                       {createCampaign.isPending || updateCampaign.isPending ? (
@@ -736,13 +736,13 @@ export default function CampaignCreate() {
                       disabled={
                         createCampaign.isPending || 
                         updateCampaign.isPending || 
-                        sendCampaign.isPending || 
+                        enqueueCampaign.isPending || 
                         scheduleCampaign.isPending ||
                         (isScheduled && (!formData.scheduleAt || formData.scheduleAt.trim() === ''))
                       }
                       className="flex-1 min-h-[48px] shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      {createCampaign.isPending || updateCampaign.isPending || sendCampaign.isPending || scheduleCampaign.isPending ? (
+                      {createCampaign.isPending || updateCampaign.isPending || enqueueCampaign.isPending || scheduleCampaign.isPending ? (
                         <span className="flex items-center gap-2">
                           <LoadingSpinner size="sm" />
                           {isScheduled ? 'Scheduling...' : 'Sending...'}

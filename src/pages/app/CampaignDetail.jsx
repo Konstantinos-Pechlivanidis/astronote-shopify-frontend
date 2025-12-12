@@ -12,8 +12,9 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import {
   useCampaign,
   useDeleteCampaign,
-  useSendCampaign,
+  useEnqueueCampaign,
   useCampaignMetrics,
+  useCampaignStatus,
 } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
@@ -27,8 +28,13 @@ export default function CampaignDetail() {
 
   const { data: campaign, isLoading, error } = useCampaign(id);
   const { data: metrics } = useCampaignMetrics(id);
+  const { data: statusData } = useCampaignStatus(id, {
+    // Enable auto-refetch for live updates
+    refetchInterval: 30 * 1000, // Refetch every 30 seconds
+    enabled: campaign?.status === 'sending' || campaign?.status === 'scheduled', // Only refetch if campaign is active
+  }); // Phase 2.2: New status endpoint with queued, processed, etc.
   const deleteCampaign = useDeleteCampaign();
-  const sendCampaign = useSendCampaign();
+  const enqueueCampaign = useEnqueueCampaign();
 
   const handleDelete = async () => {
     try {
@@ -42,7 +48,7 @@ export default function CampaignDetail() {
 
   const handleSend = async () => {
     try {
-      await sendCampaign.mutateAsync(id);
+      await enqueueCampaign.mutateAsync(id);
       toast.success('Campaign queued for sending');
     } catch (error) {
       toast.error(error?.message || 'Failed to send campaign');
@@ -166,36 +172,68 @@ export default function CampaignDetail() {
                 </div>
               </GlassCard>
 
-              {/* Metrics */}
-              {metrics && (
+              {/* Metrics - Phase 2.2: Use status endpoint for real-time metrics */}
+              {(statusData || metrics) && (
                 <GlassCard className="p-4 sm:p-6">
                   <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Performance Metrics</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                    <div>
-                      <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
-                      <p className="text-2xl font-bold text-neutral-text-primary">
-                        {metrics.sent || 0}
-                      </p>
+                  {statusData?.metrics ? (
+                    // Phase 2.2: Use new status endpoint format
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Queued</p>
+                        <p className="text-2xl font-bold text-neutral-text-primary">
+                          {statusData.metrics.queued || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
+                        <p className="text-2xl font-bold text-ice-primary">
+                          {statusData.metrics.success || statusData.campaign?.sent || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Processed</p>
+                        <p className="text-2xl font-bold text-neutral-text-primary">
+                          {statusData.metrics.processed || 0}
+                        </p>
+                        <p className="text-xs text-neutral-text-secondary mt-1">Sent + Failed</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
+                        <p className="text-2xl font-bold text-red-500">
+                          {statusData.metrics.failed || statusData.campaign?.failed || 0}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Delivered</p>
-                      <p className="text-2xl font-bold text-ice-primary">
-                        {metrics.delivered || 0}
-                      </p>
+                  ) : (
+                    // Fallback to old metrics format
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
+                        <p className="text-2xl font-bold text-neutral-text-primary">
+                          {metrics?.sent || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Delivered</p>
+                        <p className="text-2xl font-bold text-ice-primary">
+                          {metrics?.delivered || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
+                        <p className="text-2xl font-bold text-red-500">
+                          {metrics?.failed || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Delivery Rate</p>
+                        <p className="text-2xl font-bold text-ice-primary">
+                          {metrics?.deliveryRate ? `${metrics.deliveryRate.toFixed(1)}%` : '0%'}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
-                      <p className="text-2xl font-bold text-red-500">
-                        {metrics.failed || 0}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Delivery Rate</p>
-                      <p className="text-2xl font-bold text-ice-primary">
-                        {metrics.deliveryRate ? `${metrics.deliveryRate.toFixed(1)}%` : '0%'}
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </GlassCard>
               )}
             </div>

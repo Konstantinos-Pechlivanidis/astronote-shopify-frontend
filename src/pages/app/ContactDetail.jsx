@@ -188,7 +188,7 @@ export default function ContactDetail() {
         const contactId = result?.id || result?.data?.id;
         
         if (contactId) {
-          navigate(`/app/contacts/${contactId}`, { replace: true });
+          navigate(`/shopify/app/contacts/${contactId}`, { replace: true });
         } else {
           navigate('/shopify/app/contacts', { replace: true });
         }

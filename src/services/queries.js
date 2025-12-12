@@ -53,8 +53,21 @@ export const useCreateCampaign = () => {
   
   return useMutation({
     mutationFn: (data) => api.post('/campaigns', data),
-    onSuccess: () => {
+    onSuccess: (response) => {
+      // Invalidate and refetch campaigns list
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+      
+      // If campaign ID is returned, invalidate that specific campaign too
+      const campaignId = response?.data?.id || response?.id;
+      if (campaignId) {
+        queryClient.invalidateQueries({ queryKey: ['campaign', campaignId] });
+        queryClient.refetchQueries({ queryKey: ['campaign', campaignId] });
+      }
+      
+      // Update dashboard stats
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -65,9 +78,17 @@ export const useUpdateCampaign = () => {
   return useMutation({
     mutationFn: ({ id, ...data }) => api.put(`/campaigns/${id}`, data),
     onSuccess: (_, variables) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', variables.id] });
-      queryClient.invalidateQueries({ queryKey: ['campaigns', variables.id, 'metrics'] }); // Invalidate metrics
+      queryClient.refetchQueries({ queryKey: ['campaign', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', variables.id, 'metrics'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', variables.id, 'metrics'] });
+      
+      // Update dashboard stats
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -78,8 +99,11 @@ export const useDeleteCampaign = () => {
   return useMutation({
     mutationFn: (id) => api.delete(`/campaigns/${id}`),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -97,12 +121,72 @@ export const useSendCampaign = () => {
       });
     },
     onSuccess: (_, id) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', id] });
+      queryClient.refetchQueries({ queryKey: ['campaign', id] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
-      queryClient.invalidateQueries({ queryKey: ['reports'], exact: false }); // Update reports
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['reports'], exact: false });
     },
+  });
+};
+
+/**
+ * Enqueue campaign for bulk SMS sending (new bulk SMS architecture)
+ * This is the preferred method for sending campaigns
+ */
+export const useEnqueueCampaign = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (id) => {
+      return api.post(`/campaigns/${id}/enqueue`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    },
+    onSuccess: (_, id) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['campaign', id] });
+      queryClient.refetchQueries({ queryKey: ['campaign', id] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['reports'], exact: false });
+    },
+  });
+};
+
+/**
+ * Get campaign status with Phase 2.2 metrics (queued, success, processed, failed)
+ */
+export const useCampaignStatus = (id, options = {}) => {
+  return useQuery({
+    queryKey: ['campaigns', id, 'status'],
+    queryFn: () => api.get(`/campaigns/${id}/status`),
+    enabled: !!id && (options.enabled !== false),
+    staleTime: 15 * 1000, // 15 seconds - status updates frequently for active campaigns
+    gcTime: 5 * 60 * 1000, // 5 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchInterval: options.refetchInterval !== false ? 30 * 1000 : false, // Auto-refetch every 30s for live updates
+    refetchIntervalInBackground: false,
+    placeholderData: (previousData) => previousData,
+    ...options,
   });
 };
 
@@ -119,10 +203,15 @@ export const useScheduleCampaign = () => {
       return api.put(`/campaigns/${id}/schedule`, scheduleData);
     },
     onSuccess: (_, variables) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', variables.id] });
+      queryClient.refetchQueries({ queryKey: ['campaign', variables.id] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', variables.id, 'metrics'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['campaigns', variables.id, 'metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -290,8 +379,14 @@ export const usePrepareCampaign = () => {
   
   return useMutation({
     mutationFn: (id) => api.post(`/campaigns/${id}/prepare`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+    onSuccess: (_, id) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['campaign', id] });
+      queryClient.refetchQueries({ queryKey: ['campaign', id] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
     },
   });
 };
@@ -302,8 +397,17 @@ export const useRetryFailedCampaign = () => {
   return useMutation({
     mutationFn: (id) => api.post(`/campaigns/${id}/retry-failed`),
     onSuccess: (_, id) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', id] });
+      queryClient.refetchQueries({ queryKey: ['campaign', id] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -403,9 +507,13 @@ export const useCreateContact = () => {
   return useMutation({
     mutationFn: (data) => api.post('/contacts', data),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['contacts'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contacts'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['contacts', 'stats'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['contacts', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -416,8 +524,11 @@ export const useUpdateContact = () => {
   return useMutation({
     mutationFn: ({ id, ...data }) => api.put(`/contacts/${id}`, data),
     onSuccess: (_, variables) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['contacts'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contacts'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['contact', variables.id] });
+      queryClient.refetchQueries({ queryKey: ['contact', variables.id] });
     },
   });
 };
@@ -428,9 +539,13 @@ export const useDeleteContact = () => {
   return useMutation({
     mutationFn: (id) => api.delete(`/contacts/${id}`),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['contacts'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contacts'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['contacts', 'stats'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['contacts', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -463,9 +578,13 @@ export const useImportContacts = () => {
       });
     },
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['contacts'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contacts'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['contacts', 'stats'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['contacts', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -491,9 +610,13 @@ export const useCreatePurchase = () => {
   return useMutation({
     mutationFn: (data) => api.post('/billing/purchase', data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] }); // Update balance
-      queryClient.invalidateQueries({ queryKey: ['billing', 'history'], exact: false }); // Update history
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard credits
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'history'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['billing', 'history'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -517,7 +640,13 @@ export const useSubscribe = () => {
   return useMutation({
     mutationFn: (data) => api.post('/subscriptions/subscribe', data),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.refetchQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -528,8 +657,13 @@ export const useUpdateSubscription = () => {
   return useMutation({
     mutationFn: (data) => api.post('/subscriptions/update', data),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.refetchQueries({ queryKey: ['subscriptions', 'status'] });
       queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -540,7 +674,13 @@ export const useCancelSubscription = () => {
   return useMutation({
     mutationFn: () => api.post('/subscriptions/cancel'),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.refetchQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -551,8 +691,13 @@ export const useVerifySubscriptionSession = () => {
   return useMutation({
     mutationFn: (data) => api.post('/subscriptions/verify-session', data),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['subscriptions', 'status'] });
+      queryClient.refetchQueries({ queryKey: ['subscriptions', 'status'] });
       queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -582,9 +727,13 @@ export const useCreateTopup = () => {
   return useMutation({
     mutationFn: (data) => api.post('/billing/topup', data),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+      queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
       queryClient.invalidateQueries({ queryKey: ['billing', 'history'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['billing', 'history'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -648,8 +797,11 @@ export const useUpdateSenderNumber = () => {
   return useMutation({
     mutationFn: (data) => api.put('/settings/sender', data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['settings'] });
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['settings'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['settings'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['settings', 'account'] });
+      queryClient.refetchQueries({ queryKey: ['settings', 'account'] });
     },
   });
 };
@@ -660,12 +812,17 @@ export const useUpdateSettings = () => {
   return useMutation({
     mutationFn: (data) => api.put('/settings', data),
     onSuccess: (_, variables) => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['settings'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['settings'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['settings', 'account'] });
+      queryClient.refetchQueries({ queryKey: ['settings', 'account'] });
       // If currency was updated, invalidate billing packages to refetch with new currency
       if (variables.currency !== undefined) {
         queryClient.invalidateQueries({ queryKey: ['billing', 'packages'], exact: false });
+        queryClient.refetchQueries({ queryKey: ['billing', 'packages'], exact: false });
         queryClient.invalidateQueries({ queryKey: ['billing', 'balance'] });
+        queryClient.refetchQueries({ queryKey: ['billing', 'balance'] });
       }
     },
   });
@@ -798,7 +955,11 @@ export const useUpdateAutomation = () => {
       return api.put(`/automations/${id}`, payload);
     },
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['automations'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['automations'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['automations', 'stats'] });
+      queryClient.refetchQueries({ queryKey: ['automations', 'stats'] });
     },
   });
 };
@@ -809,9 +970,13 @@ export const useDeleteAutomation = () => {
   return useMutation({
     mutationFn: (id) => api.delete(`/automations/${id}`),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['automations'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['automations'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['automations', 'stats'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] }); // Update dashboard stats
+      queryClient.refetchQueries({ queryKey: ['automations', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -833,7 +998,13 @@ export const useSyncSystemDefaults = () => {
   return useMutation({
     mutationFn: () => api.post('/automations/sync'),
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['automations'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['automations'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['automations', 'stats'] });
+      queryClient.refetchQueries({ queryKey: ['automations', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['automations', 'defaults'] });
+      queryClient.refetchQueries({ queryKey: ['automations', 'defaults'] });
     },
   });
 };
@@ -1024,22 +1195,92 @@ export const useCampaignDeliveryStatus = (id, options = {}) => {
   });
 };
 
-export const useMittoMessageStatus = (messageId) => {
+export const useBulkUpdateDeliveryStatus = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => api.post('/tracking/bulk-update', data),
+    onSuccess: () => {
+      // Invalidate and refetch tracking queries
+      queryClient.invalidateQueries({ queryKey: ['tracking'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['tracking'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+    },
+  });
+};
+
+// ========== Mitto Status Refresh Hooks (New) ==========
+
+/**
+ * Refresh single message status from Mitto API
+ */
+export const useRefreshMittoStatus = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (providerMessageId) => {
+      return api.post('/api/mitto/refresh-status', { providerMessageId });
+    },
+    onSuccess: () => {
+      // Invalidate tracking queries that might be affected
+      queryClient.invalidateQueries({ queryKey: ['tracking'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['tracking'], exact: false });
+      // Invalidate campaign metrics if this message belongs to a campaign
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+    },
+  });
+};
+
+/**
+ * Refresh status for multiple messages (bulk)
+ * Supports both campaignId and providerMessageIds array
+ */
+export const useRefreshMittoStatusBulk = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data) => {
+      // Data can be { campaignId } or { providerMessageIds: [...] }
+      return api.post('/api/mitto/refresh-status-bulk', data);
+    },
+    onSuccess: (_, variables) => {
+      // Invalidate tracking queries
+      queryClient.invalidateQueries({ queryKey: ['tracking'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['tracking'], exact: false });
+      
+      // If campaignId was provided, invalidate campaign queries
+      if (variables.campaignId) {
+        queryClient.invalidateQueries({ queryKey: ['campaigns', variables.campaignId, 'metrics'] });
+        queryClient.refetchQueries({ queryKey: ['campaigns', variables.campaignId, 'metrics'] });
+        queryClient.invalidateQueries({ queryKey: ['campaigns', variables.campaignId, 'status'] });
+        queryClient.refetchQueries({ queryKey: ['campaigns', variables.campaignId, 'status'] });
+        queryClient.invalidateQueries({ queryKey: ['campaign', variables.campaignId] });
+        queryClient.refetchQueries({ queryKey: ['campaign', variables.campaignId] });
+      }
+      
+      // Invalidate all campaigns list
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
+    },
+  });
+};
+
+/**
+ * Get message status from Mitto (read-only, no update)
+ */
+export const useMittoMessageStatus = (messageId, options = {}) => {
   return useQuery({
-    queryKey: ['tracking', 'mitto', messageId],
-    queryFn: () => api.get(`/tracking/mitto/${messageId}`),
-    enabled: !!messageId,
+    queryKey: ['mitto', 'message', messageId],
+    queryFn: () => api.get(`/api/mitto/message/${messageId}`),
+    enabled: !!messageId && (options.enabled !== false),
     staleTime: 30 * 1000, // 30 seconds
     gcTime: 2 * 60 * 1000, // 2 minutes (React Query v5)
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     placeholderData: (previousData) => previousData,
-  });
-};
-
-export const useBulkUpdateDeliveryStatus = () => {
-  return useMutation({
-    mutationFn: (data) => api.post('/tracking/bulk-update', data),
+    ...options,
   });
 };
 

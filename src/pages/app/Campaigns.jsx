@@ -18,7 +18,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import EmptyState from '../../components/ui/EmptyState';
-import { useCampaigns, useDeleteCampaign, useSendCampaign, useCampaignStats } from '../../services/queries';
+import { useCampaigns, useDeleteCampaign, useEnqueueCampaign, useCampaignStats } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
 import { format } from 'date-fns';
@@ -43,7 +43,7 @@ export default function Campaigns() {
   const { data: statsData } = useCampaignStats();
 
   const deleteCampaign = useDeleteCampaign();
-  const sendCampaign = useSendCampaign();
+  const enqueueCampaign = useEnqueueCampaign();
 
   const campaigns = useMemo(() => data?.campaigns || [], [data?.campaigns]);
   const pagination = useMemo(() => {
@@ -78,7 +78,7 @@ export default function Campaigns() {
 
   const handleSend = async (id) => {
     try {
-      await sendCampaign.mutateAsync(id);
+      await enqueueCampaign.mutateAsync(id);
       toast.success('Campaign queued for sending');
     } catch (error) {
       toast.error(error?.message || 'Failed to send campaign');

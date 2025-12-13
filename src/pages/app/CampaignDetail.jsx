@@ -44,6 +44,9 @@ export default function CampaignDetail() {
     enabled: campaign?.status === CampaignStatus.sending || campaign?.status === CampaignStatus.scheduled,
     refetchInterval: 30 * 1000, // Refetch every 30 seconds for live progress
   });
+  const { data: previewData, refetch: refetchPreview } = useCampaignPreview(id, {
+    enabled: showPreviewDialog && (campaign?.status === CampaignStatus.draft || campaign?.status === CampaignStatus.scheduled),
+  });
   const { data: failedRecipientsData } = useCampaignFailedRecipients(id, {
     enabled: campaign?.status === CampaignStatus.sent || campaign?.status === CampaignStatus.failed || campaign?.status === CampaignStatus.sending,
   });
@@ -426,9 +429,23 @@ export default function CampaignDetail() {
               {/* Failed Recipients */}
               {failedRecipientsData?.recipients && failedRecipientsData.recipients.length > 0 && (
                 <GlassCard className="p-4 sm:p-6">
-                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">
-                    Failed Recipients ({failedRecipientsData.failedCount})
-                  </h2>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-text-primary">
+                      Failed Recipients ({failedRecipientsData.failedCount})
+                    </h2>
+                    <GlassButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleRetryFailed}
+                      disabled={retryFailedCampaign.isPending}
+                      className="text-orange-500 hover:text-orange-600"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon name="refresh" size="sm" className="text-orange-500" />
+                        {retryFailedCampaign.isPending ? 'Retrying...' : 'Retry Failed'}
+                      </span>
+                    </GlassButton>
+                  </div>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {failedRecipientsData.recipients.map((recipient) => (
                       <div

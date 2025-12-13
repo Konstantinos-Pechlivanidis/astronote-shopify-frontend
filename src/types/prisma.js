@@ -36,6 +36,16 @@ export const ScheduleType = {
 };
 
 /**
+ * Campaign Priority Enum
+ */
+export const CampaignPriority = {
+  low: 'low',
+  normal: 'normal',
+  high: 'high',
+  urgent: 'urgent',
+};
+
+/**
  * SMS Consent Enum
  */
 export const SmsConsent = {

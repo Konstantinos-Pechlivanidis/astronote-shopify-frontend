@@ -105,6 +105,7 @@ export default function CampaignCreate() {
         scheduleAt: existingCampaign.scheduleAt ? new Date(existingCampaign.scheduleAt).toISOString() : '',
         discountId: existingCampaign.discountId || null,
         senderId: existingCampaign.senderId || '',
+        priority: existingCampaign.priority || 'normal',
       });
       setIsScheduled(isScheduledCampaign);
     }
@@ -191,6 +192,7 @@ export default function CampaignCreate() {
         scheduleType: isScheduled ? 'scheduled' : 'immediate', // Preserve scheduleType
         discountId: formData.discountId || null,
         senderId: formData.senderId || undefined,
+        priority: formData.priority || 'normal',
       };
       
       // Include scheduleAt if scheduled (convert to UTC using shop timezone)
@@ -657,6 +659,22 @@ export default function CampaignCreate() {
                         No discount codes available in your Shopify store.
                       </p>
                     )}
+                  </div>
+
+                  <div>
+                    <GlassSelectCustom
+                      label="Priority"
+                      name="priority"
+                      value={formData.priority}
+                      onChange={handleChange}
+                      options={[
+                        { value: 'low', label: 'Low' },
+                        { value: 'normal', label: 'Normal' },
+                        { value: 'high', label: 'High' },
+                        { value: 'urgent', label: 'Urgent' },
+                      ]}
+                      helpText="Higher priority campaigns are processed first in the queue"
+                    />
                   </div>
 
                   <div>

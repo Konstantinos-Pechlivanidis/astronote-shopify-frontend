@@ -154,6 +154,31 @@ export const useEnqueueCampaign = () => {
       queryClient.invalidateQueries({ queryKey: ['campaign', id] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'progress'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
+    },
+  });
+};
+
+export const useCancelCampaign = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (id) => {
+      return api.post(`/campaigns/${id}/cancel`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    },
+    onSuccess: (_, id) => {
+      // Invalidate and refetch all campaign-related queries
+      queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['campaign', id] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'progress'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
     },
@@ -366,6 +391,36 @@ export const useCampaignMetrics = (id, options = {}) => {
 /**
  * Get failed recipients for a campaign
  */
+export const useCampaignPreview = (id, options = {}) => {
+  return useQuery({
+    queryKey: ['campaigns', id, 'preview'],
+    queryFn: () => api.get(`/campaigns/${id}/preview`),
+    enabled: !!id && (options.enabled !== false),
+    staleTime: 30 * 1000, // 30 seconds - preview can change if contacts are added/removed
+    gcTime: 5 * 60 * 1000, // 5 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    placeholderData: (previousData) => previousData,
+    ...options,
+  });
+};
+
+export const useCampaignProgress = (id, options = {}) => {
+  return useQuery({
+    queryKey: ['campaigns', id, 'progress'],
+    queryFn: () => api.get(`/campaigns/${id}/progress`),
+    enabled: !!id && (options.enabled !== false),
+    staleTime: 15 * 1000, // 15 seconds - progress updates frequently for active campaigns
+    gcTime: 5 * 60 * 1000, // 5 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchInterval: options.refetchInterval !== false ? 30 * 1000 : false, // Auto-refetch every 30s for live updates
+    refetchIntervalInBackground: false,
+    placeholderData: (previousData) => previousData,
+    ...options,
+  });
+};
+
 export const useCampaignFailedRecipients = (id, options = {}) => {
   return useQuery({
     queryKey: ['campaigns', id, 'failed-recipients'],

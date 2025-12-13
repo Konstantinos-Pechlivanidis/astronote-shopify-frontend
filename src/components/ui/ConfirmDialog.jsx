@@ -18,6 +18,7 @@ export default function ConfirmDialog({
   cancelLabel = 'Cancel',
   variant = 'primary',
   destructive = false,
+  confirmDisabled = false,
   className,
 }) {
   const handleConfirm = useCallback(() => {
@@ -87,6 +88,7 @@ export default function ConfirmDialog({
             variant={destructive ? 'fuchsia' : variant}
             size="lg"
             onClick={handleConfirm}
+            disabled={confirmDisabled}
             className="flex-1"
           >
             {confirmLabel}

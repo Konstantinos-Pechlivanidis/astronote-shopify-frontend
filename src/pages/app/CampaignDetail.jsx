@@ -13,9 +13,13 @@ import {
   useCampaign,
   useDeleteCampaign,
   useEnqueueCampaign,
+  useCancelCampaign,
   useCampaignMetrics,
   useCampaignStatus,
+  useCampaignProgress,
+  useCampaignPreview,
   useCampaignFailedRecipients,
+  useRetryFailedCampaign,
 } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
@@ -27,6 +31,7 @@ export default function CampaignDetail() {
   const navigate = useNavigate();
   const toast = useToastContext();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showPreviewDialog, setShowPreviewDialog] = useState(false);
 
   const { data: campaign, isLoading, error } = useCampaign(id);
   const { data: metrics } = useCampaignMetrics(id);
@@ -35,11 +40,17 @@ export default function CampaignDetail() {
     refetchInterval: 30 * 1000, // Refetch every 30 seconds
     enabled: campaign?.status === CampaignStatus.sending || campaign?.status === CampaignStatus.scheduled, // Only refetch if campaign is active
   }); // Phase 2.2: New status endpoint with queued, processed, etc.
+  const { data: progressData } = useCampaignProgress(id, {
+    enabled: campaign?.status === CampaignStatus.sending || campaign?.status === CampaignStatus.scheduled,
+    refetchInterval: 30 * 1000, // Refetch every 30 seconds for live progress
+  });
   const { data: failedRecipientsData } = useCampaignFailedRecipients(id, {
     enabled: campaign?.status === CampaignStatus.sent || campaign?.status === CampaignStatus.failed || campaign?.status === CampaignStatus.sending,
   });
   const deleteCampaign = useDeleteCampaign();
   const enqueueCampaign = useEnqueueCampaign();
+  const cancelCampaign = useCancelCampaign();
+  const retryFailedCampaign = useRetryFailedCampaign();
 
   const handleDelete = async () => {
     try {
@@ -63,11 +74,78 @@ export default function CampaignDetail() {
       return;
     }
 
+    // Show preview dialog first
+    setShowPreviewDialog(true);
+    await refetchPreview();
+  };
+
+  const handleConfirmSend = async () => {
+    // Prevent multiple clicks
+    if (enqueueCampaign.isPending) {
+      return;
+    }
+
+    // Check if can send based on preview
+    if (previewData && !previewData.canSend) {
+      if (previewData.insufficientCredits) {
+        toast.error(`Insufficient credits. You need ${previewData.missingCredits} more credits.`);
+      } else {
+        toast.error('Cannot send campaign. No eligible recipients found.');
+      }
+      setShowPreviewDialog(false);
+      return;
+    }
+
     try {
       await enqueueCampaign.mutateAsync(id);
       toast.success('Campaign queued for sending');
+      setShowPreviewDialog(false);
     } catch (error) {
       toast.error(error?.message || 'Failed to send campaign');
+    }
+  };
+
+  const handleCancel = async () => {
+    // Prevent multiple clicks
+    if (cancelCampaign.isPending) {
+      return;
+    }
+
+    // Confirm cancellation
+    if (!window.confirm('Are you sure you want to cancel this campaign? Pending messages will not be sent.')) {
+      return;
+    }
+
+    try {
+      await cancelCampaign.mutateAsync(id);
+      toast.success('Campaign cancelled successfully');
+    } catch (error) {
+      toast.error(error?.message || 'Failed to cancel campaign');
+    }
+  };
+
+  const handleRetryFailed = async () => {
+    // Prevent multiple clicks
+    if (retryFailedCampaign.isPending) {
+      return;
+    }
+
+    // Check if there are failed recipients
+    if (!failedRecipientsData?.recipients || failedRecipientsData.recipients.length === 0) {
+      toast.error('No failed recipients to retry');
+      return;
+    }
+
+    // Confirm retry
+    if (!window.confirm(`Retry sending to ${failedRecipientsData.failedCount || failedRecipientsData.recipients.length} failed recipient(s)?`)) {
+      return;
+    }
+
+    try {
+      await retryFailedCampaign.mutateAsync(id);
+      toast.success('Failed recipients queued for retry');
+    } catch (error) {
+      toast.error(error?.message || 'Failed to retry failed recipients');
     }
   };
 
@@ -103,6 +181,7 @@ export default function CampaignDetail() {
   const canSend =
     campaign.status === CampaignStatus.draft ||
     campaign.status === CampaignStatus.scheduled;
+  const canCancel = campaign.status === CampaignStatus.sending;
 
   return (
     <>
@@ -142,6 +221,20 @@ export default function CampaignDetail() {
                       <span className="flex items-center gap-2">
                         <Icon name="send" size="sm" variant="ice" />
                         {enqueueCampaign.isPending ? 'Sending...' : 'Send Now'}
+                      </span>
+                    </GlassButton>
+                  )}
+                  {canCancel && (
+                    <GlassButton 
+                      variant="ghost" 
+                      size="md" 
+                      onClick={handleCancel}
+                      disabled={cancelCampaign.isPending}
+                      className="text-orange-500 hover:text-orange-600"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon name="cancel" size="sm" className="text-orange-500" />
+                        {cancelCampaign.isPending ? 'Cancelling...' : 'Cancel'}
                       </span>
                     </GlassButton>
                   )}
@@ -198,6 +291,46 @@ export default function CampaignDetail() {
                   )}
                 </div>
               </GlassCard>
+
+              {/* Progress Bar - Show when campaign is sending */}
+              {progressData && campaign?.status === CampaignStatus.sending && (
+                <GlassCard className="p-4 sm:p-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Sending Progress</h2>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-neutral-text-primary">
+                        {progressData.processed || 0} of {progressData.total || 0} messages processed
+                      </span>
+                      <span className="text-sm font-bold text-ice-primary">
+                        {progressData.progress || 0}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-neutral-bg-soft rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-ice-primary to-ice-secondary h-3 rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-2"
+                        style={{ width: `${progressData.progress || 0}%` }}
+                      >
+                        {progressData.progress > 10 && (
+                          <span className="text-xs font-medium text-white">
+                            {progressData.progress}%
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 text-xs text-neutral-text-secondary">
+                      <div>
+                        <span className="font-medium text-neutral-text-primary">Sent:</span> {progressData.sent || 0}
+                      </div>
+                      <div>
+                        <span className="font-medium text-neutral-text-primary">Failed:</span> {progressData.failed || 0}
+                      </div>
+                      <div>
+                        <span className="font-medium text-neutral-text-primary">Pending:</span> {progressData.pending || 0}
+                      </div>
+                    </div>
+                  </div>
+                </GlassCard>
+              )}
 
               {/* Metrics - Phase 2.2: Use status endpoint for real-time metrics */}
               {(statusData || metrics) && (
@@ -367,6 +500,56 @@ export default function CampaignDetail() {
         </div>
       </div>
       
+      <ConfirmDialog
+        isOpen={showPreviewDialog}
+        onClose={() => setShowPreviewDialog(false)}
+        onConfirm={handleConfirmSend}
+        title="Send Campaign"
+        message={
+          previewData ? (
+            <div className="space-y-3">
+              <p className="text-neutral-text-primary">
+                You are about to send this campaign to:
+              </p>
+              <div className="bg-neutral-bg-soft p-4 rounded-lg space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-neutral-text-primary">Recipients:</span>
+                  <span className="text-lg font-bold text-ice-primary">{previewData.recipientCount || 0}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-neutral-text-primary">Estimated Cost:</span>
+                  <span className="text-lg font-bold text-neutral-text-primary">{previewData.estimatedCost || 0} credits</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-neutral-text-primary">Available Credits:</span>
+                  <span className={`text-lg font-bold ${previewData.availableCredits >= (previewData.estimatedCost || 0) ? 'text-ice-primary' : 'text-red-500'}`}>
+                    {previewData.availableCredits || 0}
+                  </span>
+                </div>
+                {previewData.insufficientCredits && (
+                  <div className="mt-2 p-2 bg-red-500/10 border border-red-500/20 rounded text-sm text-red-500">
+                    ⚠️ Insufficient credits. You need {previewData.missingCredits} more credits.
+                  </div>
+                )}
+              </div>
+              {previewData.canSend ? (
+                <p className="text-sm text-neutral-text-secondary mt-2">
+                  Click "Send" to proceed with sending this campaign.
+                </p>
+              ) : (
+                <p className="text-sm text-red-500 mt-2">
+                  Cannot send campaign. Please check your credits or recipient count.
+                </p>
+              )}
+            </div>
+          ) : (
+            'Loading preview...'
+          )
+        }
+        confirmLabel={previewData?.canSend ? (enqueueCampaign.isPending ? "Sending..." : "Send") : "Close"}
+        cancelLabel="Cancel"
+        confirmDisabled={!previewData?.canSend || enqueueCampaign.isPending || !previewData}
+      />
       <ConfirmDialog
         isOpen={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}

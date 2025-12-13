@@ -15,6 +15,7 @@ import {
   useEnqueueCampaign,
   useCampaignMetrics,
   useCampaignStatus,
+  useCampaignFailedRecipients,
 } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
@@ -34,6 +35,9 @@ export default function CampaignDetail() {
     refetchInterval: 30 * 1000, // Refetch every 30 seconds
     enabled: campaign?.status === CampaignStatus.sending || campaign?.status === CampaignStatus.scheduled, // Only refetch if campaign is active
   }); // Phase 2.2: New status endpoint with queued, processed, etc.
+  const { data: failedRecipientsData } = useCampaignFailedRecipients(id, {
+    enabled: campaign?.status === CampaignStatus.sent || campaign?.status === CampaignStatus.failed || campaign?.status === CampaignStatus.sending,
+  });
   const deleteCampaign = useDeleteCampaign();
   const enqueueCampaign = useEnqueueCampaign();
 
@@ -201,33 +205,59 @@ export default function CampaignDetail() {
                   <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">Performance Metrics</h2>
                   {statusData?.metrics ? (
                     // Phase 2.2: Use new status endpoint format
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                      <div>
-                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Queued</p>
-                        <p className="text-2xl font-bold text-neutral-text-primary">
-                          {statusData.metrics.queued || 0}
-                        </p>
+                    <>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4">
+                        <div>
+                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Queued</p>
+                          <p className="text-2xl font-bold text-neutral-text-primary">
+                            {statusData.metrics.queued || 0}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
+                          <p className="text-2xl font-bold text-ice-primary">
+                            {statusData.metrics.success || statusData.campaign?.sent || 0}
+                          </p>
+                          {statusData.campaign?.total > 0 && (
+                            <p className="text-xs text-neutral-text-secondary mt-1">
+                              {Math.round(((statusData.metrics.success || 0) / statusData.campaign.total) * 100)}%
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Processed</p>
+                          <p className="text-2xl font-bold text-neutral-text-primary">
+                            {statusData.metrics.processed || 0}
+                          </p>
+                          <p className="text-xs text-neutral-text-secondary mt-1">Sent + Failed</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
+                          <p className="text-2xl font-bold text-red-500">
+                            {statusData.metrics.failed || statusData.campaign?.failed || 0}
+                          </p>
+                          {statusData.campaign?.total > 0 && (
+                            <p className="text-xs text-red-500 mt-1">
+                              {Math.round(((statusData.metrics.failed || 0) / statusData.campaign.total) * 100)}%
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
-                        <p className="text-2xl font-bold text-ice-primary">
-                          {statusData.metrics.success || statusData.campaign?.sent || 0}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Processed</p>
-                        <p className="text-2xl font-bold text-neutral-text-primary">
-                          {statusData.metrics.processed || 0}
-                        </p>
-                        <p className="text-xs text-neutral-text-secondary mt-1">Sent + Failed</p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
-                        <p className="text-2xl font-bold text-red-500">
-                          {statusData.metrics.failed || statusData.campaign?.failed || 0}
-                        </p>
-                      </div>
-                    </div>
+                      {metrics?.sentPercentage !== undefined && (
+                        <div className="pt-4 border-t border-neutral-border/40">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium text-neutral-text-primary">Success Rate</span>
+                            <span className="text-sm font-bold text-ice-primary">{metrics.sentPercentage}%</span>
+                          </div>
+                          <div className="w-full bg-neutral-bg-soft rounded-full h-2">
+                            <div
+                              className="bg-ice-primary h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${metrics.sentPercentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     // Fallback to old metrics format
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
@@ -257,6 +287,51 @@ export default function CampaignDetail() {
                       </div>
                     </div>
                   )}
+                </GlassCard>
+              )}
+
+              {/* Failed Recipients */}
+              {failedRecipientsData?.recipients && failedRecipientsData.recipients.length > 0 && (
+                <GlassCard className="p-4 sm:p-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-neutral-text-primary">
+                    Failed Recipients ({failedRecipientsData.failedCount})
+                  </h2>
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {failedRecipientsData.recipients.map((recipient) => (
+                      <div
+                        key={recipient.id}
+                        className="p-3 bg-neutral-bg-soft rounded-lg border border-red-500/20"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <p className="font-medium text-neutral-text-primary">
+                              {recipient.contact?.firstName && recipient.contact?.lastName
+                                ? `${recipient.contact.firstName} ${recipient.contact.lastName}`
+                                : recipient.contact?.firstName || 'Unknown'}
+                            </p>
+                            <p className="text-sm text-neutral-text-secondary mt-1">
+                              {recipient.phoneE164}
+                            </p>
+                            {recipient.contact?.email && (
+                              <p className="text-xs text-neutral-text-secondary mt-1">
+                                {recipient.contact.email}
+                              </p>
+                            )}
+                            {recipient.error && (
+                              <p className="text-xs text-red-500 mt-2">
+                                Error: {recipient.error}
+                              </p>
+                            )}
+                          </div>
+                          {recipient.failedAt && (
+                            <span className="text-xs text-neutral-text-secondary">
+                              {format(new Date(recipient.failedAt), 'MMM d, HH:mm')}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </GlassCard>
               )}
             </div>

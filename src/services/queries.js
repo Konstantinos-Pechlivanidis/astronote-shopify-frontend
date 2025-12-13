@@ -363,6 +363,23 @@ export const useCampaignMetrics = (id, options = {}) => {
   });
 };
 
+/**
+ * Get failed recipients for a campaign
+ */
+export const useCampaignFailedRecipients = (id, options = {}) => {
+  return useQuery({
+    queryKey: ['campaigns', id, 'failed-recipients'],
+    queryFn: () => api.get(`/campaigns/${id}/failed-recipients`),
+    enabled: !!id && (options.enabled !== false),
+    staleTime: 60 * 1000, // 1 minute - failed recipients don't change that often
+    gcTime: 10 * 60 * 1000, // 10 minutes (React Query v5)
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    placeholderData: (previousData) => previousData,
+    ...options,
+  });
+};
+
 export const usePrepareCampaign = () => {
   const queryClient = useQueryClient();
   

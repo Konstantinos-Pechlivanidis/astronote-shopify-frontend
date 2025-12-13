@@ -358,7 +358,8 @@ export default function Campaigns() {
                             <>
                               <button
                                 onClick={() => handleSend(campaign.id)}
-                                className="p-2.5 rounded-lg hover:bg-ice-soft/50 transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group"
+                                disabled={enqueueCampaign.isPending}
+                                className="p-2.5 rounded-lg hover:bg-ice-soft/50 transition-all duration-200 hover:scale-105 focus-ring min-w-[44px] min-h-[44px] flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                 aria-label="Send campaign"
                                 title="Send campaign"
                               >

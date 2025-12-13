@@ -111,10 +111,15 @@ export default function CampaignDetail() {
               action={
                 <div className="flex gap-2">
                   {canSend && (
-                    <GlassButton variant="primary" size="md" onClick={handleSend}>
+                    <GlassButton 
+                      variant="primary" 
+                      size="md" 
+                      onClick={handleSend}
+                      disabled={enqueueCampaign.isPending}
+                    >
                       <span className="flex items-center gap-2">
                         <Icon name="send" size="sm" variant="ice" />
-                        Send Now
+                        {enqueueCampaign.isPending ? 'Sending...' : 'Send Now'}
                       </span>
                     </GlassButton>
                   )}

@@ -121,19 +121,13 @@ export const useSendCampaign = () => {
       });
     },
     onSuccess: (_, id) => {
-      // Invalidate and refetch
+      // Only invalidate queries - React Query will refetch them automatically if they're being observed
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
-      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', id] });
-      queryClient.refetchQueries({ queryKey: ['campaign', id] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
-      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
-      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'status'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      queryClient.refetchQueries({ queryKey: ['dashboard'] });
       queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
-      queryClient.refetchQueries({ queryKey: ['reports'], exact: false });
     },
   });
 };
@@ -154,19 +148,13 @@ export const useEnqueueCampaign = () => {
       });
     },
     onSuccess: (_, id) => {
-      // Invalidate and refetch
+      // Only invalidate queries - React Query will refetch them automatically if they're being observed
       queryClient.invalidateQueries({ queryKey: ['campaigns'], exact: false });
-      queryClient.refetchQueries({ queryKey: ['campaigns'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['campaign', id] });
-      queryClient.refetchQueries({ queryKey: ['campaign', id] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'metrics'] });
-      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'metrics'] });
       queryClient.invalidateQueries({ queryKey: ['campaigns', id, 'status'] });
-      queryClient.refetchQueries({ queryKey: ['campaigns', id, 'status'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      queryClient.refetchQueries({ queryKey: ['dashboard'] });
       queryClient.invalidateQueries({ queryKey: ['reports'], exact: false });
-      queryClient.refetchQueries({ queryKey: ['reports'], exact: false });
     },
   });
 };

@@ -19,6 +19,7 @@ import {
 import { useToastContext } from '../../contexts/ToastContext';
 import SEO from '../../components/SEO';
 import { format } from 'date-fns';
+import { CampaignStatus } from '../../types/prisma';
 
 export default function CampaignDetail() {
   const { id } = useParams();
@@ -78,9 +79,15 @@ export default function CampaignDetail() {
     );
   }
 
-  const canEdit = campaign.status === 'draft' || campaign.status === 'scheduled';
-  const canDelete = campaign.status === 'draft' || campaign.status === 'cancelled';
-  const canSend = campaign.status === 'draft' || campaign.status === 'scheduled';
+  const canEdit =
+    campaign.status === CampaignStatus.draft ||
+    campaign.status === CampaignStatus.scheduled;
+  const canDelete =
+    campaign.status === CampaignStatus.draft ||
+    campaign.status === CampaignStatus.cancelled;
+  const canSend =
+    campaign.status === CampaignStatus.draft ||
+    campaign.status === CampaignStatus.scheduled;
 
   return (
     <>

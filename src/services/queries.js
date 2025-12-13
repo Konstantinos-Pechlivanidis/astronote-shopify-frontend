@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from './api';
 import { normalizePaginatedResponse } from '../utils/apiHelpers';
 import { transformAutomationsFromAPI, transformAutomationToAPI } from '../utils/apiAdapters';
+import { ScheduleType } from '../types/prisma';
 
 // Campaigns
 export const useCampaigns = (params = {}) => {
@@ -184,7 +185,7 @@ export const useScheduleCampaign = () => {
   return useMutation({
     mutationFn: ({ id, scheduleType, scheduleAt, recurringDays }) => {
       const scheduleData = {
-        scheduleType: scheduleType || 'scheduled',
+        scheduleType: scheduleType || ScheduleType.scheduled,
         scheduleAt: scheduleAt ? new Date(scheduleAt).toISOString() : undefined,
         recurringDays,
       };

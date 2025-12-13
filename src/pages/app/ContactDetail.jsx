@@ -18,6 +18,7 @@ import ErrorState from '../../components/ui/ErrorState';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { useContact, useUpdateContact, useDeleteContact, useCreateContact } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
+import { SmsConsent } from '../../types/prisma';
 import SEO from '../../components/SEO';
 import { format } from 'date-fns';
 
@@ -36,7 +37,7 @@ export default function ContactDetail() {
     email: '',
     gender: '',
     birthDate: '',
-    smsConsent: 'opted_in', // Default to 'opted_in' for new contacts
+    smsConsent: SmsConsent.opted_in, // Default to 'opted_in' for new contacts
     tags: [],
   });
   const [errors, setErrors] = useState({});
@@ -56,7 +57,7 @@ export default function ContactDetail() {
         email: contact.email || '',
         gender: contact.gender || '',
         birthDate: contact.birthDate ? new Date(contact.birthDate).toISOString() : '',
-        smsConsent: contact.smsConsent || 'opted_in', // Default to 'opted_in' if not set
+        smsConsent: contact.smsConsent || SmsConsent.opted_in, // Default to 'opted_in' if not set
         tags: contact.tags || [],
       });
     }
@@ -176,7 +177,7 @@ export default function ContactDetail() {
         email: formData.email?.trim() || null,
         gender: formData.gender || null,
         birthDate: formData.birthDate && formData.birthDate.trim() ? (formData.birthDate.includes('T') ? formData.birthDate : new Date(formData.birthDate).toISOString()) : null,
-        smsConsent: formData.smsConsent || 'opted_in',
+        smsConsent: formData.smsConsent || SmsConsent.opted_in,
         tags: formData.tags || [],
       };
 

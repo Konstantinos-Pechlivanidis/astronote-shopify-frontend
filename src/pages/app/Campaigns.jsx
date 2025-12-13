@@ -20,6 +20,7 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import EmptyState from '../../components/ui/EmptyState';
 import { useCampaigns, useDeleteCampaign, useEnqueueCampaign, useCampaignStats } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
+import { CampaignStatus } from '../../types/prisma';
 import SEO from '../../components/SEO';
 import { format } from 'date-fns';
 
@@ -135,14 +136,16 @@ export default function Campaigns() {
       },
       {
         label: 'Active',
-        value: campaigns.filter((c) => c.status === 'sending').length,
+        value: campaigns.filter((c) => c.status === CampaignStatus.sending)
+          .length,
         icon: 'send',
         variant: 'ice',
         color: 'ice',
       },
       {
         label: 'Scheduled',
-        value: campaigns.filter((c) => c.status === 'scheduled').length,
+        value: campaigns.filter((c) => c.status === CampaignStatus.scheduled)
+          .length,
         icon: 'schedule',
         variant: 'ice',
         color: 'ice',

@@ -22,6 +22,7 @@ import {
   useSettings,
 } from '../../services/queries';
 import { useToastContext } from '../../contexts/ToastContext';
+import { CampaignStatus, ScheduleType } from '../../types/prisma';
 import { countSMSCharacters } from '../../utils/smsParser';
 import { normalizeArrayResponse } from '../../utils/apiHelpers';
 import { format } from 'date-fns';
@@ -82,7 +83,9 @@ export default function CampaignCreate() {
   useEffect(() => {
     if (isEditMode && existingCampaign) {
       // Check if campaign can be edited
-      const canEdit = existingCampaign.status === 'draft' || existingCampaign.status === 'scheduled';
+      const canEdit =
+        existingCampaign.status === CampaignStatus.draft ||
+        existingCampaign.status === CampaignStatus.scheduled;
       
       if (!canEdit) {
         toast.error('This campaign cannot be edited. Only draft and scheduled campaigns can be modified.');
@@ -90,7 +93,8 @@ export default function CampaignCreate() {
         return;
       }
       
-      const scheduleType = existingCampaign.scheduleType || 'immediate';
+      const scheduleType =
+        existingCampaign.scheduleType || ScheduleType.immediate;
       const isScheduledCampaign = scheduleType === 'scheduled';
       
       setFormData({

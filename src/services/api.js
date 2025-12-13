@@ -7,7 +7,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000, // 30 seconds timeout
+  timeout: 10000, // 10 seconds timeout (reduced from 30 for better UX)
 });
 
 // Request interceptor - add auth token and shop domain
@@ -215,14 +215,17 @@ api.interceptors.response.use(
       timestamp: new Date().toISOString(),
     });
 
-    // Handle 401 - Unauthorized
+    // Handle 401 - Unauthorized (token expired or invalid)
     if (error.response?.status === 401) {
+      // Clear invalid token immediately
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem('astronote_store_info');
+      
       // Redirect to login if not already there
-      // Check if we're on a shopify route
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/shopify';
+      // Use replace to avoid adding to history
+      if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/shopify/login')) {
+        // Use window.location.replace for immediate redirect without adding to history
+        window.location.replace('/shopify/login');
       }
     }
     

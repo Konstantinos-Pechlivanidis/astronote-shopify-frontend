@@ -32,7 +32,7 @@ export default function CampaignDetail() {
   const { data: statusData } = useCampaignStatus(id, {
     // Enable auto-refetch for live updates
     refetchInterval: 30 * 1000, // Refetch every 30 seconds
-    enabled: campaign?.status === 'sending' || campaign?.status === 'scheduled', // Only refetch if campaign is active
+    enabled: campaign?.status === CampaignStatus.sending || campaign?.status === CampaignStatus.scheduled, // Only refetch if campaign is active
   }); // Phase 2.2: New status endpoint with queued, processed, etc.
   const deleteCampaign = useDeleteCampaign();
   const enqueueCampaign = useEnqueueCampaign();
@@ -48,6 +48,17 @@ export default function CampaignDetail() {
   };
 
   const handleSend = async () => {
+    // Prevent multiple clicks
+    if (enqueueCampaign.isPending) {
+      return;
+    }
+    
+    // Prevent sending if campaign is not in valid state
+    if (campaign?.status !== CampaignStatus.draft && campaign?.status !== CampaignStatus.scheduled) {
+      toast.error('Campaign cannot be sent in its current state');
+      return;
+    }
+
     try {
       await enqueueCampaign.mutateAsync(id);
       toast.success('Campaign queued for sending');
@@ -122,7 +133,7 @@ export default function CampaignDetail() {
                       variant="primary" 
                       size="md" 
                       onClick={handleSend}
-                      disabled={enqueueCampaign.isPending}
+                      disabled={enqueueCampaign.isPending || campaign?.status !== CampaignStatus.draft && campaign?.status !== CampaignStatus.scheduled}
                     >
                       <span className="flex items-center gap-2">
                         <Icon name="send" size="sm" variant="ice" />

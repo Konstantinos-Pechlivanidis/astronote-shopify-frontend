@@ -78,6 +78,11 @@ export default function Campaigns() {
   };
 
   const handleSend = async (id) => {
+    // Prevent multiple clicks
+    if (enqueueCampaign.isPending) {
+      return;
+    }
+
     try {
       await enqueueCampaign.mutateAsync(id);
       toast.success('Campaign queued for sending');

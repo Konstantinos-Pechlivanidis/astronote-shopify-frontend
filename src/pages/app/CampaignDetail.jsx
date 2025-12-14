@@ -343,35 +343,35 @@ export default function CampaignDetail() {
                     // Phase 2.2: Use new status endpoint format
                     <>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4">
-                        <div>
-                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Queued</p>
-                          <p className="text-2xl font-bold text-neutral-text-primary">
-                            {statusData.metrics.queued || 0}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
-                          <p className="text-2xl font-bold text-ice-primary">
-                            {statusData.metrics.success || statusData.campaign?.sent || 0}
-                          </p>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Queued</p>
+                        <p className="text-2xl font-bold text-neutral-text-primary">
+                          {statusData.metrics.queued || 0}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Sent</p>
+                        <p className="text-2xl font-bold text-ice-primary">
+                          {statusData.metrics.success || statusData.campaign?.sent || 0}
+                        </p>
                           {statusData.campaign?.total > 0 && (
                             <p className="text-xs text-neutral-text-secondary mt-1">
                               {Math.round(((statusData.metrics.success || 0) / statusData.campaign.total) * 100)}%
                             </p>
                           )}
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Processed</p>
-                          <p className="text-2xl font-bold text-neutral-text-primary">
-                            {statusData.metrics.processed || 0}
-                          </p>
-                          <p className="text-xs text-neutral-text-secondary mt-1">Sent + Failed</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
-                          <p className="text-2xl font-bold text-red-500">
-                            {statusData.metrics.failed || statusData.campaign?.failed || 0}
-                          </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Processed</p>
+                        <p className="text-2xl font-bold text-neutral-text-primary">
+                          {statusData.metrics.processed || 0}
+                        </p>
+                        <p className="text-xs text-neutral-text-secondary mt-1">Sent + Failed</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1 uppercase tracking-wider">Failed</p>
+                        <p className="text-2xl font-bold text-red-500">
+                          {statusData.metrics.failed || statusData.campaign?.failed || 0}
+                        </p>
                           {statusData.campaign?.total > 0 && (
                             <p className="text-xs text-red-500 mt-1">
                               {Math.round(((statusData.metrics.failed || 0) / statusData.campaign.total) * 100)}%
@@ -390,8 +390,8 @@ export default function CampaignDetail() {
                               className="bg-ice-primary h-2 rounded-full transition-all duration-300"
                               style={{ width: `${metrics.sentPercentage}%` }}
                             />
-                          </div>
-                        </div>
+                      </div>
+                    </div>
                       )}
                     </>
                   ) : (
